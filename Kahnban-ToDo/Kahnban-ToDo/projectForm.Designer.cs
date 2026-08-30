@@ -35,16 +35,16 @@
             Label_Project = new Label();
             TableLayoutPanel_Content = new TableLayoutPanel();
             TableLayoutPanel_TagCount = new TableLayoutPanel();
-            Label_TagCount = new Label();
-            DataGridView_TagCount = new DataGridView();
+            label_status = new Label();
+            DataGridView_Status = new DataGridView();
             TableLayoutPanel_UserStories = new TableLayoutPanel();
-            Label_UserStories = new Label();
+            label_userStory = new Label();
             DataGridView_UserStories = new DataGridView();
             TableLayoutPanel_Body.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
             TableLayoutPanel_Content.SuspendLayout();
             TableLayoutPanel_TagCount.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)DataGridView_TagCount).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)DataGridView_Status).BeginInit();
             TableLayoutPanel_UserStories.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridView_UserStories).BeginInit();
             SuspendLayout();
@@ -132,8 +132,8 @@
             TableLayoutPanel_TagCount.ColumnCount = 1;
             TableLayoutPanel_TagCount.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             TableLayoutPanel_TagCount.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_TagCount.Controls.Add(Label_TagCount, 0, 0);
-            TableLayoutPanel_TagCount.Controls.Add(DataGridView_TagCount, 0, 1);
+            TableLayoutPanel_TagCount.Controls.Add(label_status, 0, 0);
+            TableLayoutPanel_TagCount.Controls.Add(DataGridView_Status, 0, 1);
             TableLayoutPanel_TagCount.Dock = DockStyle.Fill;
             TableLayoutPanel_TagCount.Location = new Point(3, 3);
             TableLayoutPanel_TagCount.Name = "TableLayoutPanel_TagCount";
@@ -143,34 +143,35 @@
             TableLayoutPanel_TagCount.Size = new Size(244, 657);
             TableLayoutPanel_TagCount.TabIndex = 0;
             // 
-            // Label_TagCount
+            // label_status
             // 
-            Label_TagCount.AutoSize = true;
-            Label_TagCount.Location = new Point(3, 0);
-            Label_TagCount.Name = "Label_TagCount";
-            Label_TagCount.Size = new Size(31, 15);
-            Label_TagCount.TabIndex = 0;
-            Label_TagCount.Text = "Tags";
+            label_status.Dock = DockStyle.Fill;
+            label_status.Location = new Point(3, 0);
+            label_status.Name = "label_status";
+            label_status.Size = new Size(238, 20);
+            label_status.TabIndex = 0;
+            label_status.Text = "Status";
+            label_status.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // DataGridView_TagCount
+            // DataGridView_Status
             // 
-            DataGridView_TagCount.AllowUserToAddRows = false;
-            DataGridView_TagCount.AllowUserToDeleteRows = false;
-            DataGridView_TagCount.AllowUserToResizeColumns = false;
-            DataGridView_TagCount.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            DataGridView_TagCount.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            DataGridView_TagCount.Dock = DockStyle.Fill;
-            DataGridView_TagCount.Location = new Point(3, 23);
-            DataGridView_TagCount.Name = "DataGridView_TagCount";
-            DataGridView_TagCount.Size = new Size(238, 631);
-            DataGridView_TagCount.TabIndex = 1;
+            DataGridView_Status.AllowUserToAddRows = false;
+            DataGridView_Status.AllowUserToDeleteRows = false;
+            DataGridView_Status.AllowUserToResizeColumns = false;
+            DataGridView_Status.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DataGridView_Status.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            DataGridView_Status.Dock = DockStyle.Fill;
+            DataGridView_Status.Location = new Point(3, 23);
+            DataGridView_Status.Name = "DataGridView_Status";
+            DataGridView_Status.Size = new Size(238, 631);
+            DataGridView_Status.TabIndex = 1;
             // 
             // TableLayoutPanel_UserStories
             // 
             TableLayoutPanel_UserStories.ColumnCount = 1;
             TableLayoutPanel_UserStories.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             TableLayoutPanel_UserStories.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_UserStories.Controls.Add(Label_UserStories, 0, 0);
+            TableLayoutPanel_UserStories.Controls.Add(label_userStory, 0, 0);
             TableLayoutPanel_UserStories.Controls.Add(DataGridView_UserStories, 0, 1);
             TableLayoutPanel_UserStories.Dock = DockStyle.Fill;
             TableLayoutPanel_UserStories.Location = new Point(253, 3);
@@ -181,14 +182,15 @@
             TableLayoutPanel_UserStories.Size = new Size(719, 657);
             TableLayoutPanel_UserStories.TabIndex = 1;
             // 
-            // Label_UserStories
+            // label_userStory
             // 
-            Label_UserStories.AutoSize = true;
-            Label_UserStories.Location = new Point(3, 0);
-            Label_UserStories.Name = "Label_UserStories";
-            Label_UserStories.Size = new Size(68, 15);
-            Label_UserStories.TabIndex = 0;
-            Label_UserStories.Text = "User Stories";
+            label_userStory.Dock = DockStyle.Fill;
+            label_userStory.Location = new Point(3, 0);
+            label_userStory.Name = "label_userStory";
+            label_userStory.Size = new Size(713, 20);
+            label_userStory.TabIndex = 0;
+            label_userStory.Text = "User Stories";
+            label_userStory.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // DataGridView_UserStories
             // 
@@ -201,6 +203,8 @@
             DataGridView_UserStories.TabIndex = 1;
             DataGridView_UserStories.CellDoubleClick += DataGridView_UserStories_CellDoubleClick;
             DataGridView_UserStories.CellEndEdit += DataGridView_UserStories_CellEndEdit;
+            DataGridView_UserStories.CellValueChanged += DataGridView_UserStories_CellValueChanged;
+            DataGridView_UserStories.CurrentCellDirtyStateChanged += DataGridView_UserStories_CurrentCellDirtyStateChanged;
             // 
             // ProjectForm
             // 
@@ -215,10 +219,8 @@
             FlowLayoutPanel_Navigation.PerformLayout();
             TableLayoutPanel_Content.ResumeLayout(false);
             TableLayoutPanel_TagCount.ResumeLayout(false);
-            TableLayoutPanel_TagCount.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)DataGridView_TagCount).EndInit();
+            ((System.ComponentModel.ISupportInitialize)DataGridView_Status).EndInit();
             TableLayoutPanel_UserStories.ResumeLayout(false);
-            TableLayoutPanel_UserStories.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridView_UserStories).EndInit();
             ResumeLayout(false);
         }
@@ -232,10 +234,10 @@
         private Label Label_Project;
         private TableLayoutPanel TableLayoutPanel_Content;
         private TableLayoutPanel TableLayoutPanel_TagCount;
-        private Label Label_TagCount;
-        private DataGridView DataGridView_TagCount;
+        private Label label_status;
+        private DataGridView DataGridView_Status;
         private TableLayoutPanel TableLayoutPanel_UserStories;
-        private Label Label_UserStories;
+        private Label label_userStory;
         private DataGridView DataGridView_UserStories;
     }
 }

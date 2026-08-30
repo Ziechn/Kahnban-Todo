@@ -187,18 +187,18 @@ namespace Kahnban_ToDo
         #region Save ===============================================
         private void SaveUserStory()
         {
-            string summary = RichTextBox_Summary.Text;
-            string taskList = RichTextBox_TaskList.Text;
+            UserStory userStory = new UserStory();
+            userStory.Id = _id;
+            userStory.Name = _name;
+            userStory.Organization = _organization;
+            userStory.Project = _project;
+            userStory.Status = _status;
 
-            UserStory userStory = new UserStory(
-                _id,
-                _name,
-                _organization,
-                _project,
-                _status,
-                summary,
-                taskList
-                );
+            string summary = RichTextBox_Summary.Text;
+            userStory.Summary = summary;
+
+            string taskList = RichTextBox_TaskList.Text;
+            userStory.TaskList = taskList;
 
             string fileName = $"{_id}.json";
             string filePath = Path.Combine(_projectPath, fileName);

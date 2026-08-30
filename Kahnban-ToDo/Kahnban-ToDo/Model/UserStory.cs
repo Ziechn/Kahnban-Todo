@@ -6,6 +6,8 @@ namespace Kahnban_ToDo
 {
     public class UserStory
     {
+        public string Category { get; set; } = "";
+        public DateTime DateDue { get; set; }
         public DateTime DateEnd { get; set; }
         public DateTime DateStart { get; set; }
         public long Id { get; set; }
@@ -16,15 +18,15 @@ namespace Kahnban_ToDo
         public string Summary { get; set; } = "";
         public string TaskList { get; set; } = "";
 
-        public UserStory (long id, string name, string organization, string project, string status, string summary, string taskList)
+        public UserStory()
         {
-            Id = id;
-            Name = name;
-            Organization = organization;
-            Project = project;
-            Status = status;
-            Summary = summary;
-            TaskList = taskList;
+            Category = "";
+            Name = "";
+            Organization = "";
+            Project = "";
+            Status = "";
+            Summary = "";
+            TaskList = "";
         }
     }
 }

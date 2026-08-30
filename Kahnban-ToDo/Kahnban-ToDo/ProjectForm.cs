@@ -10,6 +10,8 @@ namespace Kahnban_ToDo
     public partial class ProjectForm : Form
     {
         // CONSTANTS - DataGridView Columns
+        private const string COLUMN_CATEGORY = "category";
+        private const string COLUMN_DATE_DUE = "dateDue";
         private const string COLUMN_ID = "id";
         private const string COLUMN_STATUS = "status";
         private const string COLUMN_SUMMARY = "summary";
@@ -18,6 +20,8 @@ namespace Kahnban_ToDo
         private const string COLUMN_USER_STORY = "userStory";
 
         // CONSTANTS - DataGridView Headers
+        private const string HEADER_CATEGORY = "Category";
+        private const string HEADER_DATE_DUE = "Due Date";
         private const string HEADER_ID = "ID";
         private const string HEADER_STATUS = "Status";
         private const string HEADER_SUMMARY = "Summary";
@@ -26,9 +30,10 @@ namespace Kahnban_ToDo
         private const string HEADER_USER_STORY = "User Story";
 
         // CONSTANTS - DataGridView Properties
-        private const int PROPERTY_WIDTH_STATUS = 150;
-        private const int PROPERTY_WIDTH_TASKS = 150;
-        private const int PROPERTY_WIDTH_USER_STORY = 250;
+        private const int PROPERTY_WIDTH_CATEGORY = 100;
+        private const int PROPERTY_WIDTH_DATE_DUE = 100;
+        private const int PROPERTY_WIDTH_STATUS = 100;
+        private const int PROPERTY_WIDTH_TASKS = 100;
 
         public ProjectForm()
         {
@@ -38,9 +43,36 @@ namespace Kahnban_ToDo
             Label_Project_Display();
             LinkLabel_Organization_Display();
             DataGridView_UserStories_Load();
+
+            DataGridView_Status_Display();
         }
 
         #region Display ============================================
+        private void DataGridView_Status_Display()
+        {
+            DataGridView_Status.DataSource = null;
+
+            List<StatusCount> statusList = new List<StatusCount>();
+            foreach (DataGridViewRow row in DataGridView_UserStories.Rows)
+            {
+                if (row.IsNewRow) continue;
+                string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
+
+                StatusCount? statusCount = statusList.FirstOrDefault(s => s.Status.Equals(status));
+
+                if (statusCount != null)
+                {
+                    statusCount.Count++;
+                    continue;
+                }
+
+                statusCount = new StatusCount(status, 1);
+                statusList.Add(statusCount);
+            }
+
+            DataGridView_Status.DataSource = statusList;
+        }
+
         private void Label_Project_Display()
         {
             Label_Project.Text = AppStore.project?.Name ?? "";
@@ -57,23 +89,22 @@ namespace Kahnban_ToDo
         {
             DataGridView_UserStories.Columns.Clear();
 
+            // BEGIN Creating Columns
             // Id Column
             DataGridView_UserStories.Columns.Add(COLUMN_ID, HEADER_ID);
+            DataGridView_UserStories.Columns.Add(COLUMN_USER_STORY, HEADER_USER_STORY);
+            DataGridView_UserStories.Columns.Add(COLUMN_SUMMARY, HEADER_SUMMARY);
 
-            // User Story Column
-            DataGridViewColumn userStoryColumn = new DataGridViewColumn
+            // Category
+            DataGridViewColumn categoryColumn = new DataGridViewColumn
             {
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
                 CellTemplate = new DataGridViewTextBoxCell(),
-                HeaderText = HEADER_USER_STORY,
-                Name = COLUMN_USER_STORY,
-                Width = PROPERTY_WIDTH_USER_STORY
+                HeaderText = HEADER_CATEGORY,
+                Name = COLUMN_CATEGORY,
+                Width = PROPERTY_WIDTH_CATEGORY
             };
-
-            DataGridView_UserStories.Columns.Add(userStoryColumn);
-
-            // Summary Column
-            DataGridView_UserStories.Columns.Add(COLUMN_SUMMARY, HEADER_SUMMARY);
+            DataGridView_UserStories.Columns.Add(categoryColumn);
 
             // Status
             DataGridViewComboBoxCell statusCell = new DataGridViewComboBoxCell();
@@ -109,8 +140,26 @@ namespace Kahnban_ToDo
 
             DataGridView_UserStories.Columns.Add(tasksColumn);
 
-            // Formatting
+            DataGridViewColumn dateDueColumn = new DataGridViewColumn
+            {
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                CellTemplate = new DataGridViewTextBoxCell(),
+                HeaderText = HEADER_DATE_DUE,
+                Name = COLUMN_DATE_DUE,
+                Width = PROPERTY_WIDTH_DATE_DUE
+            };
+
+            DataGridView_UserStories.Columns.Add(dateDueColumn);
+            // END Creating Columns
+
+            // Readonly
+            DataGridView_UserStories.Columns[COLUMN_CATEGORY]?.ReadOnly = true;
+            DataGridView_UserStories.Columns[COLUMN_DATE_DUE]?.ReadOnly = true;
+            DataGridView_UserStories.Columns[COLUMN_TASKS]?.ReadOnly = true;
+
+            // Visibility
             DataGridView_UserStories.Columns[COLUMN_ID]?.Visible = false;
+            DataGridView_UserStories.Columns[COLUMN_SUMMARY]?.Visible = false;
             DataGridView_UserStories.Columns[COLUMN_TASKLIST]?.Visible = false;
         }
         #endregion Initialize
@@ -132,24 +181,29 @@ namespace Kahnban_ToDo
                     row.Cells[COLUMN_ID]?.Value = id;
                 }
 
+                // BEGIN Map to User Story object
+                UserStory userStory = new UserStory();
+                userStory.Id = id;
+                userStory.Name = userStoryName;
+                userStory.Organization = AppStore.organization;
+                userStory.Project = AppStore.project?.Name ?? "";
+
                 string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
+                userStory.Status = status;
+
                 string summary = DataGridViewUtilities.GetCellValue_String(row, COLUMN_SUMMARY);
+                userStory.Summary = summary;
+
                 string taskList = DataGridViewUtilities.GetCellValue_String(row, COLUMN_TASKLIST);
+                userStory.TaskList = taskList;
+                // END Map to User Story object
 
-                UserStory userStory = new UserStory(
-                    id,
-                    userStoryName,
-                    AppStore.organization,
-                    AppStore.project?.Name ?? "",
-                    status,
-                    summary,
-                    taskList
-                    );
-
+                // Create a Directory is non exists
                 long projectId = AppStore.project?.Id ?? -1;
                 string projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
                 controller.CreateDirectory(projectPath, id.ToString());
 
+                // Save the file
                 string fileName = $"{id}.json";
                 string filePath = Path.Combine(projectPath, fileName);
 
@@ -178,25 +232,42 @@ namespace Kahnban_ToDo
             (bool isUserStoryValid, string userStoryName) = CellValue_String_Validate(row, COLUMN_USER_STORY);
             if (isUserStoryValid == false) return;
 
-            string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
-            string summary = DataGridViewUtilities.GetCellValue_String(row, COLUMN_SUMMARY);
-            string taskList = DataGridViewUtilities.GetCellValue_String(row, COLUMN_TASKLIST);
+            // BEING Map to User Story object
+            UserStory userStory = new UserStory();
+            userStory.Id = id;
+            userStory.Name = userStoryName;
+            userStory.Organization = AppStore.organization;
+            userStory.Project = AppStore.project?.Name ?? "";
 
-            UserStory userStory = new UserStory(
-                id,
-                userStoryName,
-                AppStore.organization,
-                AppStore.project?.Name ?? "",
-                status,
-                summary,
-                taskList
-                );
+            string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
+            userStory.Status = status;
+
+            string summary = DataGridViewUtilities.GetCellValue_String(row, COLUMN_SUMMARY);
+            userStory.Summary = summary;
+
+            string taskList = DataGridViewUtilities.GetCellValue_String(row, COLUMN_TASKLIST);
+            userStory.TaskList = taskList;
+            // END Map to User Story object
 
             long projectId = AppStore.project?.Id ?? -1;
             string projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
 
             UserStoryForm userStoryForm = new UserStoryForm(userStory, projectPath);
             FormUtilities.NavigateTo(userStoryForm);
+        }
+
+        private void DataGridView_UserStories_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            DataGridView_Status_Display();
+        }
+
+        private void DataGridView_UserStories_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (DataGridView_UserStories.IsCurrentCellDirty)
+            {
+                DataGridView_UserStories.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
         }
         #endregion Interaction: DataGridView
 
@@ -237,19 +308,21 @@ namespace Kahnban_ToDo
         private void DataGridView_UserStories_Populate(UserStory userStory)
         {
             string taskList = userStory.TaskList;
-            int lineCount = 0;
+            int taskCount = 0;
             if (taskList.Length > 0)
             {
-                lineCount = taskList.Split('\n').Length;
+                taskCount = taskList.Split('\n').Count(line => string.IsNullOrWhiteSpace(line) == false);
             }
 
             DataGridView_UserStories.Rows.Add(
                 userStory.Id,
                 userStory.Name,
                 userStory.Summary,
+                userStory.Category,
                 userStory.Status,
                 taskList,
-                lineCount
+                taskCount,
+                userStory.DateDue.ToShortDateString()
                 );
         }
         #endregion Populate: DataGridView
