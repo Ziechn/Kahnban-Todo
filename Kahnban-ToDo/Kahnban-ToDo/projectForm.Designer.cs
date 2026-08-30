@@ -33,6 +33,8 @@
             LinkLabel_Organization = new LinkLabel();
             Label_Separator = new Label();
             Label_Project = new Label();
+            flowLayoutPanel_controls = new FlowLayoutPanel();
+            Button_SideBar = new Button();
             TableLayoutPanel_Content = new TableLayoutPanel();
             TableLayoutPanel_TagCount = new TableLayoutPanel();
             label_status = new Label();
@@ -42,6 +44,7 @@
             DataGridView_UserStories = new DataGridView();
             TableLayoutPanel_Body.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
+            flowLayoutPanel_controls.SuspendLayout();
             TableLayoutPanel_Content.SuspendLayout();
             TableLayoutPanel_TagCount.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridView_Status).BeginInit();
@@ -53,14 +56,15 @@
             // 
             TableLayoutPanel_Body.ColumnCount = 1;
             TableLayoutPanel_Body.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_Body.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_Body.Controls.Add(FlowLayoutPanel_Navigation, 0, 0);
-            TableLayoutPanel_Body.Controls.Add(TableLayoutPanel_Content, 0, 1);
+            TableLayoutPanel_Body.Controls.Add(flowLayoutPanel_controls, 0, 1);
+            TableLayoutPanel_Body.Controls.Add(TableLayoutPanel_Content, 0, 2);
             TableLayoutPanel_Body.Dock = DockStyle.Fill;
             TableLayoutPanel_Body.Location = new Point(0, 0);
             TableLayoutPanel_Body.Name = "TableLayoutPanel_Body";
-            TableLayoutPanel_Body.RowCount = 3;
+            TableLayoutPanel_Body.RowCount = 4;
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_Body.Size = new Size(981, 719);
@@ -111,6 +115,25 @@
             Label_Project.TabIndex = 2;
             Label_Project.Text = "project";
             // 
+            // flowLayoutPanel_controls
+            // 
+            flowLayoutPanel_controls.Controls.Add(Button_SideBar);
+            flowLayoutPanel_controls.Dock = DockStyle.Fill;
+            flowLayoutPanel_controls.Location = new Point(3, 33);
+            flowLayoutPanel_controls.Name = "flowLayoutPanel_controls";
+            flowLayoutPanel_controls.Size = new Size(975, 29);
+            flowLayoutPanel_controls.TabIndex = 2;
+            // 
+            // Button_SideBar
+            // 
+            Button_SideBar.Location = new Point(3, 3);
+            Button_SideBar.Name = "Button_SideBar";
+            Button_SideBar.Size = new Size(100, 23);
+            Button_SideBar.TabIndex = 0;
+            Button_SideBar.Text = "Side Bar";
+            Button_SideBar.UseVisualStyleBackColor = true;
+            Button_SideBar.Click += Button_SideBar_Click;
+            // 
             // TableLayoutPanel_Content
             // 
             TableLayoutPanel_Content.ColumnCount = 2;
@@ -119,12 +142,12 @@
             TableLayoutPanel_Content.Controls.Add(TableLayoutPanel_TagCount, 0, 0);
             TableLayoutPanel_Content.Controls.Add(TableLayoutPanel_UserStories, 1, 0);
             TableLayoutPanel_Content.Dock = DockStyle.Fill;
-            TableLayoutPanel_Content.Location = new Point(3, 33);
+            TableLayoutPanel_Content.Location = new Point(3, 68);
             TableLayoutPanel_Content.Name = "TableLayoutPanel_Content";
             TableLayoutPanel_Content.RowCount = 1;
             TableLayoutPanel_Content.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             TableLayoutPanel_Content.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_Content.Size = new Size(975, 663);
+            TableLayoutPanel_Content.Size = new Size(975, 628);
             TableLayoutPanel_Content.TabIndex = 1;
             // 
             // TableLayoutPanel_TagCount
@@ -140,7 +163,7 @@
             TableLayoutPanel_TagCount.RowCount = 2;
             TableLayoutPanel_TagCount.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_TagCount.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_TagCount.Size = new Size(244, 657);
+            TableLayoutPanel_TagCount.Size = new Size(244, 622);
             TableLayoutPanel_TagCount.TabIndex = 0;
             // 
             // label_status
@@ -163,7 +186,7 @@
             DataGridView_Status.Dock = DockStyle.Fill;
             DataGridView_Status.Location = new Point(3, 23);
             DataGridView_Status.Name = "DataGridView_Status";
-            DataGridView_Status.Size = new Size(238, 631);
+            DataGridView_Status.Size = new Size(238, 596);
             DataGridView_Status.TabIndex = 1;
             // 
             // TableLayoutPanel_UserStories
@@ -179,7 +202,7 @@
             TableLayoutPanel_UserStories.RowCount = 2;
             TableLayoutPanel_UserStories.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_UserStories.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_UserStories.Size = new Size(719, 657);
+            TableLayoutPanel_UserStories.Size = new Size(719, 622);
             TableLayoutPanel_UserStories.TabIndex = 1;
             // 
             // label_userStory
@@ -199,7 +222,7 @@
             DataGridView_UserStories.Dock = DockStyle.Fill;
             DataGridView_UserStories.Location = new Point(3, 23);
             DataGridView_UserStories.Name = "DataGridView_UserStories";
-            DataGridView_UserStories.Size = new Size(713, 631);
+            DataGridView_UserStories.Size = new Size(713, 596);
             DataGridView_UserStories.TabIndex = 1;
             DataGridView_UserStories.CellDoubleClick += DataGridView_UserStories_CellDoubleClick;
             DataGridView_UserStories.CellEndEdit += DataGridView_UserStories_CellEndEdit;
@@ -217,6 +240,7 @@
             TableLayoutPanel_Body.ResumeLayout(false);
             FlowLayoutPanel_Navigation.ResumeLayout(false);
             FlowLayoutPanel_Navigation.PerformLayout();
+            flowLayoutPanel_controls.ResumeLayout(false);
             TableLayoutPanel_Content.ResumeLayout(false);
             TableLayoutPanel_TagCount.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)DataGridView_Status).EndInit();
@@ -239,5 +263,7 @@
         private TableLayoutPanel TableLayoutPanel_UserStories;
         private Label label_userStory;
         private DataGridView DataGridView_UserStories;
+        private FlowLayoutPanel flowLayoutPanel_controls;
+        private Button Button_SideBar;
     }
 }

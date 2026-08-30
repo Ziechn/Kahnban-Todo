@@ -35,6 +35,10 @@ namespace Kahnban_ToDo
         private const int PROPERTY_WIDTH_STATUS = 100;
         private const int PROPERTY_WIDTH_TASKS = 100;
 
+        // CONSTANTS - TABLE LAYOUT PANELS
+        private const int COLUMN_SIDEBAR_INDEX = 0;
+        private const float COLUMN_SIDEBAR_SIZE = 250f;
+
         public ProjectForm()
         {
             InitializeComponent();
@@ -81,6 +85,13 @@ namespace Kahnban_ToDo
         private void LinkLabel_Organization_Display()
         {
             LinkLabel_Organization.Text = AppStore.organization;
+        }
+
+        private void TableLayoutPanel_Content_Display()
+        {
+            float columnWidth = TableLayoutPanel_Content.ColumnStyles[COLUMN_SIDEBAR_INDEX].Width;
+            bool isHidden = columnWidth == 0;
+            TableLayoutPanel_Content.ColumnStyles[COLUMN_SIDEBAR_INDEX].Width = isHidden ? COLUMN_SIDEBAR_SIZE : 0;
         }
         #endregion Display
 
@@ -163,6 +174,13 @@ namespace Kahnban_ToDo
             DataGridView_UserStories.Columns[COLUMN_TASKLIST]?.Visible = false;
         }
         #endregion Initialize
+
+        #region Interaction: Button ================================
+        private void Button_SideBar_Click(object sender, EventArgs e)
+        {
+            TableLayoutPanel_Content_Display();
+        }
+        #endregion Interaction: Button
 
         #region Interaction: DataGridView ==========================
         private void DataGridView_UserStories_CellEndEdit(object sender, DataGridViewCellEventArgs e)
