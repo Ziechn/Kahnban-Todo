@@ -9,4 +9,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Version>0.3.0</Version>
+  </PropertyGroup>
+
 </Project>
