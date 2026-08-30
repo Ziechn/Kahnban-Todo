@@ -35,6 +35,9 @@
             Label_Project = new Label();
             flowLayoutPanel_controls = new FlowLayoutPanel();
             Button_SideBar = new Button();
+            label_pipe = new Label();
+            ComboBox_Category = new ComboBox();
+            ComboBox_Status = new ComboBox();
             TableLayoutPanel_Content = new TableLayoutPanel();
             TableLayoutPanel_TagCount = new TableLayoutPanel();
             label_status = new Label();
@@ -118,6 +121,9 @@
             // flowLayoutPanel_controls
             // 
             flowLayoutPanel_controls.Controls.Add(Button_SideBar);
+            flowLayoutPanel_controls.Controls.Add(label_pipe);
+            flowLayoutPanel_controls.Controls.Add(ComboBox_Category);
+            flowLayoutPanel_controls.Controls.Add(ComboBox_Status);
             flowLayoutPanel_controls.Dock = DockStyle.Fill;
             flowLayoutPanel_controls.Location = new Point(3, 33);
             flowLayoutPanel_controls.Name = "flowLayoutPanel_controls";
@@ -133,6 +139,34 @@
             Button_SideBar.Text = "Side Bar";
             Button_SideBar.UseVisualStyleBackColor = true;
             Button_SideBar.Click += Button_SideBar_Click;
+            // 
+            // label_pipe
+            // 
+            label_pipe.Location = new Point(109, 0);
+            label_pipe.Name = "label_pipe";
+            label_pipe.Size = new Size(10, 23);
+            label_pipe.TabIndex = 1;
+            label_pipe.Text = "|";
+            label_pipe.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // ComboBox_Category
+            // 
+            ComboBox_Category.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_Category.FormattingEnabled = true;
+            ComboBox_Category.Location = new Point(125, 3);
+            ComboBox_Category.Name = "ComboBox_Category";
+            ComboBox_Category.Size = new Size(150, 23);
+            ComboBox_Category.TabIndex = 2;
+            ComboBox_Category.SelectedIndexChanged += ComboBox_Category_SelectedIndexChanged;
+            // 
+            // ComboBox_Status
+            // 
+            ComboBox_Status.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_Status.FormattingEnabled = true;
+            ComboBox_Status.Location = new Point(281, 3);
+            ComboBox_Status.Name = "ComboBox_Status";
+            ComboBox_Status.Size = new Size(150, 23);
+            ComboBox_Status.TabIndex = 3;
             // 
             // TableLayoutPanel_Content
             // 
@@ -265,5 +299,8 @@
         private DataGridView DataGridView_UserStories;
         private FlowLayoutPanel flowLayoutPanel_controls;
         private Button Button_SideBar;
+        private Label label_pipe;
+        private ComboBox ComboBox_Category;
+        private ComboBox ComboBox_Status;
     }
 }

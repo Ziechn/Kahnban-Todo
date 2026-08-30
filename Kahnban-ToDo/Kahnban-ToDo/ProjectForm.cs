@@ -9,6 +9,9 @@ namespace Kahnban_ToDo
 {
     public partial class ProjectForm : Form
     {
+        // CONSTANTS - ComboBox
+        private const string ITEM_ALL_CATEGORIES = "All Categories";
+
         // CONSTANTS - DataGridView Columns
         private const string COLUMN_CATEGORY = "category";
         private const string COLUMN_DATE_DUE = "dateDue";
@@ -39,6 +42,9 @@ namespace Kahnban_ToDo
         private const int COLUMN_SIDEBAR_INDEX = 0;
         private const float COLUMN_SIDEBAR_SIZE = 250f;
 
+        // Local Memory
+        private int _categorySelectedIndex = 0;
+
         public ProjectForm()
         {
             InitializeComponent();
@@ -49,6 +55,7 @@ namespace Kahnban_ToDo
             DataGridView_UserStories_Load();
 
             DataGridView_Status_Display();
+            ComboBox_Category_Load();
         }
 
         #region Display ============================================
@@ -164,7 +171,7 @@ namespace Kahnban_ToDo
             // END Creating Columns
 
             // Readonly
-            DataGridView_UserStories.Columns[COLUMN_CATEGORY]?.ReadOnly = true;
+            //DataGridView_UserStories.Columns[COLUMN_CATEGORY]?.ReadOnly = true;
             DataGridView_UserStories.Columns[COLUMN_DATE_DUE]?.ReadOnly = true;
             DataGridView_UserStories.Columns[COLUMN_TASKS]?.ReadOnly = true;
 
@@ -181,6 +188,28 @@ namespace Kahnban_ToDo
             TableLayoutPanel_Content_Display();
         }
         #endregion Interaction: Button
+
+        #region Interaction: ComboBox ==============================
+        private void ComboBox_Category_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedCategory = ComboBox_Category.Text;
+
+            foreach (DataGridViewRow row in DataGridView_UserStories.Rows)
+            {
+                if (row.IsNewRow) continue;
+                string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
+
+                if (selectedCategory.Equals(ITEM_ALL_CATEGORIES))
+                {
+                    row.Visible = true;
+                    continue;
+                }
+
+                bool isVisible = category.Equals(selectedCategory);
+                row.Visible = isVisible;
+            }
+        }
+        #endregion Interaction: ComboBox
 
         #region Interaction: DataGridView ==========================
         private void DataGridView_UserStories_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -205,6 +234,9 @@ namespace Kahnban_ToDo
                 userStory.Name = userStoryName;
                 userStory.Organization = AppStore.organization;
                 userStory.Project = AppStore.project?.Name ?? "";
+
+                string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
+                userStory.Category = category;
 
                 string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
                 userStory.Status = status;
@@ -278,6 +310,7 @@ namespace Kahnban_ToDo
         {
             if (e.RowIndex < 0) return;
             DataGridView_Status_Display();
+            ComboBox_Category_Load();
         }
 
         private void DataGridView_UserStories_CurrentCellDirtyStateChanged(object sender, EventArgs e)
@@ -298,6 +331,24 @@ namespace Kahnban_ToDo
         #endregion Interaction: LinkLabel
 
         #region Load ===============================================
+        private void ComboBox_Category_Load()
+        {
+            ComboBox_Category.Items.Clear();
+            ComboBox_Category.Items.Add(ITEM_ALL_CATEGORIES);
+
+            foreach (DataGridViewRow row in DataGridView_UserStories.Rows)
+            {
+                if (row.IsNewRow) continue;
+                string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
+                bool isInList = ComboBox_Category.Items.Contains(category);
+                if (isInList) continue;
+
+                ComboBox_Category.Items.Add(category);
+            }
+
+            ComboBox_Category.SelectedIndex = _categorySelectedIndex;
+        }
+
         private void DataGridView_UserStories_Load()
         {
             try
