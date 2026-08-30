@@ -21,6 +21,24 @@ namespace Kahnban_ToDo
             return id;
         }
 
+        public List<string> GetStatusList()
+        {
+            List<string> statusList = new List<string>();
+            statusList.Add("BACKLOG");
+            statusList.Add("BLOCKED");
+            statusList.Add("BUG");
+            statusList.Add("CANCELLED");
+            statusList.Add("COMPLETE");
+            statusList.Add("FIXED");
+            statusList.Add("PENDING");
+            statusList.Add("RELEASED");
+            statusList.Add("RFT");
+            statusList.Add("TODO");
+            statusList.Add("WIP");
+
+            return statusList;
+        }
+
         public void Save<T>(T obj, string fileName) where T : class
         {
             string json = JsonSerializer.Serialize(obj);

@@ -10,7 +10,8 @@ namespace Kahnban_ToDo
     public partial class ProjectForm : Form
     {
         // CONSTANTS - ComboBox
-        private const string ITEM_ALL_CATEGORIES = "All Categories";
+        private const string ITEM_CATEGORY_ALL = "All Categories";
+        private const string ITEM_STATUS_ALL = "All Statuses";
 
         // CONSTANTS - DataGridView Columns
         private const string COLUMN_CATEGORY = "category";
@@ -49,6 +50,7 @@ namespace Kahnban_ToDo
         {
             InitializeComponent();
             DataGridView_Projects_Intialize();
+            ComboBox_Status_Initialize();
 
             Label_Project_Display();
             LinkLabel_Organization_Display();
@@ -103,6 +105,22 @@ namespace Kahnban_ToDo
         #endregion Display
 
         #region Initialize =========================================
+        private void ComboBox_Status_Initialize()
+        {
+            ComboBox_Status.Items.Clear();
+            ComboBox_Status.Items.Add(ITEM_STATUS_ALL);
+
+            Controller controller = new();
+            List<string> statusList = controller.GetStatusList();
+
+            foreach (string status in statusList)
+            {
+                ComboBox_Status.Items.Add(status);
+            }
+
+            ComboBox_Status.SelectedIndex = 0;
+        }
+
         private void DataGridView_Projects_Intialize()
         {
             DataGridView_UserStories.Columns.Clear();
@@ -125,12 +143,14 @@ namespace Kahnban_ToDo
             DataGridView_UserStories.Columns.Add(categoryColumn);
 
             // Status
+            Controller controller = new();
+            List<string> statusList = controller.GetStatusList();
+
             DataGridViewComboBoxCell statusCell = new DataGridViewComboBoxCell();
-            statusCell.Items.Add("COMPLETE");
-            statusCell.Items.Add("PENDING");
-            statusCell.Items.Add("RELEASED");
-            statusCell.Items.Add("RFT");
-            statusCell.Items.Add("WIP");
+            foreach (string status in statusList)
+            {
+                statusCell.Items.Add(status);
+            }
 
             DataGridViewColumn statusColumn = new DataGridViewColumn
             {
@@ -192,22 +212,12 @@ namespace Kahnban_ToDo
         #region Interaction: ComboBox ==============================
         private void ComboBox_Category_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string selectedCategory = ComboBox_Category.Text;
+            DataGridView_UserStories_FilterRows();
+        }
 
-            foreach (DataGridViewRow row in DataGridView_UserStories.Rows)
-            {
-                if (row.IsNewRow) continue;
-                string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
-
-                if (selectedCategory.Equals(ITEM_ALL_CATEGORIES))
-                {
-                    row.Visible = true;
-                    continue;
-                }
-
-                bool isVisible = category.Equals(selectedCategory);
-                row.Visible = isVisible;
-            }
+        private void ComboBox_Status_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DataGridView_UserStories_FilterRows();
         }
         #endregion Interaction: ComboBox
 
@@ -334,7 +344,7 @@ namespace Kahnban_ToDo
         private void ComboBox_Category_Load()
         {
             ComboBox_Category.Items.Clear();
-            ComboBox_Category.Items.Add(ITEM_ALL_CATEGORIES);
+            ComboBox_Category.Items.Add(ITEM_CATEGORY_ALL);
 
             foreach (DataGridViewRow row in DataGridView_UserStories.Rows)
             {
@@ -372,6 +382,32 @@ namespace Kahnban_ToDo
             }
         }
         #endregion Load
+
+        #region Logic ==============================================
+        private void DataGridView_UserStories_FilterRows()
+        {
+            string selectedCategory = ComboBox_Category.Text;
+            string selectedStatus = ComboBox_Status.Text;
+
+            foreach (DataGridViewRow row in DataGridView_UserStories.Rows)
+            {
+                if (row.IsNewRow)continue;
+
+                string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
+                string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
+
+                bool categoryShowAll = selectedCategory == ITEM_CATEGORY_ALL;
+                bool matchCategory = category == selectedCategory;
+                bool categoryMatches = categoryShowAll || matchCategory;
+
+                bool statusShowAll = selectedStatus == ITEM_STATUS_ALL;
+                bool matchStatus = status == selectedStatus;
+                bool statusMatches = statusShowAll || matchStatus;
+
+                row.Visible = categoryMatches && statusMatches;
+            }
+        }
+        #endregion Logic
 
         #region Populate: DataGridView =============================
         private void DataGridView_UserStories_Populate(UserStory userStory)

@@ -167,6 +167,7 @@
             ComboBox_Status.Name = "ComboBox_Status";
             ComboBox_Status.Size = new Size(150, 23);
             ComboBox_Status.TabIndex = 3;
+            ComboBox_Status.SelectedIndexChanged += ComboBox_Status_SelectedIndexChanged;
             // 
             // TableLayoutPanel_Content
             // 
