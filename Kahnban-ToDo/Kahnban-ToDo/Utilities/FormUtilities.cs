@@ -17,5 +17,24 @@ namespace Kahnban_ToDo
 
             form.Show();
         }
+
+        public static void DisplayPlaceholder(TextBox textBox, string placeholder)
+        {
+            string text = textBox.Text;
+
+            bool isPlaceholder = text.Equals(placeholder);
+            if (isPlaceholder)
+            {
+                textBox.Text = "";
+                textBox.ForeColor = SystemColors.ControlText;
+                return;
+            }
+
+            bool isEmpty = text.Equals("");
+            if (isEmpty == false) return;
+
+            textBox.Text = placeholder;
+            textBox.ForeColor = Color.LightGray;
+        }
     }
 }

@@ -7,6 +7,19 @@ namespace Kahnban_ToDo
     internal static class DataGridViewUtilities
     {
         #region Getters ============================================
+        public static DateTime GetCellValue_DateTIme(DataGridViewRow row, string columnName)
+        {
+            if (row == null) return DateTime.MinValue;
+            string cellValue = GetCellValue_String(row, columnName);
+            if (cellValue.Equals("")) return DateTime.MinValue;
+
+            DateTime value = DateTime.MinValue;
+            bool isValid = DateTime.TryParse(cellValue, out value);
+            if (isValid) return value;
+
+            return DateTime.MinValue;
+        }
+
         public static long GetCellValue_Long(DataGridViewRow row, string columnName)
         {
             if (row == null) return -1;

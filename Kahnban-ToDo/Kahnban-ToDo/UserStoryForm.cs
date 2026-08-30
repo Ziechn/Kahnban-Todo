@@ -6,11 +6,15 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Text.Json;
+using System.Diagnostics;
 
 namespace Kahnban_ToDo
 {
     public partial class UserStoryForm : Form
     {
+        // CONSTANTS - PLACEHOLDERS
+        private const string PLACEHOLDER_CATEGORY = "Enter Category...";
+
         // CONSTANTS - TABLE LAYOUT PANELS
         private const int COLUMN_SIDEBAR_INDEX = 0;
         private const float COLUMN_SIDEBAR_SIZE = 250f;
@@ -20,34 +24,25 @@ namespace Kahnban_ToDo
         private const float ROW_SUMMARY_TEXT_SIZE = 120f;
 
         // Local Memory
-        private long _id;
-        private string _name = "";
-        private string _organization = "";
-        private string _project = "";
-        private string _projectPath = "";
-        private string _status = "";
-        private List<string> tags = new List<string>();
+        string _projectPath = "";
+        UserStory _userStory;
+        bool isLoading = true;
 
-        public UserStoryForm(UserStory userStory, string projectPath)
+        public UserStoryForm(string projectPath, long id)
         {
             InitializeComponent();
+            DateTimePicker_Due_Initialize();
+            DateTimePicker_End_Initialize();
+            DateTimePicker_Start_Initialize();
 
-            _id = userStory.Id;
-            _name = userStory.Name;
-            _organization = userStory.Organization;
-            _project = userStory.Project;
             _projectPath = projectPath;
-            _status = userStory.Status;
+            UserStory_Load(id);
 
-            LinkLabel_Organization_Display(userStory);
-            LinkLabel_Project_Display(userStory);
-            Label_UserStory_Display(userStory);
-            RichTextBox_Summary_Populate(userStory);
-            RichTextBox_TaskList_Populate(userStory);
+            TextBox_Category_DiplayPlaceholder();
+            DataGridView_StatusCount_Initialize();
+            CountStatuses();
 
-            TagList_Initialize();
-            DataGridView_TagCount_Initialize();
-            CountTags();
+            isLoading = false;
         }
 
         #region Display ============================================
@@ -61,6 +56,27 @@ namespace Kahnban_ToDo
 
                 row.Cells["count"].Value = count;
             }
+        }
+
+        private void DateTimePicker_Due_Display(UserStory userStory)
+        {
+            if (userStory.DateDue == null) return;
+            DateTimePicker_Due.Value = userStory.DateDue.Value;
+            DateTimePicker_Due.Checked = true;
+        }
+
+        private void DateTimePicker_End_Display(UserStory userStory)
+        {
+            if (userStory.DateEnd == null) return;
+            DateTimePicker_End.Value = userStory.DateEnd.Value;
+            DateTimePicker_End.Checked = true;
+        }
+
+        private void DateTimePicker_Start_Display(UserStory userStory)
+        {
+            if (userStory.DateStart == null) return;
+            DateTimePicker_Start.Value = userStory.DateStart.Value;
+            DateTimePicker_Start.Checked = true;
         }
 
         private void Label_UserStory_Display(UserStory userStory)
@@ -92,27 +108,49 @@ namespace Kahnban_ToDo
             TableLayoutPanel_UserStory.RowStyles[ROW_SUMMARY_INDEX].Height = isHidden ? ROW_SUMMARY_SIZE : 0;
             TableLayoutPanel_UserStory.RowStyles[ROW_SUMMARY_TEXT_INDEX].Height = isHidden ? ROW_SUMMARY_TEXT_SIZE : 0;
         }
+
+        private void TextBox_Category_Display(UserStory userStory)
+        {
+            TextBox_Category.Text = userStory.Category;
+        }
+
+        private void TextBox_Category_DiplayPlaceholder()
+        {
+            FormUtilities.DisplayPlaceholder(TextBox_Category, PLACEHOLDER_CATEGORY);
+        }
         #endregion Display
 
         #region Initialize =========================================
-        private void DataGridView_TagCount_Initialize()
+        private void DataGridView_StatusCount_Initialize()
         {
             DataGridView_Status.Columns.Add("tag", "Tag");
             DataGridView_Status.Columns.Add("count", "Count");
 
-            foreach (string tag in tags)
+            Controller controller = new();
+            List<string> statusList = controller.GetStatusList();
+            foreach (string status in statusList)
             {
-                int tagCount = CountTag(tag);
-                DataGridView_Status.Rows.Add(tag, tagCount);
+                int tagCount = CountStatus(status);
+                DataGridView_Status.Rows.Add(status, tagCount);
             }
         }
 
-        private void TagList_Initialize()
+        private void DateTimePicker_Due_Initialize()
         {
-            tags.Add("BUG");
-            tags.Add("RFT");
-            tags.Add("WIP");
-            tags.Add("X");
+            DateTimePicker_Due.ShowCheckBox = true;
+            DateTimePicker_Due.Checked = false;
+        }
+
+        private void DateTimePicker_End_Initialize()
+        {
+            DateTimePicker_End.ShowCheckBox = true;
+            DateTimePicker_End.Checked = false;
+        }
+
+        private void DateTimePicker_Start_Initialize()
+        {
+            DateTimePicker_Start.ShowCheckBox = true;
+            DateTimePicker_Start.Checked = false;
         }
         #endregion Initialize
 
@@ -128,6 +166,23 @@ namespace Kahnban_ToDo
         }
         #endregion Interaction: Buttons
 
+        #region Interaction: DateTimePicker ========================
+        private void DateTimePicker_Due_ValueChanged(object sender, EventArgs e)
+        {
+            SaveUserStory();
+        }
+
+        private void DateTimePicker_End_ValueChanged(object sender, EventArgs e)
+        {
+            SaveUserStory();
+        }
+
+        private void DateTimePicker_Start_ValueChanged(object sender, EventArgs e)
+        {
+            SaveUserStory();
+        }
+        #endregion Interaction: DateTimePicker
+
         #region Interaction: RichTextBox ===========================
         private void RichTextBox_Summary_KeyUp(object sender, KeyEventArgs e)
         {
@@ -137,7 +192,7 @@ namespace Kahnban_ToDo
         private void RichTextBox_TaskList_KeyUp(object sender, KeyEventArgs e)
         {
             SaveUserStory();
-            CountTags();
+            CountStatuses();
         }
         #endregion Interaction: RichTextBox
 
@@ -155,20 +210,47 @@ namespace Kahnban_ToDo
         }
         #endregion Interaction: LinkLabel
 
-        #region Logic ==============================================
-        private void CountTags()
+        #region Load ===============================================
+        private void UserStory_Load(long id)
         {
-            foreach (string tag in tags)
+            Controller controller = new();
+            UserStory? userStory = controller.GetUserStory(_projectPath, id);
+            if (userStory == null)
             {
-                int tagCount = CountTag(tag);
-                DataGridView_TagCount_Display(tag, tagCount);
+                Debug.WriteLine("Error loading User Story");
+                return;
+            }
+
+            _userStory = userStory;
+
+            DateTimePicker_Due_Display(userStory);
+            DateTimePicker_End_Display(userStory);
+            DateTimePicker_Start_Display(userStory);
+            LinkLabel_Organization_Display(userStory);
+            LinkLabel_Project_Display(userStory);
+            Label_UserStory_Display(userStory);
+            RichTextBox_Summary_Populate(userStory);
+            RichTextBox_TaskList_Populate(userStory);
+            TextBox_Category_Display(userStory);
+        }
+        #endregion Load
+
+        #region Logic ==============================================
+        private void CountStatuses()
+        {
+            Controller controller = new();
+            List<string> statusList = controller.GetStatusList();
+            foreach (string status in statusList)
+            {
+                int tagCount = CountStatus(status);
+                DataGridView_TagCount_Display(status, tagCount);
             }
         }
 
-        private int CountTag(string tagName)
+        private int CountStatus(string status)
         {
             string taskList = RichTextBox_TaskList.Text;
-            return taskList.Split(tagName).Length - 1;
+            return taskList.Split(status).Length - 1;
         }
         #endregion Logic
 
@@ -187,12 +269,12 @@ namespace Kahnban_ToDo
         #region Save ===============================================
         private void SaveUserStory()
         {
-            UserStory userStory = new UserStory();
-            userStory.Id = _id;
-            userStory.Name = _name;
-            userStory.Organization = _organization;
-            userStory.Project = _project;
-            userStory.Status = _status;
+            if (isLoading) return;
+            UserStory userStory = _userStory;
+
+            string categoryText = TextBox_Category.Text;
+            string category = categoryText.Equals(PLACEHOLDER_CATEGORY) ? "" : categoryText;
+            userStory.Category = category;
 
             string summary = RichTextBox_Summary.Text;
             userStory.Summary = summary;
@@ -200,12 +282,37 @@ namespace Kahnban_ToDo
             string taskList = RichTextBox_TaskList.Text;
             userStory.TaskList = taskList;
 
-            string fileName = $"{_id}.json";
+            DateTime? dueDate = DateTimePicker_Due.Checked ? DateTimePicker_Due.Value : null;
+            userStory.DateDue = dueDate;
+
+            DateTime? endDate = DateTimePicker_End.Checked ? DateTimePicker_End.Value : null;
+            userStory.DateEnd = endDate;
+
+            DateTime? startDate = DateTimePicker_Start.Checked ? DateTimePicker_Start.Value : null;
+            userStory.DateStart = startDate;
+
+            long id = userStory.Id;
+            string fileName = $"{id}.json";
             string filePath = Path.Combine(_projectPath, fileName);
 
             Controller controller = new();
             controller.Save(userStory, filePath);
         }
         #endregion Save
+
+        private void TextBox_Category_Enter(object sender, EventArgs e)
+        {
+            FormUtilities.DisplayPlaceholder(TextBox_Category, PLACEHOLDER_CATEGORY);
+        }
+
+        private void TextBox_Category_Leave(object sender, EventArgs e)
+        {
+            FormUtilities.DisplayPlaceholder(TextBox_Category, PLACEHOLDER_CATEGORY);
+        }
+
+        private void TextBox_Category_KeyUp(object sender, KeyEventArgs e)
+        {
+            SaveUserStory();
+        }
     }
 }

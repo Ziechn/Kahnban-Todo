@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 
 namespace Kahnban_ToDo
@@ -37,6 +38,16 @@ namespace Kahnban_ToDo
             statusList.Add("WIP");
 
             return statusList;
+        }
+
+        public UserStory? GetUserStory(string projectPath, long id)
+        {
+            string fileName = $"{id}.json";
+            string path = Path.Combine(projectPath, fileName);
+            string json = File.ReadAllText(path);
+
+            UserStory? userStory = JsonSerializer.Deserialize<UserStory>(json);
+            return userStory;
         }
 
         public void Save<T>(T obj, string fileName) where T : class

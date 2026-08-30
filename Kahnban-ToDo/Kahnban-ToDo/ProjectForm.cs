@@ -225,42 +225,51 @@ namespace Kahnban_ToDo
         private void DataGridView_UserStories_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             Controller controller = new();
+            
+            long projectId = AppStore.project?.Id ?? -1;
+            string projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
 
             foreach (DataGridViewRow row in DataGridView_UserStories.Rows)
             {
                 (bool isUserStoryValid, string userStoryName) = CellValue_String_Validate(row, COLUMN_USER_STORY);
                 if (isUserStoryValid == false) return;
 
+                UserStory? userStory = null;
+
                 (bool isIdValid, long id) = CellValue_Long_Validate(row, COLUMN_ID);
-                if (isIdValid == false)
+                if (isIdValid)
+                {
+                    userStory = controller.GetUserStory(projectPath, id);
+                }
+                else
                 {
                     id = controller.CreateId();
                     row.Cells[COLUMN_ID]?.Value = id;
+
+                    userStory = new UserStory();
+                    userStory.Id = id;
+
+                    userStory.Organization = AppStore.organization;
+                    userStory.Project = AppStore.project?.Name ?? "";
+                }
+
+                if (userStory == null)
+                {
+                    Debug.WriteLine("Error loading User Story");
+                    return;
                 }
 
                 // BEGIN Map to User Story object
-                UserStory userStory = new UserStory();
-                userStory.Id = id;
                 userStory.Name = userStoryName;
-                userStory.Organization = AppStore.organization;
-                userStory.Project = AppStore.project?.Name ?? "";
 
                 string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
                 userStory.Category = category;
 
                 string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
                 userStory.Status = status;
-
-                string summary = DataGridViewUtilities.GetCellValue_String(row, COLUMN_SUMMARY);
-                userStory.Summary = summary;
-
-                string taskList = DataGridViewUtilities.GetCellValue_String(row, COLUMN_TASKLIST);
-                userStory.TaskList = taskList;
                 // END Map to User Story object
 
                 // Create a Directory is non exists
-                long projectId = AppStore.project?.Id ?? -1;
-                string projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
                 controller.CreateDirectory(projectPath, id.ToString());
 
                 // Save the file
@@ -289,30 +298,10 @@ namespace Kahnban_ToDo
             (bool isIdValid, long id) = CellValue_Long_Validate(row, COLUMN_ID);
             if (isIdValid == false) return;
 
-            (bool isUserStoryValid, string userStoryName) = CellValue_String_Validate(row, COLUMN_USER_STORY);
-            if (isUserStoryValid == false) return;
-
-            // BEING Map to User Story object
-            UserStory userStory = new UserStory();
-            userStory.Id = id;
-            userStory.Name = userStoryName;
-            userStory.Organization = AppStore.organization;
-            userStory.Project = AppStore.project?.Name ?? "";
-
-            string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
-            userStory.Status = status;
-
-            string summary = DataGridViewUtilities.GetCellValue_String(row, COLUMN_SUMMARY);
-            userStory.Summary = summary;
-
-            string taskList = DataGridViewUtilities.GetCellValue_String(row, COLUMN_TASKLIST);
-            userStory.TaskList = taskList;
-            // END Map to User Story object
-
             long projectId = AppStore.project?.Id ?? -1;
             string projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
 
-            UserStoryForm userStoryForm = new UserStoryForm(userStory, projectPath);
+            UserStoryForm userStoryForm = new UserStoryForm(projectPath, id);
             FormUtilities.NavigateTo(userStoryForm);
         }
 
@@ -427,7 +416,7 @@ namespace Kahnban_ToDo
                 userStory.Status,
                 taskList,
                 taskCount,
-                userStory.DateDue.ToShortDateString()
+                userStory.DateDue?.ToShortDateString() ?? ""
                 );
         }
         #endregion Populate: DataGridView

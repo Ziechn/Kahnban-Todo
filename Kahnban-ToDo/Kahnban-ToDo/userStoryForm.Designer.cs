@@ -39,10 +39,14 @@
             Button_SideBar = new Button();
             Button_Summary = new Button();
             label_pipe = new Label();
+            TextBox_Category = new TextBox();
+            label_pipe2 = new Label();
             label_start = new Label();
             DateTimePicker_Start = new DateTimePicker();
             label_due = new Label();
             DateTimePicker_Due = new DateTimePicker();
+            label_end = new Label();
+            DateTimePicker_End = new DateTimePicker();
             TableLayoutPanel_Content = new TableLayoutPanel();
             TableLayoutPanel_SideBar = new TableLayoutPanel();
             DataGridView_References = new DataGridView();
@@ -161,10 +165,14 @@
             FlowLayoutPanel_Controls.Controls.Add(Button_SideBar);
             FlowLayoutPanel_Controls.Controls.Add(Button_Summary);
             FlowLayoutPanel_Controls.Controls.Add(label_pipe);
+            FlowLayoutPanel_Controls.Controls.Add(TextBox_Category);
+            FlowLayoutPanel_Controls.Controls.Add(label_pipe2);
             FlowLayoutPanel_Controls.Controls.Add(label_start);
             FlowLayoutPanel_Controls.Controls.Add(DateTimePicker_Start);
             FlowLayoutPanel_Controls.Controls.Add(label_due);
             FlowLayoutPanel_Controls.Controls.Add(DateTimePicker_Due);
+            FlowLayoutPanel_Controls.Controls.Add(label_end);
+            FlowLayoutPanel_Controls.Controls.Add(DateTimePicker_End);
             FlowLayoutPanel_Controls.Dock = DockStyle.Fill;
             FlowLayoutPanel_Controls.Location = new Point(3, 33);
             FlowLayoutPanel_Controls.Name = "FlowLayoutPanel_Controls";
@@ -200,9 +208,28 @@
             label_pipe.Text = "|";
             label_pipe.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // TextBox_Category
+            // 
+            TextBox_Category.Location = new Point(231, 3);
+            TextBox_Category.Name = "TextBox_Category";
+            TextBox_Category.Size = new Size(150, 23);
+            TextBox_Category.TabIndex = 13;
+            TextBox_Category.Enter += TextBox_Category_Enter;
+            TextBox_Category.KeyUp += TextBox_Category_KeyUp;
+            TextBox_Category.Leave += TextBox_Category_Leave;
+            // 
+            // label_pipe2
+            // 
+            label_pipe2.Location = new Point(387, 0);
+            label_pipe2.Name = "label_pipe2";
+            label_pipe2.Size = new Size(10, 23);
+            label_pipe2.TabIndex = 14;
+            label_pipe2.Text = "|";
+            label_pipe2.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // label_start
             // 
-            label_start.Location = new Point(231, 0);
+            label_start.Location = new Point(403, 0);
             label_start.Name = "label_start";
             label_start.Size = new Size(35, 23);
             label_start.TabIndex = 8;
@@ -212,14 +239,15 @@
             // DateTimePicker_Start
             // 
             DateTimePicker_Start.Format = DateTimePickerFormat.Short;
-            DateTimePicker_Start.Location = new Point(272, 3);
+            DateTimePicker_Start.Location = new Point(444, 3);
             DateTimePicker_Start.Name = "DateTimePicker_Start";
             DateTimePicker_Start.Size = new Size(100, 23);
             DateTimePicker_Start.TabIndex = 6;
+            DateTimePicker_Start.ValueChanged += DateTimePicker_Start_ValueChanged;
             // 
             // label_due
             // 
-            label_due.Location = new Point(378, 0);
+            label_due.Location = new Point(550, 0);
             label_due.Name = "label_due";
             label_due.Size = new Size(31, 23);
             label_due.TabIndex = 9;
@@ -229,10 +257,29 @@
             // DateTimePicker_Due
             // 
             DateTimePicker_Due.Format = DateTimePickerFormat.Short;
-            DateTimePicker_Due.Location = new Point(415, 3);
+            DateTimePicker_Due.Location = new Point(587, 3);
             DateTimePicker_Due.Name = "DateTimePicker_Due";
             DateTimePicker_Due.Size = new Size(100, 23);
             DateTimePicker_Due.TabIndex = 10;
+            DateTimePicker_Due.ValueChanged += DateTimePicker_Due_ValueChanged;
+            // 
+            // label_end
+            // 
+            label_end.Location = new Point(693, 0);
+            label_end.Name = "label_end";
+            label_end.Size = new Size(31, 23);
+            label_end.TabIndex = 11;
+            label_end.Text = "End:";
+            label_end.TextAlign = ContentAlignment.BottomRight;
+            // 
+            // DateTimePicker_End
+            // 
+            DateTimePicker_End.Format = DateTimePickerFormat.Short;
+            DateTimePicker_End.Location = new Point(730, 3);
+            DateTimePicker_End.Name = "DateTimePicker_End";
+            DateTimePicker_End.Size = new Size(100, 23);
+            DateTimePicker_End.TabIndex = 12;
+            DateTimePicker_End.ValueChanged += DateTimePicker_End_ValueChanged;
             // 
             // TableLayoutPanel_Content
             // 
@@ -421,6 +468,7 @@
             FlowLayoutPanel_Navigation.ResumeLayout(false);
             FlowLayoutPanel_Navigation.PerformLayout();
             FlowLayoutPanel_Controls.ResumeLayout(false);
+            FlowLayoutPanel_Controls.PerformLayout();
             TableLayoutPanel_Content.ResumeLayout(false);
             TableLayoutPanel_SideBar.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)DataGridView_References).EndInit();
@@ -466,5 +514,9 @@
         private Button Button_AddMedia;
         private Button Button_AddText;
         private Panel panel_referenceControls;
+        private Label label_end;
+        private DateTimePicker DateTimePicker_End;
+        private TextBox TextBox_Category;
+        private Label label_pipe2;
     }
 }
