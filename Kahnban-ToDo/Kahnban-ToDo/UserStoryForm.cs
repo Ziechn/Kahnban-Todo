@@ -12,8 +12,12 @@ namespace Kahnban_ToDo
     public partial class UserStoryForm : Form
     {
         // CONSTANTS - TABLE LAYOUT PANELS
-        private const int ROW_SUMMARY_INDEX = 1;
-        private const float ROW_SUMMARY_SIZE = 120f;
+        private const int COLUMN_SIDEBAR_INDEX = 0;
+        private const float COLUMN_SIDEBAR_SIZE = 250f;
+        private const int ROW_SUMMARY_INDEX = 0;
+        private const float ROW_SUMMARY_SIZE = 20f;
+        private const int ROW_SUMMARY_TEXT_INDEX = 1;
+        private const float ROW_SUMMARY_TEXT_SIZE = 120f;
 
         // Local Memory
         private long _id;
@@ -49,7 +53,7 @@ namespace Kahnban_ToDo
         #region Display ============================================
         private void DataGridView_TagCount_Display(string tag, int count)
         {
-            foreach (DataGridViewRow row in DataGridView_TagCount.Rows)
+            foreach (DataGridViewRow row in DataGridView_Status.Rows)
             {
                 string rowTag = row.Cells["tag"].Value?.ToString() ?? "";
                 bool isMatch = rowTag.Equals(tag);
@@ -74,31 +78,32 @@ namespace Kahnban_ToDo
             LinkLabel_Project.Text = userStory.Project;
         }
 
+        private void TableLayoutPanel_Content_Display()
+        {
+            float columnWidth = TableLayoutPanel_Content.ColumnStyles[COLUMN_SIDEBAR_INDEX].Width;
+            bool isHidden = columnWidth == 0;
+            TableLayoutPanel_Content.ColumnStyles[COLUMN_SIDEBAR_INDEX].Width = isHidden ? COLUMN_SIDEBAR_SIZE : 0;
+        }
+
         private void TableLayoutPanel_Summary_Display()
         {
             float rowHeight = TableLayoutPanel_UserStory.RowStyles[ROW_SUMMARY_INDEX].Height;
             bool isHidden = rowHeight == 0;
-
-            if (isHidden)
-            {
-                TableLayoutPanel_UserStory.RowStyles[ROW_SUMMARY_INDEX].Height = ROW_SUMMARY_SIZE;
-                return;
-            }
-
-            TableLayoutPanel_UserStory.RowStyles[ROW_SUMMARY_INDEX].Height = 0;
+            TableLayoutPanel_UserStory.RowStyles[ROW_SUMMARY_INDEX].Height = isHidden ? ROW_SUMMARY_SIZE : 0;
+            TableLayoutPanel_UserStory.RowStyles[ROW_SUMMARY_TEXT_INDEX].Height = isHidden ? ROW_SUMMARY_TEXT_SIZE : 0;
         }
         #endregion Display
 
         #region Initialize =========================================
         private void DataGridView_TagCount_Initialize()
         {
-            DataGridView_TagCount.Columns.Add("tag", "Tag");
-            DataGridView_TagCount.Columns.Add("count", "Count");
+            DataGridView_Status.Columns.Add("tag", "Tag");
+            DataGridView_Status.Columns.Add("count", "Count");
 
             foreach (string tag in tags)
             {
                 int tagCount = CountTag(tag);
-                DataGridView_TagCount.Rows.Add(tag, tagCount);
+                DataGridView_Status.Rows.Add(tag, tagCount);
             }
         }
 
@@ -112,6 +117,11 @@ namespace Kahnban_ToDo
         #endregion Initialize
 
         #region Interaction: Buttons ===============================
+        private void Button_SideBar_Click(object sender, EventArgs e)
+        {
+            TableLayoutPanel_Content_Display();
+        }
+
         private void Button_Summary_Click(object sender, EventArgs e)
         {
             TableLayoutPanel_Summary_Display();
@@ -119,6 +129,11 @@ namespace Kahnban_ToDo
         #endregion Interaction: Buttons
 
         #region Interaction: RichTextBox ===========================
+        private void RichTextBox_Summary_KeyUp(object sender, KeyEventArgs e)
+        {
+            SaveUserStory();
+        }
+
         private void RichTextBox_TaskList_KeyUp(object sender, KeyEventArgs e)
         {
             SaveUserStory();
