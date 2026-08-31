@@ -12,6 +12,9 @@ namespace Kahnban_ToDo
 {
     public partial class UserStoryForm : Form
     {
+        // CONSTANTS - COMBOBOX
+        private const string ITEMS_STATUS_SELECT = "Select Status...";
+
         // CONSTANTS - PLACEHOLDERS
         private const string PLACEHOLDER_CATEGORY = "Enter Category...";
 
@@ -31,6 +34,7 @@ namespace Kahnban_ToDo
         public UserStoryForm(string projectPath, long id)
         {
             InitializeComponent();
+            ComboBox_Status_Initialize();
             DateTimePicker_Due_Initialize();
             DateTimePicker_End_Initialize();
             DateTimePicker_Start_Initialize();
@@ -46,6 +50,11 @@ namespace Kahnban_ToDo
         }
 
         #region Display ============================================
+        private void ComboBox_Status_Display(UserStory userStory)
+        {
+            ComboBox_Status.Text = userStory.Status;
+        }
+
         private void DataGridView_TagCount_Display(string tag, int count)
         {
             foreach (DataGridViewRow row in DataGridView_Status.Rows)
@@ -121,6 +130,21 @@ namespace Kahnban_ToDo
         #endregion Display
 
         #region Initialize =========================================
+        private void ComboBox_Status_Initialize()
+        {
+            ComboBox_Status.Items.Clear();
+            ComboBox_Status.Items.Add(ITEMS_STATUS_SELECT);
+
+            Controller controller = new();
+            List<string> statusList = controller.GetStatusList();
+            
+            foreach (string status in statusList)
+            {
+                ComboBox_Status.Items.Add(status);
+            }
+
+            ComboBox_Status.SelectedIndex = 0;
+        }
         private void DataGridView_StatusCount_Initialize()
         {
             DataGridView_Status.Columns.Add("tag", "Tag");
@@ -166,6 +190,13 @@ namespace Kahnban_ToDo
         }
         #endregion Interaction: Buttons
 
+        #region Interaction: ComboBox ==============================
+        private void ComboBox_Status_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SaveUserStory();
+        }
+        #endregion Interaction: ComboBox
+
         #region Interaction: DateTimePicker ========================
         private void DateTimePicker_Due_ValueChanged(object sender, EventArgs e)
         {
@@ -210,6 +241,23 @@ namespace Kahnban_ToDo
         }
         #endregion Interaction: LinkLabel
 
+        #region Interaction: TextBox ===============================
+        private void TextBox_Category_Enter(object sender, EventArgs e)
+        {
+            TextBox_Category_DiplayPlaceholder();
+        }
+
+        private void TextBox_Category_KeyUp(object sender, KeyEventArgs e)
+        {
+            SaveUserStory();
+        }
+
+        private void TextBox_Category_Leave(object sender, EventArgs e)
+        {
+            TextBox_Category_DiplayPlaceholder();
+        }
+        #endregion Interaction: TextBox
+
         #region Load ===============================================
         private void UserStory_Load(long id)
         {
@@ -223,6 +271,7 @@ namespace Kahnban_ToDo
 
             _userStory = userStory;
 
+            ComboBox_Status_Display(userStory);
             DateTimePicker_Due_Display(userStory);
             DateTimePicker_End_Display(userStory);
             DateTimePicker_Start_Display(userStory);
@@ -276,6 +325,10 @@ namespace Kahnban_ToDo
             string category = categoryText.Equals(PLACEHOLDER_CATEGORY) ? "" : categoryText;
             userStory.Category = category;
 
+            string statusText = ComboBox_Status.Text;
+            string status = statusText.Equals(ITEMS_STATUS_SELECT) ? "" : statusText;
+            userStory.Status = status;
+
             string summary = RichTextBox_Summary.Text;
             userStory.Summary = summary;
 
@@ -299,20 +352,5 @@ namespace Kahnban_ToDo
             controller.Save(userStory, filePath);
         }
         #endregion Save
-
-        private void TextBox_Category_Enter(object sender, EventArgs e)
-        {
-            FormUtilities.DisplayPlaceholder(TextBox_Category, PLACEHOLDER_CATEGORY);
-        }
-
-        private void TextBox_Category_Leave(object sender, EventArgs e)
-        {
-            FormUtilities.DisplayPlaceholder(TextBox_Category, PLACEHOLDER_CATEGORY);
-        }
-
-        private void TextBox_Category_KeyUp(object sender, KeyEventArgs e)
-        {
-            SaveUserStory();
-        }
     }
 }

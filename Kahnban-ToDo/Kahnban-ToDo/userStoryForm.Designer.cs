@@ -40,6 +40,7 @@
             Button_Summary = new Button();
             label_pipe = new Label();
             TextBox_Category = new TextBox();
+            ComboBox_Status = new ComboBox();
             label_pipe2 = new Label();
             label_start = new Label();
             DateTimePicker_Start = new DateTimePicker();
@@ -166,6 +167,7 @@
             FlowLayoutPanel_Controls.Controls.Add(Button_Summary);
             FlowLayoutPanel_Controls.Controls.Add(label_pipe);
             FlowLayoutPanel_Controls.Controls.Add(TextBox_Category);
+            FlowLayoutPanel_Controls.Controls.Add(ComboBox_Status);
             FlowLayoutPanel_Controls.Controls.Add(label_pipe2);
             FlowLayoutPanel_Controls.Controls.Add(label_start);
             FlowLayoutPanel_Controls.Controls.Add(DateTimePicker_Start);
@@ -218,9 +220,19 @@
             TextBox_Category.KeyUp += TextBox_Category_KeyUp;
             TextBox_Category.Leave += TextBox_Category_Leave;
             // 
+            // ComboBox_Status
+            // 
+            ComboBox_Status.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_Status.FormattingEnabled = true;
+            ComboBox_Status.Location = new Point(387, 3);
+            ComboBox_Status.Name = "ComboBox_Status";
+            ComboBox_Status.Size = new Size(150, 23);
+            ComboBox_Status.TabIndex = 15;
+            ComboBox_Status.SelectedIndexChanged += ComboBox_Status_SelectedIndexChanged;
+            // 
             // label_pipe2
             // 
-            label_pipe2.Location = new Point(387, 0);
+            label_pipe2.Location = new Point(543, 0);
             label_pipe2.Name = "label_pipe2";
             label_pipe2.Size = new Size(10, 23);
             label_pipe2.TabIndex = 14;
@@ -229,7 +241,7 @@
             // 
             // label_start
             // 
-            label_start.Location = new Point(403, 0);
+            label_start.Location = new Point(559, 0);
             label_start.Name = "label_start";
             label_start.Size = new Size(35, 23);
             label_start.TabIndex = 8;
@@ -239,7 +251,7 @@
             // DateTimePicker_Start
             // 
             DateTimePicker_Start.Format = DateTimePickerFormat.Short;
-            DateTimePicker_Start.Location = new Point(444, 3);
+            DateTimePicker_Start.Location = new Point(600, 3);
             DateTimePicker_Start.Name = "DateTimePicker_Start";
             DateTimePicker_Start.Size = new Size(100, 23);
             DateTimePicker_Start.TabIndex = 6;
@@ -247,7 +259,7 @@
             // 
             // label_due
             // 
-            label_due.Location = new Point(550, 0);
+            label_due.Location = new Point(706, 0);
             label_due.Name = "label_due";
             label_due.Size = new Size(31, 23);
             label_due.TabIndex = 9;
@@ -257,7 +269,7 @@
             // DateTimePicker_Due
             // 
             DateTimePicker_Due.Format = DateTimePickerFormat.Short;
-            DateTimePicker_Due.Location = new Point(587, 3);
+            DateTimePicker_Due.Location = new Point(743, 3);
             DateTimePicker_Due.Name = "DateTimePicker_Due";
             DateTimePicker_Due.Size = new Size(100, 23);
             DateTimePicker_Due.TabIndex = 10;
@@ -265,7 +277,7 @@
             // 
             // label_end
             // 
-            label_end.Location = new Point(693, 0);
+            label_end.Location = new Point(849, 0);
             label_end.Name = "label_end";
             label_end.Size = new Size(31, 23);
             label_end.TabIndex = 11;
@@ -275,7 +287,7 @@
             // DateTimePicker_End
             // 
             DateTimePicker_End.Format = DateTimePickerFormat.Short;
-            DateTimePicker_End.Location = new Point(730, 3);
+            DateTimePicker_End.Location = new Point(886, 3);
             DateTimePicker_End.Name = "DateTimePicker_End";
             DateTimePicker_End.Size = new Size(100, 23);
             DateTimePicker_End.TabIndex = 12;
@@ -518,5 +530,6 @@
         private DateTimePicker DateTimePicker_End;
         private TextBox TextBox_Category;
         private Label label_pipe2;
+        private ComboBox ComboBox_Status;
     }
 }
