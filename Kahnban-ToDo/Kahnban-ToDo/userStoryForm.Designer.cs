@@ -406,6 +406,7 @@
             Button_AddText.TabIndex = 1;
             Button_AddText.Text = "Add Text";
             Button_AddText.UseVisualStyleBackColor = true;
+            Button_AddText.Click += Button_AddText_Click;
             // 
             // TableLayoutPanel_UserStory
             // 

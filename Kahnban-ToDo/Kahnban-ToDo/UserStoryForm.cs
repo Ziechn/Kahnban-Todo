@@ -137,7 +137,7 @@ namespace Kahnban_ToDo
 
             Controller controller = new();
             List<string> statusList = controller.GetStatusList();
-            
+
             foreach (string status in statusList)
             {
                 ComboBox_Status.Items.Add(status);
@@ -187,6 +187,13 @@ namespace Kahnban_ToDo
         private void Button_Summary_Click(object sender, EventArgs e)
         {
             TableLayoutPanel_Summary_Display();
+        }
+
+        private void Button_AddText_Click(object sender, EventArgs e)
+        {
+            long id = _userStory.Id;
+            TextReferenceForm textReferenceForm = new TextReferenceForm(id);
+            textReferenceForm.Show();
         }
         #endregion Interaction: Buttons
 
