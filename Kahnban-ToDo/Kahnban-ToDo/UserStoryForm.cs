@@ -143,7 +143,7 @@ namespace Kahnban_ToDo
         #region Event Handlers =====================================
         private void DataGridView_References_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            DataGridView_References.Columns[HEADER_ID]?.Visible = false;
+            //DataGridView_References.Columns[HEADER_ID]?.Visible = false;
         }
         #endregion Event Handlers
 
@@ -223,6 +223,40 @@ namespace Kahnban_ToDo
             SaveUserStory();
         }
         #endregion Interaction: ComboBox
+
+        #region Interaction: DataGridView ==========================
+        private void DataGridView_References_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            if (rowIndex < 0) return;
+
+            DataGridViewRow row = DataGridView_References.Rows[rowIndex];
+            if (row == null) return;
+
+            long id = DataGridViewUtilities.GetCellValue_Long(row, HEADER_ID);
+            if (id < 0) return;
+
+            string organizationPath = AppStore.organizationPath;
+            string projectId = AppStore.project?.Id.ToString() ?? "";
+
+            string userStoryId = _userStory.Id.ToString();
+            string fileName = $"{id}.json";
+            string filePath = Path.Combine(organizationPath, projectId, userStoryId, fileName);
+
+            string json = File.ReadAllText(filePath);
+
+            Reference? reference = JsonSerializer.Deserialize<Reference>(json);
+            if (reference == null) return;
+
+            if (reference is TextReference textReference)
+            {
+                TextReferenceForm textReferenceForm = new TextReferenceForm(_userStory.Id, textReference);
+                textReferenceForm.ShowDialog();
+            }
+
+            References_Load(_userStory.Id);
+        }
+        #endregion Interaction: DataGridView
 
         #region Interaction: DateTimePicker ========================
         private void DateTimePicker_Due_ValueChanged(object sender, EventArgs e)

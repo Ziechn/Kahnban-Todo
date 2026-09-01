@@ -21,9 +21,16 @@ namespace Kahnban_ToDo
             Button_Save_State();
         }
 
-        public TextReferenceForm(TextReference textReference)
+        public TextReferenceForm(long userStoryId, TextReference textReference)
         {
+            InitializeComponent();
+            _userStoryId = userStoryId;
 
+            _textReference = textReference;
+            TextBox_Title_Populate(textReference);
+            RichTextBox_Content_Populate(textReference);
+
+            Button_Save_State();
         }
 
         #region Event Handlers =====================================
@@ -81,6 +88,8 @@ namespace Kahnban_ToDo
                 id = textReference.Id;
             }
 
+            textReference.Id = id;
+
             string title = TextBox_Title.Text.Trim();
             textReference.Title = title;
 
@@ -116,5 +125,17 @@ namespace Kahnban_ToDo
             Button_Save_State();
         }
         #endregion Interaction
+
+        #region Populate ===========================================
+        private void TextBox_Title_Populate(TextReference textReference)
+        {
+            TextBox_Title.Text = textReference.Title;
+        }
+
+        private void RichTextBox_Content_Populate(TextReference textReference)
+        {
+            RichTextBox_Content.Text = textReference.Content;
+        }
+        #endregion Populate
     }
 }

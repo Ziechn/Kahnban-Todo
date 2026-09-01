@@ -344,6 +344,7 @@
             DataGridView_References.Name = "DataGridView_References";
             DataGridView_References.Size = new Size(238, 315);
             DataGridView_References.TabIndex = 0;
+            DataGridView_References.CellDoubleClick += DataGridView_References_CellDoubleClick;
             DataGridView_References.DataBindingComplete += DataGridView_References_DataBindingComplete;
             // 
             // Label_Status
