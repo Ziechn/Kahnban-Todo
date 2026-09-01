@@ -72,7 +72,7 @@
             RichTextBox_Content.Location = new Point(3, 19);
             RichTextBox_Content.Name = "RichTextBox_Content";
             RichTextBox_Content.Size = new Size(434, 424);
-            RichTextBox_Content.TabIndex = 0;
+            RichTextBox_Content.TabIndex = 1;
             RichTextBox_Content.Text = "";
             RichTextBox_Content.KeyUp += RichTextBox_Content_KeyUp;
             // 
@@ -105,8 +105,11 @@
             Controls.Add(Button_Cancel);
             Controls.Add(groupBox_text);
             Controls.Add(groupBox_title);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
             Name = "TextReferenceForm";
             Text = "Add Text Reference";
+            Shown += TextReferenceForm_Shown;
             groupBox_title.ResumeLayout(false);
             groupBox_title.PerformLayout();
             groupBox_text.ResumeLayout(false);

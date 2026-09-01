@@ -15,6 +15,11 @@ namespace Kahnban_ToDo
         // CONSTANTS - COMBOBOX
         private const string ITEMS_STATUS_SELECT = "Select Status...";
 
+        // CONSTANTS - DATATABLEVIEW - References
+        private const string HEADER_ID = "Id";
+        private const string HEADER_TITLE = "Title";
+        private const string HEADER_TYPE = "Type";
+
         // CONSTANTS - PLACEHOLDERS
         private const string PLACEHOLDER_CATEGORY = "Enter Category...";
 
@@ -45,6 +50,7 @@ namespace Kahnban_ToDo
             TextBox_Category_DiplayPlaceholder();
             DataGridView_StatusCount_Initialize();
             CountStatuses();
+            References_Load(id);
 
             isLoading = false;
         }
@@ -65,6 +71,11 @@ namespace Kahnban_ToDo
 
                 row.Cells["count"].Value = count;
             }
+        }
+
+        private void DataGridView_References_Display(DataTable dataTable)
+        {
+            DataGridView_References.DataSource = dataTable;
         }
 
         private void DateTimePicker_Due_Display(UserStory userStory)
@@ -128,6 +139,13 @@ namespace Kahnban_ToDo
             FormUtilities.DisplayPlaceholder(TextBox_Category, PLACEHOLDER_CATEGORY);
         }
         #endregion Display
+
+        #region Event Handlers =====================================
+        private void DataGridView_References_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            DataGridView_References.Columns[HEADER_ID]?.Visible = false;
+        }
+        #endregion Event Handlers
 
         #region Initialize =========================================
         private void ComboBox_Status_Initialize()
@@ -193,7 +211,9 @@ namespace Kahnban_ToDo
         {
             long id = _userStory.Id;
             TextReferenceForm textReferenceForm = new TextReferenceForm(id);
-            textReferenceForm.Show();
+            textReferenceForm.ShowDialog();
+
+            References_Load(id);
         }
         #endregion Interaction: Buttons
 
@@ -266,6 +286,42 @@ namespace Kahnban_ToDo
         #endregion Interaction: TextBox
 
         #region Load ===============================================
+        private void References_Load(long id)
+        {
+            string idString = id.ToString();
+            string organizationPath = AppStore.organizationPath;
+            string projectId = AppStore.project?.Id.ToString() ?? "";
+
+            string filePath = Path.Combine(organizationPath, projectId, idString);
+
+            DataTable dataTable = new DataTable();
+
+            dataTable.Columns.Add(HEADER_ID);
+            dataTable.Columns.Add(HEADER_TITLE);
+            dataTable.Columns.Add(HEADER_TYPE);
+
+            Controller controller = new();
+            List<string> jsonFiles = controller.GetFiles(filePath);
+            foreach (string jsonFile in jsonFiles)
+            {
+                string json = File.ReadAllText(jsonFile);
+                Reference? reference = JsonSerializer.Deserialize<Reference>(json);
+                if (reference == null) continue;
+
+                if (reference is TextReference textReference)
+                {
+                    dataTable.Rows.Add(
+                        textReference.Id,
+                        textReference.Title,
+                        "Text"
+                        );
+                }
+            }
+
+            if (dataTable.Rows.Count == 0) return;
+            DataGridView_References_Display(dataTable);
+        }
+
         private void UserStory_Load(long id)
         {
             Controller controller = new();

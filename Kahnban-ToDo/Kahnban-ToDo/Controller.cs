@@ -22,6 +22,12 @@ namespace Kahnban_ToDo
             return id;
         }
 
+        public List<string> GetFiles(string path)
+        {
+            string[] files = Directory.GetFiles(path);
+            return new List<string>(files);
+        }
+
         public List<string> GetStatusList()
         {
             List<string> statusList = new List<string>();
@@ -50,9 +56,13 @@ namespace Kahnban_ToDo
             return userStory;
         }
 
-        public void Save<T>(T obj, string fileName) where T : class
+        public void Save<T>(T obj, string fileName, Type? declaredType = null) where T : class
         {
-            string json = JsonSerializer.Serialize(obj);
+            string json = JsonSerializer.Serialize(
+                obj,
+                declaredType ?? typeof(T)
+                );
+
             File.WriteAllText(fileName, json);
         }
     }

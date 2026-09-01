@@ -18,12 +18,20 @@ namespace Kahnban_ToDo
         {
             InitializeComponent();
             _userStoryId = userStoryId;
+            Button_Save_State();
         }
 
         public TextReferenceForm(TextReference textReference)
         {
 
         }
+
+        #region Event Handlers =====================================
+        private void TextReferenceForm_Shown(object sender, EventArgs e)
+        {
+            TextBox_Title.Focus();
+        }
+        #endregion Event Handlers
 
         #region Interaction ========================================
         private void Button_Cancel_Click(object sender, EventArgs e)
@@ -46,9 +54,9 @@ namespace Kahnban_ToDo
                     );
 
                 if (result == DialogResult.No) return;
-
-                Close();
             }
+
+            Close();
         }
 
         private void Button_Save_Click(object sender, EventArgs e)
@@ -75,13 +83,13 @@ namespace Kahnban_ToDo
 
             string title = TextBox_Title.Text.Trim();
             textReference.Title = title;
-            
+
             string content = RichTextBox_Content.Text.Trim();
             textReference.Content = content;
 
             string fileName = $"{id}.json";
             string filePath = Path.Combine(organizationPath, projectId, userStoryId, fileName);
-            controller.Save(textReference, filePath);
+            controller.Save(textReference, filePath, typeof(Reference));
 
             Close();
         }
