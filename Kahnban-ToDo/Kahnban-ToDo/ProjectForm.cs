@@ -274,15 +274,10 @@ namespace Kahnban_ToDo
                 // END Map to User Story object
 
                 // Create a Directory is non exists
-                controller.CreateDirectory(projectPath, id.ToString());
-
-                // Save the file
-                string fileName = $"{id}.json";
-                string filePath = Path.Combine(projectPath, fileName);
-
+                controller.CreateDirectory(projectPath, id);
                 try
                 {
-                    controller.Save(userStory, filePath);
+                    controller.Save(userStory, projectPath, id);
                 }
                 catch (Exception exception)
                 {

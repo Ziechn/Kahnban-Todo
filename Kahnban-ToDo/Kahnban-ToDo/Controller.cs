@@ -9,8 +9,9 @@ namespace Kahnban_ToDo
 {
     internal class Controller
     {
-        public void CreateDirectory(string originalPath, string directoryName)
+        public void CreateDirectory(string originalPath, long id)
         {
+            string directoryName = id.ToString();
             string path = Path.Combine(originalPath, directoryName);
             Directory.CreateDirectory(path);
         }
@@ -56,14 +57,26 @@ namespace Kahnban_ToDo
             return userStory;
         }
 
-        public void Save<T>(T obj, string fileName, Type? declaredType = null) where T : class
+        public T? ReadObject<T>(string path, long id)
         {
+            string fileName = $"{id}.json";
+            string filPath = Path.Combine(path, fileName);
+
+            string json = File.ReadAllText(filPath);
+            return JsonSerializer.Deserialize<T>(json);
+        }
+
+        public void Save<T>(T obj, string filePath, long id, Type? declaredType = null) where T : class
+        {
+            string fileName = $"{id}.json";
+            string path = Path.Combine(filePath, fileName);
+
             string json = JsonSerializer.Serialize(
                 obj,
                 declaredType ?? typeof(T)
                 );
 
-            File.WriteAllText(fileName, json);
+            File.WriteAllText(path, json);
         }
     }
 }

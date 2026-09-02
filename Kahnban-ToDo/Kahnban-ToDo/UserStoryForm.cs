@@ -233,26 +233,34 @@ namespace Kahnban_ToDo
             DataGridViewRow row = DataGridView_References.Rows[rowIndex];
             if (row == null) return;
 
-            long id = DataGridViewUtilities.GetCellValue_Long(row, HEADER_ID);
-            if (id < 0) return;
+            long referenceId = DataGridViewUtilities.GetCellValue_Long(row, HEADER_ID);
+            if (referenceId < 0) return;
+
+            long userStoryId = _userStory.Id;
+
+            TextReferenceForm textReferenceForm = new TextReferenceForm(userStoryId, referenceId);
+            textReferenceForm.ShowDialog(this);
+
+            References_Load(_userStory.Id);
+            return;
 
             string organizationPath = AppStore.organizationPath;
             string projectId = AppStore.project?.Id.ToString() ?? "";
 
-            string userStoryId = _userStory.Id.ToString();
-            string fileName = $"{id}.json";
-            string filePath = Path.Combine(organizationPath, projectId, userStoryId, fileName);
+            //string userStoryId = _userStory.Id.ToString();
+            string fileName = $"{referenceId}.json";
+            //string filePath = Path.Combine(organizationPath, projectId, userStoryId, fileName);
 
-            string json = File.ReadAllText(filePath);
+            //string json = File.ReadAllText(filePath);
 
-            Reference? reference = JsonSerializer.Deserialize<Reference>(json);
-            if (reference == null) return;
+            //Reference? reference = JsonSerializer.Deserialize<Reference>(json);
+            //if (reference == null) return;
 
-            if (reference is TextReference textReference)
-            {
-                TextReferenceForm textReferenceForm = new TextReferenceForm(_userStory.Id, textReference);
-                textReferenceForm.ShowDialog();
-            }
+            //if (reference is TextReference textReference)
+            //{
+                //TextReferenceForm textReferenceForm = new TextReferenceForm(_userStory.Id, textReference);
+                //textReferenceForm.ShowDialog();
+            //}
 
             References_Load(_userStory.Id);
         }
@@ -442,11 +450,17 @@ namespace Kahnban_ToDo
             userStory.DateStart = startDate;
 
             long id = userStory.Id;
-            string fileName = $"{id}.json";
-            string filePath = Path.Combine(_projectPath, fileName);
 
             Controller controller = new();
-            controller.Save(userStory, filePath);
+
+            try
+            {
+                controller.Save(userStory, _projectPath, id);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
         }
         #endregion Save
     }

@@ -185,14 +185,10 @@ namespace Kahnban_ToDo
                     AppStore.organization
                 );
 
-                controller.CreateDirectory(AppStore.organizationPath, id.ToString());
-
-                string fileName = $"{id}.json";
-                string filePath = Path.Combine(AppStore.organizationPath, fileName);
-
+                controller.CreateDirectory(AppStore.organizationPath, id);
                 try
                 {
-                    controller.Save(project, filePath);
+                    controller.Save(project, AppStore.organizationPath, id);
                 }
                 catch (Exception exception)
                 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -11,8 +12,8 @@ namespace Kahnban_ToDo
     public partial class TextReferenceForm : Form
     {
         // Local Memory
-        private long _userStoryId;
-        private TextReference? _textReference;
+        private long _referenceId = -1;
+        private long _userStoryId = -1;
 
         public TextReferenceForm(long userStoryId)
         {
@@ -21,12 +22,19 @@ namespace Kahnban_ToDo
             Button_Save_State();
         }
 
-        public TextReferenceForm(long userStoryId, TextReference textReference)
+        public TextReferenceForm(long userStoryId, long referenceId)
         {
             InitializeComponent();
+            _referenceId = referenceId;
             _userStoryId = userStoryId;
 
-            _textReference = textReference;
+            TextReference? textReference = ReadTextReference();
+            if (textReference == null)
+            {
+                Debug.WriteLine("Error reading text reference.");
+                return;
+            }
+
             TextBox_Title_Populate(textReference);
             RichTextBox_Content_Populate(textReference);
 
@@ -68,27 +76,36 @@ namespace Kahnban_ToDo
 
         private void Button_Save_Click(object sender, EventArgs e)
         {
-            long id = -1;
-
             string organizationPath = AppStore.organizationPath;
             string projectId = AppStore.project?.Id.ToString() ?? "";
             string userStoryId = _userStoryId.ToString();
 
+            string filePath = Path.Combine(organizationPath, projectId, userStoryId);
+
             Controller controller = new();
 
             TextReference? textReference = null;
-            if (_textReference == null)
+            if (_referenceId < 0)
             {
                 textReference = new TextReference();
-                id = controller.CreateId();
+                _referenceId = controller.CreateId();
             }
             else
             {
-                textReference = _textReference;
-                id = textReference.Id;
+                try
+                {
+                    textReference = controller.ReadObject<TextReference>(filePath, _referenceId);
+                }
+                catch(Exception exception)
+                {
+                    Debug.WriteLine(exception);
+                    return;
+                }
             }
 
-            textReference.Id = id;
+            if (textReference == null) return;
+
+            textReference.Id = _referenceId;
 
             string title = TextBox_Title.Text.Trim();
             textReference.Title = title;
@@ -96,9 +113,15 @@ namespace Kahnban_ToDo
             string content = RichTextBox_Content.Text.Trim();
             textReference.Content = content;
 
-            string fileName = $"{id}.json";
-            string filePath = Path.Combine(organizationPath, projectId, userStoryId, fileName);
-            controller.Save(textReference, filePath, typeof(Reference));
+            try
+            {
+                controller.Save(textReference, filePath, _referenceId, typeof(Reference));
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+                return;
+            }
 
             Close();
         }
@@ -137,5 +160,19 @@ namespace Kahnban_ToDo
             RichTextBox_Content.Text = textReference.Content;
         }
         #endregion Populate
+
+        #region Read ===============================================
+        // Read methods return an object or value.
+        private TextReference? ReadTextReference()
+        {
+            string organizationPath = AppStore.organizationPath;
+            string projectId = AppStore.project?.Id.ToString() ?? "";
+            string userStoryId = _userStoryId.ToString();
+            string filePath = Path.Combine(organizationPath, projectId, userStoryId);
+
+            Controller controller = new();
+            return controller.ReadObject<TextReference>(filePath, _referenceId);
+        }
+        #endregion
     }
 }
