@@ -13,6 +13,7 @@ namespace Kahnban_ToDo
     public partial class UserStoryForm : Form
     {
         // CONSTANTS - COMBOBOX
+        private const string ITEMS_STATUS_RELEASED = "RELEASED";
         private const string ITEMS_STATUS_SELECT = "Select Status...";
 
         // CONSTANTS - DATATABLEVIEW - References
@@ -55,6 +56,20 @@ namespace Kahnban_ToDo
             DataGridView_StatusCount_Initialize();
             CountStatuses();
             References_Load(id);
+
+            // Determine user story editable state based on the status.
+            string status = ComboBox_Status.Text;
+            bool isInProgress = status.Equals(ITEMS_STATUS_RELEASED) == false;
+
+            Button_AddMedia.Enabled = isInProgress;
+            Button_AddText.Enabled = isInProgress;
+            ComboBox_Status.Enabled = isInProgress;
+            DateTimePicker_Due.Enabled = isInProgress;
+            DateTimePicker_End.Enabled = isInProgress;
+            DateTimePicker_Start.Enabled = isInProgress;
+            TextBox_Category.Enabled = isInProgress;
+            RichTextBox_Summary.Enabled = isInProgress;
+            RichTextBox_TaskList.Enabled = isInProgress;
 
             isLoading = false;
         }
