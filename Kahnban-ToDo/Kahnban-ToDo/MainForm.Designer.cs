@@ -30,9 +30,9 @@
         {
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
+            ToolStripMenuItem_OpenOrganization = new ToolStripMenuItem();
             ToolStripMenuItem_Exit = new ToolStripMenuItem();
             Panel_Main = new Panel();
-            ToolStripMenuItem_OpenOrganization = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -52,10 +52,17 @@
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
             // 
+            // ToolStripMenuItem_OpenOrganization
+            // 
+            ToolStripMenuItem_OpenOrganization.Name = "ToolStripMenuItem_OpenOrganization";
+            ToolStripMenuItem_OpenOrganization.Size = new Size(174, 22);
+            ToolStripMenuItem_OpenOrganization.Text = "Open Organization";
+            ToolStripMenuItem_OpenOrganization.Click += ToolStripMenuItem_OpenOrganization_Click;
+            // 
             // ToolStripMenuItem_Exit
             // 
             ToolStripMenuItem_Exit.Name = "ToolStripMenuItem_Exit";
-            ToolStripMenuItem_Exit.Size = new Size(180, 22);
+            ToolStripMenuItem_Exit.Size = new Size(174, 22);
             ToolStripMenuItem_Exit.Text = "Exit";
             ToolStripMenuItem_Exit.Click += ToolStripMenuItem_Exit_Click;
             // 
@@ -67,13 +74,6 @@
             Panel_Main.Size = new Size(1094, 595);
             Panel_Main.TabIndex = 1;
             // 
-            // ToolStripMenuItem_OpenOrganization
-            // 
-            ToolStripMenuItem_OpenOrganization.Name = "ToolStripMenuItem_OpenOrganization";
-            ToolStripMenuItem_OpenOrganization.Size = new Size(180, 22);
-            ToolStripMenuItem_OpenOrganization.Text = "Open Organization";
-            ToolStripMenuItem_OpenOrganization.Click += ToolStripMenuItem_OpenOrganization_Click;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -82,6 +82,7 @@
             Controls.Add(Panel_Main);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
+            MinimumSize = new Size(960, 600);
             Name = "MainForm";
             Text = "MainForm";
             menuStrip1.ResumeLayout(false);

@@ -88,7 +88,7 @@
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_Body.Size = new Size(1100, 803);
+            TableLayoutPanel_Body.Size = new Size(944, 561);
             TableLayoutPanel_Body.TabIndex = 0;
             // 
             // FlowLayoutPanel_Navigation
@@ -102,7 +102,7 @@
             FlowLayoutPanel_Navigation.Location = new Point(0, 0);
             FlowLayoutPanel_Navigation.Margin = new Padding(0);
             FlowLayoutPanel_Navigation.Name = "FlowLayoutPanel_Navigation";
-            FlowLayoutPanel_Navigation.Size = new Size(1100, 30);
+            FlowLayoutPanel_Navigation.Size = new Size(944, 30);
             FlowLayoutPanel_Navigation.TabIndex = 1;
             // 
             // LinkLabel_Organization
@@ -178,7 +178,7 @@
             FlowLayoutPanel_Controls.Dock = DockStyle.Fill;
             FlowLayoutPanel_Controls.Location = new Point(3, 33);
             FlowLayoutPanel_Controls.Name = "FlowLayoutPanel_Controls";
-            FlowLayoutPanel_Controls.Size = new Size(1094, 29);
+            FlowLayoutPanel_Controls.Size = new Size(938, 29);
             FlowLayoutPanel_Controls.TabIndex = 0;
             // 
             // Button_SideBar
@@ -214,7 +214,7 @@
             // 
             TextBox_Category.Location = new Point(231, 3);
             TextBox_Category.Name = "TextBox_Category";
-            TextBox_Category.Size = new Size(150, 23);
+            TextBox_Category.Size = new Size(125, 23);
             TextBox_Category.TabIndex = 13;
             TextBox_Category.Enter += TextBox_Category_Enter;
             TextBox_Category.KeyUp += TextBox_Category_KeyUp;
@@ -224,15 +224,15 @@
             // 
             ComboBox_Status.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_Status.FormattingEnabled = true;
-            ComboBox_Status.Location = new Point(387, 3);
+            ComboBox_Status.Location = new Point(362, 3);
             ComboBox_Status.Name = "ComboBox_Status";
-            ComboBox_Status.Size = new Size(150, 23);
+            ComboBox_Status.Size = new Size(125, 23);
             ComboBox_Status.TabIndex = 15;
             ComboBox_Status.SelectedIndexChanged += ComboBox_Status_SelectedIndexChanged;
             // 
             // label_pipe2
             // 
-            label_pipe2.Location = new Point(543, 0);
+            label_pipe2.Location = new Point(493, 0);
             label_pipe2.Name = "label_pipe2";
             label_pipe2.Size = new Size(10, 23);
             label_pipe2.TabIndex = 14;
@@ -241,7 +241,8 @@
             // 
             // label_start
             // 
-            label_start.Location = new Point(559, 0);
+            label_start.Location = new Point(509, 0);
+            label_start.Margin = new Padding(3, 0, 0, 0);
             label_start.Name = "label_start";
             label_start.Size = new Size(35, 23);
             label_start.TabIndex = 8;
@@ -251,7 +252,7 @@
             // DateTimePicker_Start
             // 
             DateTimePicker_Start.Format = DateTimePickerFormat.Short;
-            DateTimePicker_Start.Location = new Point(600, 3);
+            DateTimePicker_Start.Location = new Point(547, 3);
             DateTimePicker_Start.Name = "DateTimePicker_Start";
             DateTimePicker_Start.Size = new Size(100, 23);
             DateTimePicker_Start.TabIndex = 6;
@@ -259,7 +260,8 @@
             // 
             // label_due
             // 
-            label_due.Location = new Point(706, 0);
+            label_due.Location = new Point(653, 0);
+            label_due.Margin = new Padding(3, 0, 0, 0);
             label_due.Name = "label_due";
             label_due.Size = new Size(31, 23);
             label_due.TabIndex = 9;
@@ -269,7 +271,7 @@
             // DateTimePicker_Due
             // 
             DateTimePicker_Due.Format = DateTimePickerFormat.Short;
-            DateTimePicker_Due.Location = new Point(743, 3);
+            DateTimePicker_Due.Location = new Point(687, 3);
             DateTimePicker_Due.Name = "DateTimePicker_Due";
             DateTimePicker_Due.Size = new Size(100, 23);
             DateTimePicker_Due.TabIndex = 10;
@@ -277,7 +279,8 @@
             // 
             // label_end
             // 
-            label_end.Location = new Point(849, 0);
+            label_end.Location = new Point(793, 0);
+            label_end.Margin = new Padding(3, 0, 0, 0);
             label_end.Name = "label_end";
             label_end.Size = new Size(31, 23);
             label_end.TabIndex = 11;
@@ -287,7 +290,7 @@
             // DateTimePicker_End
             // 
             DateTimePicker_End.Format = DateTimePickerFormat.Short;
-            DateTimePicker_End.Location = new Point(886, 3);
+            DateTimePicker_End.Location = new Point(827, 3);
             DateTimePicker_End.Name = "DateTimePicker_End";
             DateTimePicker_End.Size = new Size(100, 23);
             DateTimePicker_End.TabIndex = 12;
@@ -307,7 +310,7 @@
             TableLayoutPanel_Content.Name = "TableLayoutPanel_Content";
             TableLayoutPanel_Content.RowCount = 1;
             TableLayoutPanel_Content.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_Content.Size = new Size(1100, 718);
+            TableLayoutPanel_Content.Size = new Size(944, 476);
             TableLayoutPanel_Content.TabIndex = 2;
             // 
             // TableLayoutPanel_SideBar
@@ -328,7 +331,7 @@
             TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
-            TableLayoutPanel_SideBar.Size = new Size(244, 712);
+            TableLayoutPanel_SideBar.Size = new Size(244, 470);
             TableLayoutPanel_SideBar.TabIndex = 3;
             // 
             // DataGridView_References
@@ -340,9 +343,9 @@
             DataGridView_References.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             DataGridView_References.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_References.Dock = DockStyle.Fill;
-            DataGridView_References.Location = new Point(3, 364);
+            DataGridView_References.Location = new Point(3, 243);
             DataGridView_References.Name = "DataGridView_References";
-            DataGridView_References.Size = new Size(238, 315);
+            DataGridView_References.Size = new Size(238, 194);
             DataGridView_References.TabIndex = 0;
             DataGridView_References.CellDoubleClick += DataGridView_References_CellDoubleClick;
             DataGridView_References.DataBindingComplete += DataGridView_References_DataBindingComplete;
@@ -360,7 +363,7 @@
             // Label_References
             // 
             Label_References.Dock = DockStyle.Fill;
-            Label_References.Location = new Point(3, 341);
+            Label_References.Location = new Point(3, 220);
             Label_References.Name = "Label_References";
             Label_References.Size = new Size(238, 20);
             Label_References.TabIndex = 1;
@@ -377,7 +380,7 @@
             DataGridView_Status.Dock = DockStyle.Fill;
             DataGridView_Status.Location = new Point(3, 23);
             DataGridView_Status.Name = "DataGridView_Status";
-            DataGridView_Status.Size = new Size(238, 315);
+            DataGridView_Status.Size = new Size(238, 194);
             DataGridView_Status.TabIndex = 1;
             // 
             // panel_referenceControls
@@ -385,7 +388,7 @@
             panel_referenceControls.Controls.Add(Button_AddMedia);
             panel_referenceControls.Controls.Add(Button_AddText);
             panel_referenceControls.Dock = DockStyle.Fill;
-            panel_referenceControls.Location = new Point(0, 682);
+            panel_referenceControls.Location = new Point(0, 440);
             panel_referenceControls.Margin = new Padding(0);
             panel_referenceControls.Name = "panel_referenceControls";
             panel_referenceControls.Size = new Size(244, 30);
@@ -427,7 +430,7 @@
             TableLayoutPanel_UserStory.RowStyles.Add(new RowStyle(SizeType.Absolute, 120F));
             TableLayoutPanel_UserStory.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_UserStory.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_UserStory.Size = new Size(844, 712);
+            TableLayoutPanel_UserStory.Size = new Size(688, 470);
             TableLayoutPanel_UserStory.TabIndex = 2;
             // 
             // RichTextBox_Summary
@@ -435,7 +438,7 @@
             RichTextBox_Summary.Dock = DockStyle.Fill;
             RichTextBox_Summary.Location = new Point(3, 23);
             RichTextBox_Summary.Name = "RichTextBox_Summary";
-            RichTextBox_Summary.Size = new Size(838, 114);
+            RichTextBox_Summary.Size = new Size(682, 114);
             RichTextBox_Summary.TabIndex = 3;
             RichTextBox_Summary.Text = "";
             RichTextBox_Summary.KeyUp += RichTextBox_Summary_KeyUp;
@@ -445,7 +448,7 @@
             RichTextBox_TaskList.Dock = DockStyle.Fill;
             RichTextBox_TaskList.Location = new Point(3, 163);
             RichTextBox_TaskList.Name = "RichTextBox_TaskList";
-            RichTextBox_TaskList.Size = new Size(838, 546);
+            RichTextBox_TaskList.Size = new Size(682, 304);
             RichTextBox_TaskList.TabIndex = 4;
             RichTextBox_TaskList.Text = "";
             RichTextBox_TaskList.KeyUp += RichTextBox_TaskList_KeyUp;
@@ -456,7 +459,7 @@
             Label_Summary.Location = new Point(3, 3);
             Label_Summary.Margin = new Padding(3);
             Label_Summary.Name = "Label_Summary";
-            Label_Summary.Size = new Size(838, 14);
+            Label_Summary.Size = new Size(682, 14);
             Label_Summary.TabIndex = 2;
             Label_Summary.Text = "Summary";
             Label_Summary.TextAlign = ContentAlignment.MiddleLeft;
@@ -467,7 +470,7 @@
             Label_TaskList.Location = new Point(3, 143);
             Label_TaskList.Margin = new Padding(3);
             Label_TaskList.Name = "Label_TaskList";
-            Label_TaskList.Size = new Size(838, 14);
+            Label_TaskList.Size = new Size(682, 14);
             Label_TaskList.TabIndex = 3;
             Label_TaskList.Text = "Tasks";
             Label_TaskList.TextAlign = ContentAlignment.MiddleLeft;
@@ -476,8 +479,9 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1100, 803);
+            ClientSize = new Size(944, 561);
             Controls.Add(TableLayoutPanel_Body);
+            MinimumSize = new Size(960, 600);
             Name = "UserStoryForm";
             Text = "userStoryForm";
             TableLayoutPanel_Body.ResumeLayout(false);
