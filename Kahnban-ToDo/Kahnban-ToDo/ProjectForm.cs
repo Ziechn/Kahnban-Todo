@@ -11,8 +11,9 @@ namespace Kahnban_ToDo
     {
         // CONSTANTS - ComboBox
         private const string ITEM_CATEGORY_ALL = "All Categories";
+        private const string ITEM_STATUS_BACKLOCK = "BACKLOG";
         private const string ITEM_STATUS_CANCELLED = "CANCELLED";
-        private const string ITEM_STATUS_ALL = "All Statuses";
+        private const string ITEM_STATUS_ALL = "All Active Statuses";
         private const string ITEM_STATUS_RELEASED = "RELEASED";
 
         // CONSTANTS - DataGridView Columns
@@ -396,7 +397,9 @@ namespace Kahnban_ToDo
                 bool statusShowAll = selectedStatus == ITEM_STATUS_ALL;
                 bool matchStatus = status == selectedStatus;
                 bool statusMatches = statusShowAll || matchStatus;
-                bool defaultHiddenStatus = status.Equals(ITEM_STATUS_CANCELLED) || status.Equals(ITEM_STATUS_RELEASED);
+                bool defaultHiddenStatus = status.Equals(ITEM_STATUS_CANCELLED) 
+                    || status.Equals(ITEM_STATUS_RELEASED) 
+                    || status.Equals(ITEM_STATUS_BACKLOCK);
 
                 bool isRowVisible = statusMatches && (statusShowAll == false || defaultHiddenStatus == false);
 
