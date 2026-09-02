@@ -6,6 +6,6 @@ namespace Kahnban_ToDo
 {
     public class FileReference : Reference
     {
-        public string FileLocation { get; set; } = "";
+        public string FileName { get; set; } = "";
     }
 }
