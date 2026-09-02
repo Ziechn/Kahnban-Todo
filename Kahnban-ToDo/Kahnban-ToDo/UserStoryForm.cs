@@ -31,6 +31,10 @@ namespace Kahnban_ToDo
         private const int ROW_SUMMARY_TEXT_INDEX = 1;
         private const float ROW_SUMMARY_TEXT_SIZE = 120f;
 
+        // CONSTANTS - Reference Types
+        private const string REFERENCE_FILE = "File";
+        private const string REFERENCE_TEXT = "Text";
+
         // Local Memory
         string _projectPath = "";
         UserStory _userStory;
@@ -209,11 +213,20 @@ namespace Kahnban_ToDo
 
         private void Button_AddText_Click(object sender, EventArgs e)
         {
-            long id = _userStory.Id;
-            TextReferenceForm textReferenceForm = new TextReferenceForm(id);
+            long userStoryId = _userStory.Id;
+            TextReferenceForm textReferenceForm = new TextReferenceForm(userStoryId);
             textReferenceForm.ShowDialog();
 
-            References_Load(id);
+            References_Load(userStoryId);
+        }
+
+        private void Button_AddMedia_Click(object sender, EventArgs e)
+        {
+            long userStoryId = _userStory.Id;
+            FileReferenceForm fileReferenceForm = new FileReferenceForm(userStoryId);
+            fileReferenceForm.ShowDialog();
+
+            References_Load(userStoryId);
         }
         #endregion Interaction: Buttons
 
@@ -236,31 +249,53 @@ namespace Kahnban_ToDo
             long referenceId = DataGridViewUtilities.GetCellValue_Long(row, HEADER_ID);
             if (referenceId < 0) return;
 
+            string referenceType = DataGridViewUtilities.GetCellValue_String(row, HEADER_TYPE);
+            if (string.IsNullOrEmpty(referenceType)) return;
+
             long userStoryId = _userStory.Id;
 
-            TextReferenceForm textReferenceForm = new TextReferenceForm(userStoryId, referenceId);
-            textReferenceForm.ShowDialog(this);
+            bool isTextReference = referenceType.Equals(REFERENCE_TEXT);
+            if (isTextReference)
+            {
+                TextReferenceForm textReferenceForm = new TextReferenceForm(userStoryId, referenceId);
+                textReferenceForm.ShowDialog(this);
+            }
 
-            References_Load(_userStory.Id);
-            return;
+            bool isFileReference = referenceType.Equals(REFERENCE_FILE);
+            if (isFileReference)
+            {
+                // Find the file
+                string organizaitonPath = AppStore.organizationPath;
+                string projectId = AppStore.project?.Id.ToString() ?? "";
+                string userStoryIdString = _userStory.Id.ToString();
+                
+                string path = Path.Combine(organizaitonPath, projectId, userStoryIdString);
 
-            string organizationPath = AppStore.organizationPath;
-            string projectId = AppStore.project?.Id.ToString() ?? "";
+                FileReference? fileReference = null;
+                Controller controller = new();
+                try
+                {
+                    fileReference = controller.ReadObject<FileReference>(path, referenceId);
+                }
+                catch(Exception exception)
+                {
+                    Debug.WriteLine(exception);
+                    return;
+                }
 
-            //string userStoryId = _userStory.Id.ToString();
-            string fileName = $"{referenceId}.json";
-            //string filePath = Path.Combine(organizationPath, projectId, userStoryId, fileName);
+                if (fileReference == null) return;
 
-            //string json = File.ReadAllText(filePath);
+                string fileName = fileReference.FileName;
+                string filePath = Path.Combine(path, fileName);
 
-            //Reference? reference = JsonSerializer.Deserialize<Reference>(json);
-            //if (reference == null) return;
-
-            //if (reference is TextReference textReference)
-            //{
-                //TextReferenceForm textReferenceForm = new TextReferenceForm(_userStory.Id, textReference);
-                //textReferenceForm.ShowDialog();
-            //}
+                // Open the file using windows.
+                Process.Start(
+                    new ProcessStartInfo
+                    {
+                        FileName = filePath,
+                        UseShellExecute = true
+                    });
+            }
 
             References_Load(_userStory.Id);
         }
@@ -355,7 +390,16 @@ namespace Kahnban_ToDo
                     dataTable.Rows.Add(
                         textReference.Id,
                         textReference.Title,
-                        "Text"
+                        REFERENCE_TEXT
+                        );
+                }
+
+                if (reference is FileReference fileReference)
+                {
+                    dataTable.Rows.Add(
+                        fileReference.Id,
+                        fileReference.Title,
+                        REFERENCE_FILE
                         );
                 }
             }

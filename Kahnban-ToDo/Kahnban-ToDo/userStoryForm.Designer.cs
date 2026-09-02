@@ -399,6 +399,7 @@
             Button_AddMedia.TabIndex = 0;
             Button_AddMedia.Text = "Add Media";
             Button_AddMedia.UseVisualStyleBackColor = true;
+            Button_AddMedia.Click += Button_AddMedia_Click;
             // 
             // Button_AddText
             // 

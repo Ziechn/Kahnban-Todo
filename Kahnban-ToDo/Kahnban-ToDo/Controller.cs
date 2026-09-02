@@ -23,10 +23,15 @@ namespace Kahnban_ToDo
             return id;
         }
 
+        public void CopyFile(string sourceFile, string destinationPath, string fileName)
+        {
+            string path = Path.Combine(destinationPath, fileName);
+            File.Copy(sourceFile, path, overwrite: false);
+        }
+
         public List<string> GetFiles(string path)
         {
-            string[] files = Directory.GetFiles(path);
-            return new List<string>(files);
+            return Directory.GetFiles(path, "*.json").ToList();
         }
 
         public List<string> GetStatusList()

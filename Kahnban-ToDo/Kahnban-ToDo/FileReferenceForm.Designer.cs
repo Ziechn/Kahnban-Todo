@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             label_title = new Label();
-            textBox1 = new TextBox();
+            TextBox_Title = new TextBox();
             groupBox_fileLocation = new GroupBox();
-            textBox2 = new TextBox();
             Button_Browse = new Button();
+            TextBox_Location = new TextBox();
             Button_Save = new Button();
             Button_Cancel = new Button();
             groupBox_fileLocation.SuspendLayout();
@@ -47,30 +47,24 @@
             label_title.TabIndex = 0;
             label_title.Text = "Title:";
             // 
-            // textBox1
+            // TextBox_Title
             // 
-            textBox1.Location = new Point(12, 27);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(250, 23);
-            textBox1.TabIndex = 1;
+            TextBox_Title.Location = new Point(12, 27);
+            TextBox_Title.Name = "TextBox_Title";
+            TextBox_Title.Size = new Size(250, 23);
+            TextBox_Title.TabIndex = 1;
+            TextBox_Title.KeyUp += TextBox_Title_KeyUp;
             // 
             // groupBox_fileLocation
             // 
             groupBox_fileLocation.Controls.Add(Button_Browse);
-            groupBox_fileLocation.Controls.Add(textBox2);
+            groupBox_fileLocation.Controls.Add(TextBox_Location);
             groupBox_fileLocation.Location = new Point(12, 56);
             groupBox_fileLocation.Name = "groupBox_fileLocation";
             groupBox_fileLocation.Size = new Size(440, 59);
             groupBox_fileLocation.TabIndex = 2;
             groupBox_fileLocation.TabStop = false;
             groupBox_fileLocation.Text = "File Location";
-            // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(112, 22);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(322, 23);
-            textBox2.TabIndex = 0;
             // 
             // Button_Browse
             // 
@@ -80,6 +74,15 @@
             Button_Browse.TabIndex = 1;
             Button_Browse.Text = "Browse";
             Button_Browse.UseVisualStyleBackColor = true;
+            Button_Browse.Click += Button_Browse_Click;
+            // 
+            // TextBox_Location
+            // 
+            TextBox_Location.Location = new Point(112, 22);
+            TextBox_Location.Name = "TextBox_Location";
+            TextBox_Location.Size = new Size(322, 23);
+            TextBox_Location.TabIndex = 0;
+            TextBox_Location.KeyUp += TextBox_Location_KeyUp;
             // 
             // Button_Save
             // 
@@ -89,6 +92,7 @@
             Button_Save.TabIndex = 3;
             Button_Save.Text = "Save";
             Button_Save.UseVisualStyleBackColor = true;
+            Button_Save.Click += Button_Save_Click;
             // 
             // Button_Cancel
             // 
@@ -98,6 +102,7 @@
             Button_Cancel.TabIndex = 4;
             Button_Cancel.Text = "Cancel";
             Button_Cancel.UseVisualStyleBackColor = true;
+            Button_Cancel.Click += Button_Cancel_Click;
             // 
             // FileReferenceForm
             // 
@@ -107,7 +112,7 @@
             Controls.Add(Button_Cancel);
             Controls.Add(Button_Save);
             Controls.Add(groupBox_fileLocation);
-            Controls.Add(textBox1);
+            Controls.Add(TextBox_Title);
             Controls.Add(label_title);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
@@ -122,10 +127,10 @@
         #endregion
 
         private Label label_title;
-        private TextBox textBox1;
+        private TextBox TextBox_Title;
         private GroupBox groupBox_fileLocation;
         private Button Button_Browse;
-        private TextBox textBox2;
+        private TextBox TextBox_Location;
         private Button Button_Save;
         private Button Button_Cancel;
         private Label label1;
