@@ -11,7 +11,9 @@ namespace Kahnban_ToDo
     {
         // CONSTANTS - ComboBox
         private const string ITEM_CATEGORY_ALL = "All Categories";
+        private const string ITEM_STATUS_CANCELLED = "CANCELLED";
         private const string ITEM_STATUS_ALL = "All Statuses";
+        private const string ITEM_STATUS_RELEASED = "RELEASED";
 
         // CONSTANTS - DataGridView Columns
         private const string COLUMN_CATEGORY = "category";
@@ -382,17 +384,19 @@ namespace Kahnban_ToDo
                 if (row.IsNewRow)continue;
 
                 string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
-                string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
-
                 bool categoryShowAll = selectedCategory == ITEM_CATEGORY_ALL;
                 bool matchCategory = category == selectedCategory;
                 bool categoryMatches = categoryShowAll || matchCategory;
 
+                string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
                 bool statusShowAll = selectedStatus == ITEM_STATUS_ALL;
                 bool matchStatus = status == selectedStatus;
                 bool statusMatches = statusShowAll || matchStatus;
+                bool defaultHiddenStatus = status.Equals(ITEM_STATUS_CANCELLED) || status.Equals(ITEM_STATUS_RELEASED);
 
-                row.Visible = categoryMatches && statusMatches;
+                bool isRowVisible = statusMatches && (statusShowAll == false || defaultHiddenStatus == false);
+
+                row.Visible = categoryMatches && isRowVisible;
             }
         }
         #endregion Logic
