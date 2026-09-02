@@ -263,6 +263,7 @@
             DataGridView_UserStories.CellEndEdit += DataGridView_UserStories_CellEndEdit;
             DataGridView_UserStories.CellValueChanged += DataGridView_UserStories_CellValueChanged;
             DataGridView_UserStories.CurrentCellDirtyStateChanged += DataGridView_UserStories_CurrentCellDirtyStateChanged;
+            DataGridView_UserStories.UserDeletingRow += DataGridView_UserStories_UserDeletingRow;
             // 
             // ProjectForm
             // 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -238,7 +239,7 @@ namespace Kahnban_ToDo
             if (row.IsNewRow) return;
 
             Controller controller = new();
-            
+
             long projectId = AppStore.project?.Id ?? -1;
             string projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
 
@@ -325,6 +326,51 @@ namespace Kahnban_ToDo
                 DataGridView_UserStories.CommitEdit(DataGridViewDataErrorContexts.Commit);
             }
         }
+
+        private void DataGridView_UserStories_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            if (e.Row == null) return;
+
+            DialogResult result = MessageBox.Show(
+                "Send this user story to the recycling bin?",
+                "Confirmation",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+                );
+
+            if (result == DialogResult.No)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            DataGridViewRow row = e.Row;
+            long userStoryId = DataGridViewUtilities.GetCellValue_Long(row, COLUMN_ID);
+
+            string organizationPath = AppStore.organizationPath;
+            string projectId = AppStore.project?.Id.ToString() ?? "";
+
+            string directoryPath = Path.Combine(organizationPath, projectId, userStoryId.ToString());
+            if (Directory.Exists(directoryPath))
+            {
+                FileSystem.DeleteDirectory(
+                    directoryPath,
+                    UIOption.OnlyErrorDialogs,
+                    RecycleOption.SendToRecycleBin
+                );
+            }
+
+            string fileName = $"{userStoryId}.json";
+            string filePath = Path.Combine(organizationPath, projectId, fileName);
+            if (File.Exists(filePath))
+            {
+                FileSystem.DeleteFile(
+                    filePath,
+                    UIOption.OnlyErrorDialogs,
+                    RecycleOption.SendToRecycleBin
+                );
+            }
+        }
         #endregion Interaction: DataGridView
 
         #region Interaction: LinkLabel =============================
@@ -386,7 +432,7 @@ namespace Kahnban_ToDo
 
             foreach (DataGridViewRow row in DataGridView_UserStories.Rows)
             {
-                if (row.IsNewRow)continue;
+                if (row.IsNewRow) continue;
 
                 string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
                 bool categoryShowAll = selectedCategory == ITEM_CATEGORY_ALL;
@@ -397,8 +443,8 @@ namespace Kahnban_ToDo
                 bool statusShowAll = selectedStatus == ITEM_STATUS_ALL;
                 bool matchStatus = status == selectedStatus;
                 bool statusMatches = statusShowAll || matchStatus;
-                bool defaultHiddenStatus = status.Equals(ITEM_STATUS_CANCELLED) 
-                    || status.Equals(ITEM_STATUS_RELEASED) 
+                bool defaultHiddenStatus = status.Equals(ITEM_STATUS_CANCELLED)
+                    || status.Equals(ITEM_STATUS_RELEASED)
                     || status.Equals(ITEM_STATUS_BACKLOCK);
 
                 bool isRowVisible = statusMatches && (statusShowAll == false || defaultHiddenStatus == false);
