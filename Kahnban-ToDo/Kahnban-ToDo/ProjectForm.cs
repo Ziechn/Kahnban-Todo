@@ -229,62 +229,66 @@ namespace Kahnban_ToDo
         #region Interaction: DataGridView ==========================
         private void DataGridView_UserStories_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0) return;
+            int rowIndex = e.RowIndex;
+
+            DataGridViewRow row = DataGridView_UserStories.Rows[rowIndex];
+            if (row == null) return;
+            if (row.IsNewRow) return;
+
             Controller controller = new();
             
             long projectId = AppStore.project?.Id ?? -1;
             string projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
 
-            foreach (DataGridViewRow row in DataGridView_UserStories.Rows)
+            (bool isUserStoryValid, string userStoryName) = CellValue_String_Validate(row, COLUMN_USER_STORY);
+            if (isUserStoryValid == false) return;
+
+            UserStory? userStory = null;
+
+            (bool isIdValid, long id) = CellValue_Long_Validate(row, COLUMN_ID);
+            if (isIdValid)
             {
-                (bool isUserStoryValid, string userStoryName) = CellValue_String_Validate(row, COLUMN_USER_STORY);
-                if (isUserStoryValid == false) return;
+                userStory = controller.GetUserStory(projectPath, id);
+            }
+            else
+            {
+                id = controller.CreateId();
+                row.Cells[COLUMN_ID]?.Value = id;
+                row.Cells[COLUMN_STATUS]?.Value = DEFAULT_STATUS;
 
-                UserStory? userStory = null;
+                userStory = new UserStory();
+                userStory.Id = id;
 
-                (bool isIdValid, long id) = CellValue_Long_Validate(row, COLUMN_ID);
-                if (isIdValid)
-                {
-                    userStory = controller.GetUserStory(projectPath, id);
-                }
-                else
-                {
-                    id = controller.CreateId();
-                    row.Cells[COLUMN_ID]?.Value = id;
-                    row.Cells[COLUMN_STATUS]?.Value = DEFAULT_STATUS;
+                userStory.Organization = AppStore.organization;
+                userStory.Project = AppStore.project?.Name ?? "";
+            }
 
-                    userStory = new UserStory();
-                    userStory.Id = id;
+            if (userStory == null)
+            {
+                Debug.WriteLine("Error loading User Story");
+                return;
+            }
 
-                    userStory.Organization = AppStore.organization;
-                    userStory.Project = AppStore.project?.Name ?? "";
-                }
+            // BEGIN Map to User Story object
+            userStory.Name = userStoryName;
 
-                if (userStory == null)
-                {
-                    Debug.WriteLine("Error loading User Story");
-                    return;
-                }
+            string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
+            userStory.Category = category;
 
-                // BEGIN Map to User Story object
-                userStory.Name = userStoryName;
+            string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
+            userStory.Status = status;
+            // END Map to User Story object
 
-                string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
-                userStory.Category = category;
-
-                string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
-                userStory.Status = status;
-                // END Map to User Story object
-
-                // Create a Directory is non exists
-                controller.CreateDirectory(projectPath, id);
-                try
-                {
-                    controller.Save(userStory, projectPath, id);
-                }
-                catch (Exception exception)
-                {
-                    Debug.WriteLine(exception);
-                }
+            // Create a Directory is non exists
+            controller.CreateDirectory(projectPath, id);
+            try
+            {
+                controller.Save(userStory, projectPath, id);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
             }
         }
 
