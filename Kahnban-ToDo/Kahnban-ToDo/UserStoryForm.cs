@@ -162,7 +162,12 @@ namespace Kahnban_ToDo
         #region Event Handlers =====================================
         private void DataGridView_References_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            //DataGridView_References.Columns[HEADER_ID]?.Visible = false;
+            DataGridView_References.Columns[HEADER_ID]?.Visible = false;
+        }
+
+        private void DataGridView_Status_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+
         }
         #endregion Event Handlers
 
@@ -283,7 +288,7 @@ namespace Kahnban_ToDo
                 string organizaitonPath = AppStore.organizationPath;
                 string projectId = AppStore.project?.Id.ToString() ?? "";
                 string userStoryIdString = _userStory.Id.ToString();
-                
+
                 string path = Path.Combine(organizaitonPath, projectId, userStoryIdString);
 
                 FileReference? fileReference = null;
@@ -292,7 +297,7 @@ namespace Kahnban_ToDo
                 {
                     fileReference = controller.ReadObject<FileReference>(path, referenceId);
                 }
-                catch(Exception exception)
+                catch (Exception exception)
                 {
                     Debug.WriteLine(exception);
                     return;

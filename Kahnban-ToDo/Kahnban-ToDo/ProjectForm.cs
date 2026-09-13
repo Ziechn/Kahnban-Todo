@@ -29,6 +29,7 @@ namespace Kahnban_ToDo
 
         // CONSTANTS  DataGridView Defaults
         private const string DEFAULT_STATUS = "PENDING";
+        private const int DEFAULT_TASKS = 0;
 
         // CONSTANTS - DataGridView Headers
         private const string HEADER_CATEGORY = "Category";
@@ -258,6 +259,7 @@ namespace Kahnban_ToDo
                 id = controller.CreateId();
                 row.Cells[COLUMN_ID]?.Value = id;
                 row.Cells[COLUMN_STATUS]?.Value = DEFAULT_STATUS;
+                row.Cells[COLUMN_TASKS]?.Value = DEFAULT_TASKS;
 
                 userStory = new UserStory();
                 userStory.Id = id;

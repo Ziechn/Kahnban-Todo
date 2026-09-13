@@ -222,6 +222,7 @@
             DataGridView_Status.Location = new Point(3, 23);
             DataGridView_Status.Name = "DataGridView_Status";
             DataGridView_Status.ReadOnly = true;
+            DataGridView_Status.ShowCellToolTips = false;
             DataGridView_Status.Size = new Size(238, 596);
             DataGridView_Status.TabIndex = 1;
             // 
@@ -258,6 +259,7 @@
             DataGridView_UserStories.Dock = DockStyle.Fill;
             DataGridView_UserStories.Location = new Point(3, 23);
             DataGridView_UserStories.Name = "DataGridView_UserStories";
+            DataGridView_UserStories.ShowCellToolTips = false;
             DataGridView_UserStories.Size = new Size(713, 596);
             DataGridView_UserStories.TabIndex = 1;
             DataGridView_UserStories.CellDoubleClick += DataGridView_UserStories_CellDoubleClick;

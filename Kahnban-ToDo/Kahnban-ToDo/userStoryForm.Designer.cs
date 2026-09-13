@@ -346,6 +346,7 @@
             DataGridView_References.Location = new Point(3, 243);
             DataGridView_References.Name = "DataGridView_References";
             DataGridView_References.ReadOnly = true;
+            DataGridView_References.ShowCellToolTips = false;
             DataGridView_References.Size = new Size(238, 194);
             DataGridView_References.TabIndex = 0;
             DataGridView_References.CellDoubleClick += DataGridView_References_CellDoubleClick;
@@ -382,8 +383,10 @@
             DataGridView_Status.Location = new Point(3, 23);
             DataGridView_Status.Name = "DataGridView_Status";
             DataGridView_Status.ReadOnly = true;
+            DataGridView_Status.ShowCellToolTips = false;
             DataGridView_Status.Size = new Size(238, 194);
             DataGridView_Status.TabIndex = 1;
+            DataGridView_Status.DataBindingComplete += DataGridView_Status_DataBindingComplete;
             // 
             // panel_referenceControls
             // 

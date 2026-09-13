@@ -137,6 +137,7 @@
             DataGridView_Tags.Location = new Point(3, 23);
             DataGridView_Tags.Name = "DataGridView_Tags";
             DataGridView_Tags.ReadOnly = true;
+            DataGridView_Tags.ShowCellToolTips = false;
             DataGridView_Tags.Size = new Size(238, 535);
             DataGridView_Tags.TabIndex = 1;
             // 
@@ -174,6 +175,7 @@
             DataGridView_Projects.Dock = DockStyle.Fill;
             DataGridView_Projects.Location = new Point(3, 23);
             DataGridView_Projects.Name = "DataGridView_Projects";
+            DataGridView_Projects.ShowCellToolTips = false;
             DataGridView_Projects.Size = new Size(773, 535);
             DataGridView_Projects.TabIndex = 1;
             DataGridView_Projects.CellDoubleClick += DataGridView_Projects_CellDoubleClick;
