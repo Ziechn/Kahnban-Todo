@@ -221,6 +221,7 @@
             DataGridView_Status.Dock = DockStyle.Fill;
             DataGridView_Status.Location = new Point(3, 23);
             DataGridView_Status.Name = "DataGridView_Status";
+            DataGridView_Status.ReadOnly = true;
             DataGridView_Status.Size = new Size(238, 596);
             DataGridView_Status.TabIndex = 1;
             // 

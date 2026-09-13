@@ -136,6 +136,7 @@
             DataGridView_Tags.Dock = DockStyle.Fill;
             DataGridView_Tags.Location = new Point(3, 23);
             DataGridView_Tags.Name = "DataGridView_Tags";
+            DataGridView_Tags.ReadOnly = true;
             DataGridView_Tags.Size = new Size(238, 535);
             DataGridView_Tags.TabIndex = 1;
             // 

@@ -292,6 +292,8 @@ namespace Kahnban_ToDo
             {
                 Debug.WriteLine(exception);
             }
+
+            DataGridView_UserStories_FilterRows();
         }
 
         private void DataGridView_UserStories_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -427,6 +429,9 @@ namespace Kahnban_ToDo
         #region Logic ==============================================
         private void DataGridView_UserStories_FilterRows()
         {
+            bool isEditing = DataGridView_UserStories.IsCurrentCellInEditMode;
+            if (isEditing) return;
+
             string selectedCategory = ComboBox_Category.Text;
             string selectedStatus = ComboBox_Status.Text;
 
