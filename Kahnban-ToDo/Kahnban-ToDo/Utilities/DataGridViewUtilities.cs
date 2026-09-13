@@ -20,6 +20,19 @@ namespace Kahnban_ToDo
             return DateTime.MinValue;
         }
 
+        public static int GetCellValue_Int(DataGridViewRow row, string columnName)
+        {
+            if (row == null) return -1;
+            string cellValue = GetCellValue_String(row, columnName);
+            if (cellValue.Equals("")) return -2;
+
+            int value = 0;
+            bool isValid = int.TryParse(cellValue, out value);
+            if (isValid) return value;
+
+            return -3;
+        }
+
         public static long GetCellValue_Long(DataGridViewRow row, string columnName)
         {
             if (row == null) return -1;

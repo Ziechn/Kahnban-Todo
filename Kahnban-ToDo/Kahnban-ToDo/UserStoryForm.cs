@@ -21,6 +21,12 @@ namespace Kahnban_ToDo
         private const string HEADER_TITLE = "Title";
         private const string HEADER_TYPE = "Type";
 
+        // CONSTANTS - DATAGRIDVIEW - Status
+        private const string COLUMN_COUNT = "count";
+        private const string COLUMN_STATUS = "status";
+        private const string HEADER_COUNT = "Count";
+        private const string HEADER_STATUS = "Status";
+
         // CONSTANTS - PLACEHOLDERS
         private const string PLACEHOLDER_CATEGORY = "Enter Category...";
 
@@ -80,15 +86,18 @@ namespace Kahnban_ToDo
             ComboBox_Status.Text = userStory.Status;
         }
 
-        private void DataGridView_TagCount_Display(string tag, int count)
+        private void DataGridView_Status_Display(string status, int count)
         {
             foreach (DataGridViewRow row in DataGridView_Status.Rows)
             {
-                string rowTag = row.Cells["tag"].Value?.ToString() ?? "";
-                bool isMatch = rowTag.Equals(tag);
+                string rowStatus = row.Cells[COLUMN_STATUS].Value?.ToString() ?? "";
+                bool isMatch = rowStatus.Equals(status);
                 if (isMatch == false) continue;
 
-                row.Cells["count"].Value = count;
+                row.Cells[COLUMN_COUNT].Value = count;
+
+                bool isVisible = count > 0;
+                row.Visible = isVisible;
             }
         }
 
@@ -164,11 +173,6 @@ namespace Kahnban_ToDo
         {
             DataGridView_References.Columns[HEADER_ID]?.Visible = false;
         }
-
-        private void DataGridView_Status_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
-        {
-
-        }
         #endregion Event Handlers
 
         #region Initialize =========================================
@@ -189,8 +193,8 @@ namespace Kahnban_ToDo
         }
         private void DataGridView_StatusCount_Initialize()
         {
-            DataGridView_Status.Columns.Add("tag", "Tag");
-            DataGridView_Status.Columns.Add("count", "Count");
+            DataGridView_Status.Columns.Add(COLUMN_STATUS, HEADER_STATUS);
+            DataGridView_Status.Columns.Add(COLUMN_COUNT, HEADER_COUNT);
 
             Controller controller = new();
             List<string> statusList = controller.GetStatusList();
@@ -460,8 +464,15 @@ namespace Kahnban_ToDo
             List<string> statusList = controller.GetStatusList();
             foreach (string status in statusList)
             {
-                int tagCount = CountStatus(status);
-                DataGridView_TagCount_Display(status, tagCount);
+                int statusCount = CountStatus(status);
+
+                if (status.Equals("COMPLETE"))
+                {
+                    statusCount += CountStatus("X");
+                    statusCount += CountStatus("DONE");
+                }
+
+                DataGridView_Status_Display(status, statusCount);
             }
         }
 

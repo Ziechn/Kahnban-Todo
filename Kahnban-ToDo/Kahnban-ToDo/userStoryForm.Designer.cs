@@ -386,7 +386,6 @@
             DataGridView_Status.ShowCellToolTips = false;
             DataGridView_Status.Size = new Size(238, 194);
             DataGridView_Status.TabIndex = 1;
-            DataGridView_Status.DataBindingComplete += DataGridView_Status_DataBindingComplete;
             // 
             // panel_referenceControls
             // 
