@@ -313,7 +313,7 @@ namespace Kahnban_ToDo
                 Debug.WriteLine(exception);
             }
 
-            DataGridView_UserStories_FilterRows();
+            BeginInvoke(() => DataGridView_UserStories_FilterRows());
         }
 
         private void DataGridView_UserStories_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
