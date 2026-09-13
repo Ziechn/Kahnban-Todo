@@ -12,9 +12,10 @@ namespace Kahnban_ToDo
     {
         // CONSTANTS - ComboBox
         private const string ITEM_CATEGORY_ALL = "All Categories";
-        private const string ITEM_STATUS_BACKLOCK = "BACKLOG";
+        private const string ITEM_STATUS_BACKLOG = "BACKLOG";
         private const string ITEM_STATUS_CANCELLED = "CANCELLED";
-        private const string ITEM_STATUS_ALL = "All Active Statuses";
+        private const string ITEM_STATUS_ALL = "All Statuses";
+        private const string ITEM_STATUS_ALL_ACTIVE = "All Active Statuses";
         private const string ITEM_STATUS_RELEASED = "RELEASED";
 
         // CONSTANTS - DataGridView Columns
@@ -117,6 +118,7 @@ namespace Kahnban_ToDo
         {
             ComboBox_Status.Items.Clear();
             ComboBox_Status.Items.Add(ITEM_STATUS_ALL);
+            ComboBox_Status.Items.Add(ITEM_STATUS_ALL_ACTIVE);
 
             Controller controller = new();
             List<string> statusList = controller.GetStatusList();
@@ -126,7 +128,7 @@ namespace Kahnban_ToDo
                 ComboBox_Status.Items.Add(status);
             }
 
-            ComboBox_Status.SelectedIndex = 0;
+            ComboBox_Status.SelectedIndex = 1;
         }
 
         private void DataGridView_Projects_Intialize()
@@ -447,16 +449,26 @@ namespace Kahnban_ToDo
                 bool categoryMatches = categoryShowAll || matchCategory;
 
                 string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
-                bool statusShowAll = selectedStatus == ITEM_STATUS_ALL;
-                bool matchStatus = status == selectedStatus;
-                bool statusMatches = statusShowAll || matchStatus;
                 bool defaultHiddenStatus = status.Equals(ITEM_STATUS_CANCELLED)
                     || status.Equals(ITEM_STATUS_RELEASED)
-                    || status.Equals(ITEM_STATUS_BACKLOCK);
+                    || status.Equals(ITEM_STATUS_BACKLOG);
 
-                bool isRowVisible = statusMatches && (statusShowAll == false || defaultHiddenStatus == false);
+                bool statusMatches = false;
 
-                row.Visible = categoryMatches && isRowVisible;
+                if (selectedStatus.Equals(ITEM_STATUS_ALL))
+                {
+                    statusMatches = true;
+                }
+                else if (selectedStatus.Equals(ITEM_STATUS_ALL_ACTIVE))
+                {
+                    statusMatches = defaultHiddenStatus == false;
+                }
+                else
+                {
+                    statusMatches = selectedStatus.Equals(status);
+                }
+
+                row.Visible = categoryMatches && statusMatches;
             }
         }
         #endregion Logic
