@@ -449,6 +449,7 @@
             // 
             // RichTextBox_TaskList
             // 
+            RichTextBox_TaskList.AcceptsTab = true;
             RichTextBox_TaskList.Dock = DockStyle.Fill;
             RichTextBox_TaskList.Location = new Point(3, 163);
             RichTextBox_TaskList.Name = "RichTextBox_TaskList";
