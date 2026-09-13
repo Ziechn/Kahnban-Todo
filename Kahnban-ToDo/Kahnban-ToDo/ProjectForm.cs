@@ -27,6 +27,7 @@ namespace Kahnban_ToDo
         private const string COLUMN_TASKLIST = "taskList";
         private const string COLUMN_TASKS = "tasks";
         private const string COLUMN_USER_STORY = "userStory";
+        private const string COLUMN_VERSION = "version";
 
         // CONSTANTS  DataGridView Defaults
         private const string DEFAULT_STATUS = "PENDING";
@@ -41,12 +42,14 @@ namespace Kahnban_ToDo
         private const string HEADER_TASKLIST = "Task List";
         private const string HEADER_TASKS = "Tasks";
         private const string HEADER_USER_STORY = "User Story";
+        private const string HEADER_VERSION = "Version";
 
         // CONSTANTS - DataGridView Properties
         private const int PROPERTY_WIDTH_CATEGORY = 100;
         private const int PROPERTY_WIDTH_DATE_DUE = 100;
         private const int PROPERTY_WIDTH_STATUS = 100;
         private const int PROPERTY_WIDTH_TASKS = 100;
+        private const int PROPERTY_WIDTH_VERSION = 100;
 
         // CONSTANTS - TABLE LAYOUT PANELS
         private const int COLUMN_SIDEBAR_INDEX = 0;
@@ -198,10 +201,20 @@ namespace Kahnban_ToDo
             };
 
             DataGridView_UserStories.Columns.Add(dateDueColumn);
+
+            DataGridViewColumn versionColumn = new DataGridViewColumn
+            {
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                CellTemplate = new DataGridViewTextBoxCell(),
+                HeaderText = HEADER_VERSION,
+                Name = COLUMN_VERSION,
+                Width = PROPERTY_WIDTH_VERSION
+            };
+
+            DataGridView_UserStories.Columns.Add(versionColumn);
             // END Creating Columns
 
             // Readonly
-            //DataGridView_UserStories.Columns[COLUMN_CATEGORY]?.ReadOnly = true;
             DataGridView_UserStories.Columns[COLUMN_DATE_DUE]?.ReadOnly = true;
             DataGridView_UserStories.Columns[COLUMN_TASKS]?.ReadOnly = true;
 
@@ -284,6 +297,9 @@ namespace Kahnban_ToDo
 
             string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
             userStory.Status = status;
+
+            string version = DataGridViewUtilities.GetCellValue_String(row, COLUMN_VERSION);
+            userStory.Version = version;
             // END Map to User Story object
 
             // Create a Directory is non exists
@@ -491,7 +507,8 @@ namespace Kahnban_ToDo
                 userStory.Status,
                 taskList,
                 taskCount,
-                userStory.DateDue?.ToShortDateString() ?? ""
+                userStory.DateDue?.ToShortDateString() ?? "",
+                userStory.Version
                 );
         }
         #endregion Populate: DataGridView

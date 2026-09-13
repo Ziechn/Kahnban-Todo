@@ -17,6 +17,7 @@ namespace Kahnban_ToDo
         public string Status { get; set; } = "";
         public string Summary { get; set; } = "";
         public string TaskList { get; set; } = "";
+        public string Version { get; set; } = "";
 
         public UserStory()
         {
@@ -27,6 +28,7 @@ namespace Kahnban_ToDo
             Status = "";
             Summary = "";
             TaskList = "";
+            Version = "";
         }
     }
 }
