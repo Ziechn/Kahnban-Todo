@@ -15,7 +15,7 @@ namespace Kahnban_ToDo
             InitializeComponent();
             MainForm_Initialize();
 
-            Form_Text_Display("Projectz");
+            Form_Text_Display("ProjectZ - 0.6.1");
         }
 
         #region Display ============================================
