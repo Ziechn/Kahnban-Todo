@@ -55,14 +55,14 @@
             // ToolStripMenuItem_OpenOrganization
             // 
             ToolStripMenuItem_OpenOrganization.Name = "ToolStripMenuItem_OpenOrganization";
-            ToolStripMenuItem_OpenOrganization.Size = new Size(174, 22);
-            ToolStripMenuItem_OpenOrganization.Text = "Open Organization";
-            ToolStripMenuItem_OpenOrganization.Click += ToolStripMenuItem_OpenOrganization_Click;
+            ToolStripMenuItem_OpenOrganization.Size = new Size(180, 22);
+            ToolStripMenuItem_OpenOrganization.Text = "Open Folder";
+            ToolStripMenuItem_OpenOrganization.Click += ToolStripMenuItem_OpenFolder_Click;
             // 
             // ToolStripMenuItem_Exit
             // 
             ToolStripMenuItem_Exit.Name = "ToolStripMenuItem_Exit";
-            ToolStripMenuItem_Exit.Size = new Size(174, 22);
+            ToolStripMenuItem_Exit.Size = new Size(180, 22);
             ToolStripMenuItem_Exit.Text = "Exit";
             ToolStripMenuItem_Exit.Click += ToolStripMenuItem_Exit_Click;
             // 

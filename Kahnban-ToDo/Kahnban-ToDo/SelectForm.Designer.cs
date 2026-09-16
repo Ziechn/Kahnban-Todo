@@ -79,6 +79,7 @@
             DataGridView_Organizations.ReadOnly = true;
             DataGridView_Organizations.Size = new Size(794, 359);
             DataGridView_Organizations.TabIndex = 1;
+            DataGridView_Organizations.CellDoubleClick += DataGridView_Organizations_CellDoubleClick;
             // 
             // flowLayoutPanel_controls
             // 

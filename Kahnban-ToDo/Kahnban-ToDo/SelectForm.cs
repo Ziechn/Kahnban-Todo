@@ -61,7 +61,7 @@ namespace Kahnban_ToDo
         }
         #endregion DataGridView
 
-        #region Interaction: Button ================================
+        #region Interaction ========================================
         private void Button_Add_Click(object sender, EventArgs e)
         {
             string result = Interaction.InputBox(
@@ -75,6 +75,23 @@ namespace Kahnban_ToDo
             Directory.CreateDirectory(path);
             DataGridView_Organizations_Populate();
         }
-        #endregion Interaction: Button
+
+        private void DataGridView_Organizations_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            DataGridViewRow? row = DataGridView_Organizations.Rows[rowIndex];
+            if (row == null) return;
+
+            string directory = DataGridViewUtilities.GetCellValue_String(row, COLUMN_DIRECTORY);
+            if (string.IsNullOrEmpty(directory)) return;
+
+            string organization = Path.GetFileName(directory);
+            AppStore.organization = organization;
+            AppStore.organizationPath = directory;
+
+            OrganizationForm organizationForm = new OrganizationForm();
+            FormUtilities.NavigateTo(organizationForm);
+        }
+        #endregion Interaction
     }
 }

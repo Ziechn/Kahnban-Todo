@@ -38,7 +38,7 @@ namespace Kahnban_ToDo
             Application.Exit();
         }
 
-        private void ToolStripMenuItem_OpenOrganization_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem_OpenFolder_Click(object sender, EventArgs e)
         {
             using FolderBrowserDialog dialog = new FolderBrowserDialog();
             dialog.Description = "Pick a folder.";
@@ -52,16 +52,6 @@ namespace Kahnban_ToDo
             // Open Select (Organization) Form
             SelectForm selectForm = new SelectForm();
             FormUtilities.NavigateTo(selectForm);
-            return;
-
-            string path = dialog.SelectedPath;
-            AppStore.organizationPath = path;
-
-            string organization = Path.GetFileName(path);
-            AppStore.organization = organization;
-
-            OrganizationForm form = new OrganizationForm();
-            FormUtilities.NavigateTo(form);
         }
         #endregion Interaction
     }
