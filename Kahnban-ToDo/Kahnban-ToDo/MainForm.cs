@@ -15,7 +15,7 @@ namespace Kahnban_ToDo
             InitializeComponent();
             MainForm_Initialize();
 
-            Form_Text_Display("ProjectZ - 0.6.1");
+            Form_Text_Display("ProjectZ - 0.7.0");
         }
 
         #region Display ============================================
@@ -41,10 +41,18 @@ namespace Kahnban_ToDo
         private void ToolStripMenuItem_OpenOrganization_Click(object sender, EventArgs e)
         {
             using FolderBrowserDialog dialog = new FolderBrowserDialog();
-            dialog.Description = "Select the organization folder.";
+            dialog.Description = "Pick a folder.";
             DialogResult result = dialog.ShowDialog();
 
             if (result == DialogResult.Cancel) return;
+
+            // Selected path is the ApplicationPath
+            AppStore.applicationPath = dialog.SelectedPath;
+
+            // Open Select (Organization) Form
+            SelectForm selectForm = new SelectForm();
+            FormUtilities.NavigateTo(selectForm);
+            return;
 
             string path = dialog.SelectedPath;
             AppStore.organizationPath = path;

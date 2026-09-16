@@ -189,7 +189,7 @@
             ClientSize = new Size(1041, 623);
             Controls.Add(TableLayoutPanel_Body);
             Name = "OrganizationForm";
-            Text = "Form1";
+            Text = "Organization";
             TableLayoutPanel_Body.ResumeLayout(false);
             FlowLayoutPanel_Navigation.ResumeLayout(false);
             FlowLayoutPanel_Navigation.PerformLayout();
