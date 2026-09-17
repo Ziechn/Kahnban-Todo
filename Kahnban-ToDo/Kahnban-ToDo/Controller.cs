@@ -9,6 +9,34 @@ namespace Kahnban_ToDo
 {
     internal class Controller
     {
+        public int CountStatus(string status, string textBoxText)
+        {
+            return textBoxText.Split(status).Length - 1;
+        }
+
+        public List<StatusCount> CountStatuses(string text)
+        {
+            List<StatusCount> statusCounts = new List<StatusCount>();
+            List<string> statusList = GetStatusList();
+
+            foreach (string status in statusList)
+            {
+                string statusTag = $"[{status}]";
+                int count = CountStatus(statusTag, text);
+
+                if (statusTag.Contains("COMPLETE"))
+                {
+                    count += CountStatus("[X]", text);
+                    count += CountStatus("[DONE]", text);
+                }
+
+                StatusCount statusCount = new StatusCount(status, count);
+                statusCounts.Add(statusCount);
+            }
+
+            return statusCounts;
+        }
+
         public void CreateDirectory(string originalPath, long id)
         {
             string directoryName = id.ToString();

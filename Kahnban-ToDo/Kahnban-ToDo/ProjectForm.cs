@@ -505,12 +505,20 @@ namespace Kahnban_ToDo
         #region Populate: DataGridView =============================
         private void DataGridView_UserStories_Populate(UserStory userStory)
         {
-            string taskList = userStory.TaskList;
+            string taskList = userStory.TaskList.ToUpper();
             int taskCount = 0;
             if (taskList.Length > 0)
             {
                 taskCount = taskList.Split('\n').Count(line => string.IsNullOrWhiteSpace(line) == false);
             }
+
+            // Count completed tasks.
+            Controller controller = new();
+            List<StatusCount> statusCounts = controller.CountStatuses(taskList);
+            int completeCount = statusCounts.FirstOrDefault(statusCount => statusCount.Status.Equals("COMPLETE"))?.Count ?? 0;
+            taskCount -= completeCount;
+
+            if (taskCount < 0) taskCount = 0;
 
             DataGridView_UserStories.Rows.Add(
                 userStory.Id,

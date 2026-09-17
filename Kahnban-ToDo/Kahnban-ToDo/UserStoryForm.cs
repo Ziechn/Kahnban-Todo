@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
 using System.Text.Json;
-using System.Diagnostics;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Kahnban_ToDo
 {
@@ -54,13 +55,13 @@ namespace Kahnban_ToDo
             DateTimePicker_Due_Initialize();
             DateTimePicker_End_Initialize();
             DateTimePicker_Start_Initialize();
+            DataGridView_StatusCount_Initialize();
 
             _projectPath = projectPath;
             UserStory_Load(id);
 
             TextBox_Category_DiplayPlaceholder();
-            DataGridView_StatusCount_Initialize();
-            CountStatuses();
+            DataGridView_Status_Display();
             References_Load(id);
 
             // Determine user story editable state based on the status.
@@ -86,18 +87,32 @@ namespace Kahnban_ToDo
             ComboBox_Status.Text = userStory.Status;
         }
 
-        private void DataGridView_Status_Display(string status, int count)
+        private void DataGridView_Status_Display()
         {
-            foreach (DataGridViewRow row in DataGridView_Status.Rows)
+            string textBoxText = RichTextBox_TaskList.Text.ToUpper();
+
+            Controller controller = new();
+            List<StatusCount> statusCounts = controller.CountStatuses(textBoxText);
+            foreach (StatusCount statusCount in statusCounts)
             {
-                string rowStatus = row.Cells[COLUMN_STATUS].Value?.ToString() ?? "";
-                bool isMatch = rowStatus.Equals(status);
-                if (isMatch == false) continue;
+                string status = statusCount.Status;
+                DataGridViewRow? row = DataGridView_Status
+                    .Rows
+                    .Cast<DataGridViewRow>()
+                    .FirstOrDefault(
+                        row => row.Cells[COLUMN_STATUS].Value?.ToString() == status
+                        );
 
+                if (row == null)
+                {
+                    int index = DataGridView_Status.Rows.Add();
+                    row = DataGridView_Status.Rows[index];
+                    row.Cells[COLUMN_STATUS].Value = status;
+                }
+
+                int count = statusCount.Count;
                 row.Cells[COLUMN_COUNT].Value = count;
-
-                bool isVisible = count > 0;
-                row.Visible = isVisible;
+                row.Visible = count > 0;
             }
         }
 
@@ -191,18 +206,11 @@ namespace Kahnban_ToDo
 
             ComboBox_Status.SelectedIndex = 0;
         }
+
         private void DataGridView_StatusCount_Initialize()
         {
             DataGridView_Status.Columns.Add(COLUMN_STATUS, HEADER_STATUS);
             DataGridView_Status.Columns.Add(COLUMN_COUNT, HEADER_COUNT);
-
-            Controller controller = new();
-            List<string> statusList = controller.GetStatusList();
-            foreach (string status in statusList)
-            {
-                int tagCount = CountStatus(status);
-                DataGridView_Status.Rows.Add(status, tagCount);
-            }
         }
 
         private void DateTimePicker_Due_Initialize()
@@ -351,7 +359,7 @@ namespace Kahnban_ToDo
         private void RichTextBox_TaskList_KeyUp(object sender, KeyEventArgs e)
         {
             SaveUserStory();
-            CountStatuses();
+            DataGridView_Status_Display();
         }
         #endregion Interaction: RichTextBox
 
@@ -456,32 +464,6 @@ namespace Kahnban_ToDo
             TextBox_Category_Display(userStory);
         }
         #endregion Load
-
-        #region Logic ==============================================
-        private void CountStatuses()
-        {
-            Controller controller = new();
-            List<string> statusList = controller.GetStatusList();
-            foreach (string status in statusList)
-            {
-                int statusCount = CountStatus(status);
-
-                if (status.Equals("COMPLETE"))
-                {
-                    statusCount += CountStatus("X");
-                    statusCount += CountStatus("DONE");
-                }
-
-                DataGridView_Status_Display(status, statusCount);
-            }
-        }
-
-        private int CountStatus(string status)
-        {
-            string taskList = RichTextBox_TaskList.Text;
-            return taskList.Split(status).Length - 1;
-        }
-        #endregion Logic
 
         #region Populate ===========================================
         private void RichTextBox_Summary_Populate(UserStory userStory)
