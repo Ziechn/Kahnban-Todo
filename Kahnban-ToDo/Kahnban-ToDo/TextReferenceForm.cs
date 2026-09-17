@@ -18,6 +18,8 @@ namespace Kahnban_ToDo
         public TextReferenceForm(long userStoryId)
         {
             InitializeComponent();
+            StartPosition = FormStartPosition.CenterParent;
+
             _userStoryId = userStoryId;
             Button_Save_State();
         }

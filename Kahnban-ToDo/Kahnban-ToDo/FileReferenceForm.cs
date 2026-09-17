@@ -17,8 +17,9 @@ namespace Kahnban_ToDo
         public FileReferenceForm(long userStoryId)
         {
             InitializeComponent();
-            _userStoryId = userStoryId;
+            StartPosition = FormStartPosition.CenterParent;
 
+            _userStoryId = userStoryId;
             Button_Save_State();
         }
 
