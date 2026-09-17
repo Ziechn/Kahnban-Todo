@@ -425,6 +425,10 @@ namespace Kahnban_ToDo
             {
                 if (row.IsNewRow) continue;
                 string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
+
+                bool isEmpty = string.IsNullOrEmpty(category);
+                if (isEmpty) continue;
+
                 bool isInList = ComboBox_Category.Items.Contains(category);
                 if (isInList) continue;
 
@@ -470,7 +474,7 @@ namespace Kahnban_ToDo
 
                 string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
                 bool categoryShowAll = selectedCategory == ITEM_CATEGORY_ALL;
-                bool matchCategory = category == selectedCategory;
+                bool matchCategory = selectedCategory.Contains(category);
                 bool categoryMatches = categoryShowAll || matchCategory;
 
                 string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);

@@ -18,8 +18,6 @@ namespace Kahnban_ToDo
             InitializeComponent();
             MainForm_Initialize();
 
-            Form_Text_Display("ProjectZ - 0.7.0");
-
             // Load AppState
             string application = Application.ExecutablePath;
             string applicationPath = Path.GetDirectoryName(application);
