@@ -45,8 +45,8 @@ namespace Kahnban_ToDo
             string title = TextBox_Title.Text.Trim();
             string location = TextBox_Location.Text.Trim();
 
-            bool hasTitle = title.Equals("") == false;
-            bool hasLocation = Location.Equals("") == false;
+            bool hasTitle = string.IsNullOrEmpty(title) == false;
+            bool hasLocation = string.IsNullOrEmpty(location) == false;
 
             bool hasUnsavedChanges = hasTitle || hasLocation;
 
