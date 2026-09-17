@@ -38,6 +38,8 @@
             TableLayoutPanel_Organization = new TableLayoutPanel();
             Label_Projects = new Label();
             DataGridView_Projects = new DataGridView();
+            flowLayoutPanel_controls = new FlowLayoutPanel();
+            Button_Back = new Button();
             TableLayoutPanel_Body.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
             TableLayoutPanel_Content.SuspendLayout();
@@ -45,20 +47,22 @@
             ((System.ComponentModel.ISupportInitialize)DataGridView_Tags).BeginInit();
             TableLayoutPanel_Organization.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridView_Projects).BeginInit();
+            flowLayoutPanel_controls.SuspendLayout();
             SuspendLayout();
             // 
             // TableLayoutPanel_Body
             // 
             TableLayoutPanel_Body.ColumnCount = 1;
             TableLayoutPanel_Body.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_Body.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_Body.Controls.Add(FlowLayoutPanel_Navigation, 0, 0);
-            TableLayoutPanel_Body.Controls.Add(TableLayoutPanel_Content, 0, 1);
+            TableLayoutPanel_Body.Controls.Add(TableLayoutPanel_Content, 0, 2);
+            TableLayoutPanel_Body.Controls.Add(flowLayoutPanel_controls, 0, 1);
             TableLayoutPanel_Body.Dock = DockStyle.Fill;
             TableLayoutPanel_Body.Location = new Point(0, 0);
             TableLayoutPanel_Body.Name = "TableLayoutPanel_Body";
-            TableLayoutPanel_Body.RowCount = 3;
+            TableLayoutPanel_Body.RowCount = 4;
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
+            TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_Body.Size = new Size(1041, 623);
@@ -92,12 +96,12 @@
             TableLayoutPanel_Content.Controls.Add(TableLayoutPanel_TagCount, 0, 0);
             TableLayoutPanel_Content.Controls.Add(TableLayoutPanel_Organization, 1, 0);
             TableLayoutPanel_Content.Dock = DockStyle.Fill;
-            TableLayoutPanel_Content.Location = new Point(3, 33);
+            TableLayoutPanel_Content.Location = new Point(3, 68);
             TableLayoutPanel_Content.Name = "TableLayoutPanel_Content";
             TableLayoutPanel_Content.RowCount = 1;
             TableLayoutPanel_Content.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             TableLayoutPanel_Content.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_Content.Size = new Size(1035, 567);
+            TableLayoutPanel_Content.Size = new Size(1035, 532);
             TableLayoutPanel_Content.TabIndex = 1;
             // 
             // TableLayoutPanel_TagCount
@@ -113,7 +117,7 @@
             TableLayoutPanel_TagCount.RowCount = 2;
             TableLayoutPanel_TagCount.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_TagCount.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_TagCount.Size = new Size(244, 561);
+            TableLayoutPanel_TagCount.Size = new Size(244, 526);
             TableLayoutPanel_TagCount.TabIndex = 0;
             // 
             // Label_TagCount
@@ -138,7 +142,7 @@
             DataGridView_Tags.Name = "DataGridView_Tags";
             DataGridView_Tags.ReadOnly = true;
             DataGridView_Tags.ShowCellToolTips = false;
-            DataGridView_Tags.Size = new Size(238, 535);
+            DataGridView_Tags.Size = new Size(238, 500);
             DataGridView_Tags.TabIndex = 1;
             // 
             // TableLayoutPanel_Organization
@@ -154,7 +158,7 @@
             TableLayoutPanel_Organization.RowCount = 2;
             TableLayoutPanel_Organization.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_Organization.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_Organization.Size = new Size(779, 561);
+            TableLayoutPanel_Organization.Size = new Size(779, 526);
             TableLayoutPanel_Organization.TabIndex = 1;
             // 
             // Label_Projects
@@ -176,11 +180,30 @@
             DataGridView_Projects.Location = new Point(3, 23);
             DataGridView_Projects.Name = "DataGridView_Projects";
             DataGridView_Projects.ShowCellToolTips = false;
-            DataGridView_Projects.Size = new Size(773, 535);
+            DataGridView_Projects.Size = new Size(773, 500);
             DataGridView_Projects.TabIndex = 1;
             DataGridView_Projects.CellDoubleClick += DataGridView_Projects_CellDoubleClick;
             DataGridView_Projects.CellEndEdit += DataGridView_Projects_CellEndEdit;
             DataGridView_Projects.UserDeletingRow += DataGridView_Projects_UserDeletingRow;
+            // 
+            // flowLayoutPanel_controls
+            // 
+            flowLayoutPanel_controls.Controls.Add(Button_Back);
+            flowLayoutPanel_controls.Dock = DockStyle.Fill;
+            flowLayoutPanel_controls.Location = new Point(3, 33);
+            flowLayoutPanel_controls.Name = "flowLayoutPanel_controls";
+            flowLayoutPanel_controls.Size = new Size(1035, 29);
+            flowLayoutPanel_controls.TabIndex = 1;
+            // 
+            // Button_Back
+            // 
+            Button_Back.Location = new Point(3, 3);
+            Button_Back.Name = "Button_Back";
+            Button_Back.Size = new Size(75, 23);
+            Button_Back.TabIndex = 0;
+            Button_Back.Text = "Back";
+            Button_Back.UseVisualStyleBackColor = true;
+            Button_Back.Click += Button_Back_Click;
             // 
             // OrganizationForm
             // 
@@ -200,6 +223,7 @@
             TableLayoutPanel_Organization.ResumeLayout(false);
             TableLayoutPanel_Organization.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridView_Projects).EndInit();
+            flowLayoutPanel_controls.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -215,5 +239,7 @@
         private Label Label_Projects;
         private DataGridView DataGridView_Projects;
         private Label Label_Organization;
+        private FlowLayoutPanel flowLayoutPanel_controls;
+        private Button Button_Back;
     }
 }

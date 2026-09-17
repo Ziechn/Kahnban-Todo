@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -10,12 +11,39 @@ namespace Kahnban_ToDo
 {
     public partial class MainForm : Form
     {
+        // CONSTANTS
+        private const string NAME_APP_STATE = "AppState";
         public MainForm()
         {
             InitializeComponent();
             MainForm_Initialize();
 
             Form_Text_Display("ProjectZ - 0.7.0");
+
+            // Load AppState
+            string application = Application.ExecutablePath;
+            string applicationPath = Path.GetDirectoryName(application);
+            AppState? appState = null;
+
+            try
+            {
+                Controller controller = new();
+                appState = controller.ReadObject<AppState>(applicationPath, NAME_APP_STATE);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return;
+            }
+
+            if (appState == null) return;
+
+            string path = appState.Path;
+            AppStore.path = path;
+
+            // Open Select (Organization) Form
+            SelectForm selectForm = new SelectForm();
+            FormUtilities.NavigateTo(selectForm);
         }
 
         #region Display ============================================
@@ -45,9 +73,30 @@ namespace Kahnban_ToDo
             DialogResult result = dialog.ShowDialog();
 
             if (result == DialogResult.Cancel) return;
+            string path = dialog.SelectedPath;
 
-            // Selected path is the ApplicationPath
-            AppStore.applicationPath = dialog.SelectedPath;
+            AppStore.path = path; // User selected folder path;
+            string application = Application.ExecutablePath;
+            string applicationPath = Path.GetDirectoryName(application);
+
+            // Save AppState
+            AppState appState = new(path);
+
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                Controller controller = new();
+                controller.Save(appState, applicationPath, NAME_APP_STATE);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return;
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
 
             // Open Select (Organization) Form
             SelectForm selectForm = new SelectForm();

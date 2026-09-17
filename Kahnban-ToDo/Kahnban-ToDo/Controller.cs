@@ -71,6 +71,15 @@ namespace Kahnban_ToDo
             return JsonSerializer.Deserialize<T>(json);
         }
 
+        public T? ReadObject<T>(string path, string name)
+        {
+            string fileName = $"{name}.json";
+            string filPath = Path.Combine(path, fileName);
+
+            string json = File.ReadAllText(filPath);
+            return JsonSerializer.Deserialize<T>(json);
+        }
+
         public void Save<T>(T obj, string filePath, long id, Type? declaredType = null) where T : class
         {
             string fileName = $"{id}.json";
@@ -81,6 +90,20 @@ namespace Kahnban_ToDo
                 declaredType ?? typeof(T)
                 );
 
+            File.WriteAllText(path, json);
+        }
+
+        public void Save<T>(T obj, string filePath, string name, Type? declaredType = null) where T : class
+        {
+            string fileName = $"{name}.json";
+            string path = Path.Combine(filePath, fileName);
+
+            string json = JsonSerializer.Serialize(
+                obj,
+                declaredType ?? typeof(T)
+                );
+
+            Directory.CreateDirectory(filePath);
             File.WriteAllText(path, json);
         }
     }
