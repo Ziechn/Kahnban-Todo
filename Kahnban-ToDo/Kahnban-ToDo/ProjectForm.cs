@@ -235,11 +235,17 @@ namespace Kahnban_ToDo
         #region Interaction: ComboBox ==============================
         private void ComboBox_Category_SelectedIndexChanged(object sender, EventArgs e)
         {
+            bool isEditing = DataGridView_UserStories.IsCurrentCellInEditMode; 
+            if (isEditing) return;
+
             DataGridView_UserStories_FilterRows();
         }
 
         private void ComboBox_Status_SelectedIndexChanged(object sender, EventArgs e)
         {
+            bool isEditing = DataGridView_UserStories.IsCurrentCellInEditMode;
+            if (isEditing) return;
+
             DataGridView_UserStories_FilterRows();
         }
         #endregion Interaction: ComboBox
@@ -337,8 +343,14 @@ namespace Kahnban_ToDo
         private void DataGridView_UserStories_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
+
             DataGridView_Status_Display();
             ComboBox_Category_Load();
+
+            bool isStatusColumn = e.ColumnIndex == DataGridView_UserStories.Columns[COLUMN_STATUS].Index;
+            if (isStatusColumn == false) return;
+            
+            DataGridView_UserStories_FilterRows();
         }
 
         private void DataGridView_UserStories_CurrentCellDirtyStateChanged(object sender, EventArgs e)
@@ -449,9 +461,6 @@ namespace Kahnban_ToDo
         #region Logic ==============================================
         private void DataGridView_UserStories_FilterRows()
         {
-            bool isEditing = DataGridView_UserStories.IsCurrentCellInEditMode;
-            if (isEditing) return;
-
             string selectedCategory = ComboBox_Category.Text;
             string selectedStatus = ComboBox_Status.Text;
 
