@@ -12,8 +12,8 @@ namespace Kahnban_ToDo
     public partial class TextReferenceForm : Form
     {
         // Local Memory
-        private long _referenceId = -1;
         private long _userStoryId = -1;
+        private TextReference? _textReference;
 
         public TextReferenceForm(long userStoryId)
         {
@@ -27,18 +27,17 @@ namespace Kahnban_ToDo
         public TextReferenceForm(long userStoryId, long referenceId)
         {
             InitializeComponent();
-            _referenceId = referenceId;
             _userStoryId = userStoryId;
 
-            TextReference? textReference = ReadTextReference();
-            if (textReference == null)
+            _textReference = ReadTextReference(referenceId);
+            if (_textReference == null)
             {
                 Debug.WriteLine("Error reading text reference.");
                 return;
             }
 
-            TextBox_Title_Populate(textReference);
-            RichTextBox_Content_Populate(textReference);
+            TextBox_Title_Populate();
+            RichTextBox_Content_Populate();
 
             Button_Save_State();
         }
@@ -56,10 +55,28 @@ namespace Kahnban_ToDo
             string title = TextBox_Title.Text;
             string content = RichTextBox_Content.Text;
 
-            bool hasTitle = title.Equals("") == false;
-            bool hasContent = content.Equals("") == false;
+            bool hasTitle = false;
+            bool hasContent = false;
+            bool updatedTitle = false;
+            bool updatedContent = false;
 
-            if (hasTitle || hasContent)
+            if (_textReference != null)
+            {
+                string titleToUpdate = _textReference.Title;
+                updatedTitle = title.Equals(titleToUpdate) == false;
+
+                string contentToUpdate = _textReference.Content;
+                updatedContent = content.Equals(contentToUpdate) == false;
+            }
+            else
+            {
+                hasTitle = title.Equals("") == false;
+                hasContent = content.Equals("") == false;
+            }
+
+            bool hasUnsavedChanges = hasTitle || hasContent || updatedTitle || updatedContent;
+
+            if (hasUnsavedChanges)
             {
                 string message = "Discard unsaved changes?";
 
@@ -81,33 +98,27 @@ namespace Kahnban_ToDo
             string organizationPath = AppStore.organizationPath;
             string projectId = AppStore.project?.Id.ToString() ?? "";
             string userStoryId = _userStoryId.ToString();
-
             string filePath = Path.Combine(organizationPath, projectId, userStoryId);
 
-            Controller controller = new();
-
             TextReference? textReference = null;
-            if (_referenceId < 0)
+            long referenceId = -1;
+
+            Controller controller = new();
+            if (_textReference == null)
             {
                 textReference = new TextReference();
-                _referenceId = controller.CreateId();
+                referenceId = controller.CreateId();
             }
             else
             {
-                try
-                {
-                    textReference = controller.ReadObject<TextReference>(filePath, _referenceId);
-                }
-                catch(Exception exception)
-                {
-                    Debug.WriteLine(exception);
-                    return;
-                }
+                textReference = _textReference;
+                referenceId = _textReference.Id;
             }
 
             if (textReference == null) return;
+            if (referenceId < 0) return;
 
-            textReference.Id = _referenceId;
+            textReference.Id = referenceId;
 
             string title = TextBox_Title.Text.Trim();
             textReference.Title = title;
@@ -117,7 +128,7 @@ namespace Kahnban_ToDo
 
             try
             {
-                controller.Save(textReference, filePath, _referenceId, typeof(Reference));
+                controller.Save(textReference, filePath, referenceId, typeof(Reference));
             }
             catch (Exception exception)
             {
@@ -152,20 +163,20 @@ namespace Kahnban_ToDo
         #endregion Interaction
 
         #region Populate ===========================================
-        private void TextBox_Title_Populate(TextReference textReference)
+        private void TextBox_Title_Populate()
         {
-            TextBox_Title.Text = textReference.Title;
+            TextBox_Title.Text = _textReference.Title;
         }
 
-        private void RichTextBox_Content_Populate(TextReference textReference)
+        private void RichTextBox_Content_Populate()
         {
-            RichTextBox_Content.Text = textReference.Content;
+            RichTextBox_Content.Text = _textReference.Content;
         }
         #endregion Populate
 
         #region Read ===============================================
         // Read methods return an object or value.
-        private TextReference? ReadTextReference()
+        private TextReference? ReadTextReference(long referenceId)
         {
             string organizationPath = AppStore.organizationPath;
             string projectId = AppStore.project?.Id.ToString() ?? "";
@@ -173,7 +184,7 @@ namespace Kahnban_ToDo
             string filePath = Path.Combine(organizationPath, projectId, userStoryId);
 
             Controller controller = new();
-            return controller.ReadObject<TextReference>(filePath, _referenceId);
+            return controller.ReadObject<TextReference>(filePath, referenceId);
         }
         #endregion
     }
