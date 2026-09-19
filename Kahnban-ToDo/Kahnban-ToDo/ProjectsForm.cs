@@ -20,6 +20,7 @@ namespace Kahnban_ToDo
 
         // CONSTANTS - DataGridView Columns
         private const string COLUMN_CATEGORY = "category";
+        private const string COLUMN_COUNT = "count";
         private const string COLUMN_DATE_DUE = "dateDue";
         private const string COLUMN_ID = "id";
         private const string COLUMN_STATUS = "status";
@@ -61,7 +62,7 @@ namespace Kahnban_ToDo
         public ProjectsForm()
         {
             InitializeComponent();
-            DataGridView_Projects_Intialize();
+            DataGridView_UserStories_Intialize();
             ComboBox_Status_Initialize();
 
             Label_Project_Display();
@@ -70,6 +71,9 @@ namespace Kahnban_ToDo
 
             DataGridView_Status_Display();
             ComboBox_Category_Load();
+
+            Label_Status_Display();
+            Label_UserStories_Display();
         }
 
         #region Display ============================================
@@ -96,11 +100,64 @@ namespace Kahnban_ToDo
             }
 
             DataGridView_Status.DataSource = statusList;
+            Label_Status_Display();
         }
 
         private void Label_Project_Display()
         {
             Label_Project.Text = AppStore.project?.Name ?? "";
+        }
+
+        private void Label_Status_Display()
+        {
+            int remaining = 0;
+            int total = 0;
+
+            foreach (DataGridViewRow row in DataGridView_Status.Rows)
+            {
+                if (row.Visible == false) continue;
+                int count = DataGridViewUtilities.GetCellValue_Int(row, COLUMN_COUNT);
+                total += count;
+
+                // Only count statuses that are not complete.
+                string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
+
+                bool isCancelled = status.Equals(ITEM_STATUS_CANCELLED);
+                bool isReleased = status.Equals(ITEM_STATUS_RELEASED);
+
+                bool doNotAddToRemainingCount = isReleased || isCancelled;
+                if (doNotAddToRemainingCount) continue;
+
+                remaining += count;
+            }
+
+            string text = $"Status (total: {total}, remaining: {remaining})";
+            Label_Status.Text = text;
+        }
+
+        private void Label_UserStories_Display()
+        {
+            int total = 0;
+
+            foreach (DataGridViewRow row in DataGridView_UserStories.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                // Only count tasks on incomplete user stories.
+                string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
+
+                bool isCancelled = status.Equals(ITEM_STATUS_CANCELLED);
+                bool isReleased = status.Equals(ITEM_STATUS_RELEASED);
+
+                bool doNotCount = isReleased || isCancelled;
+                if (doNotCount) continue;
+
+                int tasks = DataGridViewUtilities.GetCellValue_Int(row, COLUMN_TASKS);
+                total += tasks;
+            }
+
+            string text = $"User Stories (tasks: {total})";
+            Label_UserStories.Text = text;
         }
 
         private void LinkLabel_Organization_Display()
@@ -134,7 +191,7 @@ namespace Kahnban_ToDo
             ComboBox_Status.SelectedIndex = 1;
         }
 
-        private void DataGridView_Projects_Intialize()
+        private void DataGridView_UserStories_Intialize()
         {
             DataGridView_UserStories.Columns.Clear();
 
@@ -508,6 +565,8 @@ namespace Kahnban_ToDo
 
                 row.Visible = categoryMatches && statusMatches;
             }
+
+            Label_UserStories_Display();
         }
         #endregion Logic
 
