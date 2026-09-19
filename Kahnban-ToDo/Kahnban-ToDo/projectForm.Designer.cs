@@ -51,7 +51,7 @@
             TextBox_Name.Location = new Point(10, 27);
             TextBox_Name.Name = "TextBox_Name";
             TextBox_Name.Size = new Size(362, 23);
-            TextBox_Name.TabIndex = 1;
+            TextBox_Name.TabIndex = 0;
             TextBox_Name.KeyUp += TextBox_Name_KeyUp;
             // 
             // label1
@@ -69,7 +69,7 @@
             RichTextBox_Description.Location = new Point(10, 71);
             RichTextBox_Description.Name = "RichTextBox_Description";
             RichTextBox_Description.Size = new Size(362, 249);
-            RichTextBox_Description.TabIndex = 3;
+            RichTextBox_Description.TabIndex = 1;
             RichTextBox_Description.Text = "";
             RichTextBox_Description.KeyUp += RichTextBox_Description_KeyUp;
             // 
@@ -78,7 +78,7 @@
             Button_Cancel.Location = new Point(10, 326);
             Button_Cancel.Name = "Button_Cancel";
             Button_Cancel.Size = new Size(100, 23);
-            Button_Cancel.TabIndex = 0;
+            Button_Cancel.TabIndex = 3;
             Button_Cancel.Text = "Cancel";
             Button_Cancel.UseVisualStyleBackColor = true;
             Button_Cancel.Click += Button_Cancel_Click;
@@ -88,7 +88,7 @@
             Button_Submit.Location = new Point(272, 326);
             Button_Submit.Name = "Button_Submit";
             Button_Submit.Size = new Size(100, 23);
-            Button_Submit.TabIndex = 1;
+            Button_Submit.TabIndex = 2;
             Button_Submit.Text = "Submit";
             Button_Submit.UseVisualStyleBackColor = true;
             Button_Submit.Click += Button_Submit_Click;

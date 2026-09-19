@@ -125,8 +125,8 @@
             DataGridView_Projects.ShowCellToolTips = false;
             DataGridView_Projects.Size = new Size(978, 450);
             DataGridView_Projects.TabIndex = 1;
+            DataGridView_Projects.CellClick += DataGridView_Projects_CellClick;
             DataGridView_Projects.CellDoubleClick += DataGridView_Projects_CellDoubleClick;
-            DataGridView_Projects.CellEndEdit += DataGridView_Projects_CellEndEdit;
             DataGridView_Projects.UserDeletingRow += DataGridView_Projects_UserDeletingRow;
             // 
             // Label_Projects
@@ -180,6 +180,7 @@
             Button_Project_Delete.TabIndex = 1;
             Button_Project_Delete.Text = "Delete Project";
             Button_Project_Delete.UseVisualStyleBackColor = true;
+            Button_Project_Delete.Click += Button_Project_Delete_Click;
             // 
             // OrganizationForm
             // 

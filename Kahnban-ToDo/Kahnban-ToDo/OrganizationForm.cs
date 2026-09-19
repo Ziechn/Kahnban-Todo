@@ -80,9 +80,55 @@ namespace Kahnban_ToDo
             Projects_Load();
         }
 
-        private void DataGridView_Projects_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void Button_Project_Delete_Click(object sender, EventArgs e)
         {
-            Projects_Save();
+            int rowIndex = DataGridView_Projects.SelectedCells[0].RowIndex;
+            DataGridViewRow row = DataGridView_Projects.Rows[rowIndex];
+            if (row == null) return;
+
+            long id = DataGridViewUtilities.GetCellValue_Long(row, COLUMN_ID);
+            string name = DataGridViewUtilities.GetCellValue_String(row, COLUMN_PROJECT);
+
+            DialogResult result = MessageBox.Show(
+                $"Are you sure you want to delete {name} and all related user stories?",
+                "Confirmation",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+                );
+
+            if (result == DialogResult.No) return;
+
+            Controller controller = new();
+            try
+            {
+                controller.DeleteProject(id);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+                return;
+            }
+
+            Projects_Load();
+        }
+
+        private void Button_Project_Delete_State(int rowIndex)
+        {
+            DataGridViewRow row = DataGridView_Projects.Rows[rowIndex];
+            if (row == null) return;
+
+            long id = DataGridViewUtilities.GetCellValue_Long(row, COLUMN_ID);
+            bool isIdValid = id > 0;
+
+            Button_Project_Delete.Enabled = isIdValid;
+        }
+
+        private void DataGridView_Projects_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            if (rowIndex < 0) return;
+
+            Button_Project_Delete_State(rowIndex);
         }
 
         private void DataGridView_Projects_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -193,57 +239,11 @@ namespace Kahnban_ToDo
         }
         #endregion Populate: DataGridView
 
-        #region Save ===============================================
-        private void Projects_Save()
-        {
-            Controller controller = new();
-
-            foreach (DataGridViewRow row in DataGridView_Projects.Rows)
-            {
-                (bool isProjectValid, string projectName) = CellValue_String_Validate(row, COLUMN_PROJECT);
-                if (isProjectValid == false) continue;
-
-                (bool isIdValid, long id) = CellValue_Long_Validate(row, COLUMN_ID);
-                if (isIdValid == false)
-                {
-                    id = controller.GenerateId();
-                    row.Cells[COLUMN_ID]?.Value = id;
-                }
-
-                string description = DataGridViewUtilities.GetCellValue_String(row, COLUMN_DESCRIPTION);
-
-                Project project = new(
-                    id,
-                    projectName,
-                    description,
-                    AppStore.organization
-                );
-
-                controller.CreateDirectory(AppStore.organizationPath, id);
-                try
-                {
-                    controller.Save(project, AppStore.organizationPath, id);
-                }
-                catch (Exception exception)
-                {
-                    Debug.WriteLine(exception);
-                }
-            }
-        }
-        #endregion Save
-
         #region Validation =========================================
         private (bool, long) CellValue_Long_Validate(DataGridViewRow row, string columnName)
         {
             long cellValue = DataGridViewUtilities.GetCellValue_Long(row, columnName);
             bool isValid = cellValue > 0;
-            return (isValid, cellValue);
-        }
-
-        private (bool, string) CellValue_String_Validate(DataGridViewRow row, string columnName)
-        {
-            string cellValue = DataGridViewUtilities.GetCellValue_String(row, columnName);
-            bool isValid = cellValue.Equals("") == false;
             return (isValid, cellValue);
         }
         #endregion Validation
