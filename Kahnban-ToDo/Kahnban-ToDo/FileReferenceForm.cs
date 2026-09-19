@@ -77,7 +77,7 @@ namespace Kahnban_ToDo
             Controller controller = new();
             FileReference? fileReference = new FileReference();
 
-            long id = controller.CreateId();
+            long id = controller.GenerateId();
             fileReference.Id = id;
             fileReference.Title = title;
             fileReference.FileName = fileName;

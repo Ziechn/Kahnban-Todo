@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -44,7 +45,7 @@ namespace Kahnban_ToDo
             Directory.CreateDirectory(path);
         }
 
-        public long CreateId()
+        public long GenerateId()
         {
             string dateTime = DateTime.Now.ToString("yyyyMMddHHmmss");
             long.TryParse(dateTime, out long id);
@@ -55,6 +56,70 @@ namespace Kahnban_ToDo
         {
             string path = Path.Combine(destinationPath, fileName);
             File.Copy(sourceFile, path, overwrite: false);
+        }
+
+        private void DeleteDirectory(long id, string path)
+        {
+            string directoryName = id.ToString();
+            string directoryPath = Path.Combine(path, directoryName);
+
+            if (Directory.Exists(directoryPath))
+            {
+                FileSystem.DeleteDirectory(
+                    directoryPath,
+                    UIOption.OnlyErrorDialogs,
+                    RecycleOption.SendToRecycleBin
+                );
+            }
+        }
+
+        private void DeleteJson(long id, string path)
+        {
+            string fileName = $"{id}.json";
+            string filePath = Path.Combine(path, fileName);
+
+            if (File.Exists(filePath))
+            {
+                FileSystem.DeleteFile(
+                    filePath,
+                    UIOption.OnlyErrorDialogs,
+                    RecycleOption.SendToRecycleBin
+                );
+            }
+        }
+
+        public void DeleteOrganization(string organizationName)
+        {
+            string userPath = AppStore.userPath;
+            string organizationPath = Path.Combine(userPath, organizationName);
+
+            if (Directory.Exists(organizationPath))
+            {
+                FileSystem.DeleteDirectory(
+                    organizationPath,
+                    UIOption.OnlyErrorDialogs,
+                    RecycleOption.SendToRecycleBin
+                );
+            }
+        }
+
+        public void DeleteProject(long id)
+        {
+            string organizationPath = AppStore.organizationPath;
+
+            DeleteDirectory(id, organizationPath);
+            DeleteJson(id, organizationPath);
+        }
+
+        public void DeleteUserStory(long id)
+        {
+            string organizationPath = AppStore.organizationPath;
+            string projectId = AppStore.project?.Id.ToString() ?? "";
+
+            string projectPath = Path.Combine(organizationPath, projectId);
+
+            DeleteDirectory(id, projectPath);
+            DeleteJson(id, projectPath);
         }
 
         public List<string> GetFiles(string path)

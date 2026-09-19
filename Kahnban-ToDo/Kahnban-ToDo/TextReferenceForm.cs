@@ -107,7 +107,7 @@ namespace Kahnban_ToDo
             if (_textReference == null)
             {
                 textReference = new TextReference();
-                referenceId = controller.CreateId();
+                referenceId = controller.GenerateId();
             }
             else
             {

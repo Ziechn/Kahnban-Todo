@@ -72,6 +72,14 @@ namespace Kahnban_ToDo
             FormUtilities.NavigateTo(selectForm);
         }
 
+        private void Button_Project_Add_Click(object sender, EventArgs e)
+        {
+            ProjectForm projectForm = new ProjectForm();
+            projectForm.ShowDialog();
+
+            Projects_Load();
+        }
+
         private void DataGridView_Projects_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             Projects_Save();
@@ -100,7 +108,7 @@ namespace Kahnban_ToDo
 
             AppStore.project = project;
 
-            ProjectForm projectform = new ProjectForm();
+            ProjectsForm projectform = new ProjectsForm();
             FormUtilities.NavigateTo(projectform);
         }
 
@@ -143,9 +151,12 @@ namespace Kahnban_ToDo
         #region Load ===============================================
         private void Projects_Load()
         {
+            string organizationPath = AppStore.organizationPath;
+            List<Project> projects = new List<Project>();
+
             try
             {
-                string[] jsonFiles = Directory.GetFiles(AppStore.organizationPath, "*.json");
+                string[] jsonFiles = Directory.GetFiles(organizationPath, "*.json");
 
                 foreach (string jsonFile in jsonFiles)
                 {
@@ -153,24 +164,32 @@ namespace Kahnban_ToDo
                     Project? project = JsonSerializer.Deserialize<Project>(json);
                     if (project == null) continue;
 
-                    DataGridView_Projects_Populate(project);
+                    projects.Add(project);
                 }
             }
             catch (Exception exception)
             {
                 Debug.WriteLine(exception);
+                return;
             }
+
+            DataGridView_Projects_Populate(projects);
         }
         #endregion Load
 
         #region Populate: DataGridView =============================
-        private void DataGridView_Projects_Populate(Project project)
+        private void DataGridView_Projects_Populate(List<Project> projects)
         {
-            DataGridView_Projects.Rows.Add(
+            DataGridView_Projects.Rows.Clear();
+
+            foreach (Project project in projects)
+            {
+                DataGridView_Projects.Rows.Add(
                 project.Id,
                 project.Name,
                 project.Description
                 );
+            }
         }
         #endregion Populate: DataGridView
 
@@ -187,7 +206,7 @@ namespace Kahnban_ToDo
                 (bool isIdValid, long id) = CellValue_Long_Validate(row, COLUMN_ID);
                 if (isIdValid == false)
                 {
-                    id = controller.CreateId();
+                    id = controller.GenerateId();
                     row.Cells[COLUMN_ID]?.Value = id;
                 }
 
@@ -228,7 +247,5 @@ namespace Kahnban_ToDo
             return (isValid, cellValue);
         }
         #endregion Validation
-
-        
     }
 }

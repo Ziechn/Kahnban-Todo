@@ -83,6 +83,7 @@
             DataGridView_Organizations.ReadOnly = true;
             DataGridView_Organizations.Size = new Size(978, 450);
             DataGridView_Organizations.TabIndex = 1;
+            DataGridView_Organizations.CellClick += DataGridView_Organizations_CellClick;
             DataGridView_Organizations.CellDoubleClick += DataGridView_Organizations_CellDoubleClick;
             // 
             // flowLayoutPanel_controls
@@ -114,6 +115,7 @@
             Button_Remove.TabIndex = 1;
             Button_Remove.Text = "Remove Organization";
             Button_Remove.UseVisualStyleBackColor = true;
+            Button_Remove.Click += Button_Remove_Click;
             // 
             // label_organizations
             // 

@@ -26,6 +26,12 @@ namespace Kahnban_ToDo
         }
 
         #region DataGridView =======================================
+        private void DataGridView_Organizations_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            Button_Remove_State(rowIndex);
+        }
+
         private void DataGridView_Organizations_Initialize()
         {
             // Organization
@@ -74,6 +80,38 @@ namespace Kahnban_ToDo
 
             Directory.CreateDirectory(path);
             DataGridView_Organizations_Populate();
+        }
+
+        private void Button_Remove_Click(object sender, EventArgs e)
+        {
+            int rowIndex = DataGridView_Organizations.SelectedCells[0].RowIndex;
+            DataGridViewRow row = DataGridView_Organizations.Rows[rowIndex];
+            if (row == null) return;
+
+            string organizationName = DataGridViewUtilities.GetCellValue_String(row, COLUMN_ORGANIZATION);
+
+            DialogResult result = MessageBox.Show(
+                $"Are you sure you want to delete {organizationName}?",
+                "Confirmation",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+                );
+
+            if (result == DialogResult.No) return;
+
+            Controller controller = new();
+            controller.DeleteOrganization(organizationName);
+
+            DataGridView_Organizations_Populate();
+        }
+
+        private void Button_Remove_State(int rowIndex)
+        {
+            DataGridViewRow row = DataGridView_Organizations.Rows[rowIndex];
+            if (row == null) return;
+
+            string organizationName = DataGridViewUtilities.GetCellValue_String(row, COLUMN_ORGANIZATION);
+            Button_Remove.Enabled = string.IsNullOrEmpty(organizationName) == false;
         }
 
         private void DataGridView_Organizations_CellDoubleClick(object sender, DataGridViewCellEventArgs e)

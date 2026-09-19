@@ -37,6 +37,7 @@
             Label_Projects = new Label();
             flowLayoutPanel_controls = new FlowLayoutPanel();
             Button_Project_Add = new Button();
+            Button_Project_Edit = new Button();
             Button_Project_Delete = new Button();
             TableLayoutPanel_Body.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
@@ -111,6 +112,7 @@
             // 
             // DataGridView_Projects
             // 
+            DataGridView_Projects.AllowUserToAddRows = false;
             DataGridView_Projects.AllowUserToDeleteRows = false;
             DataGridView_Projects.AllowUserToResizeRows = false;
             DataGridView_Projects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -119,6 +121,7 @@
             DataGridView_Projects.Dock = DockStyle.Fill;
             DataGridView_Projects.Location = new Point(3, 88);
             DataGridView_Projects.Name = "DataGridView_Projects";
+            DataGridView_Projects.ReadOnly = true;
             DataGridView_Projects.ShowCellToolTips = false;
             DataGridView_Projects.Size = new Size(978, 450);
             DataGridView_Projects.TabIndex = 1;
@@ -140,6 +143,7 @@
             // flowLayoutPanel_controls
             // 
             flowLayoutPanel_controls.Controls.Add(Button_Project_Add);
+            flowLayoutPanel_controls.Controls.Add(Button_Project_Edit);
             flowLayoutPanel_controls.Controls.Add(Button_Project_Delete);
             flowLayoutPanel_controls.Dock = DockStyle.Fill;
             flowLayoutPanel_controls.Location = new Point(3, 33);
@@ -155,10 +159,22 @@
             Button_Project_Add.TabIndex = 0;
             Button_Project_Add.Text = "Create Project";
             Button_Project_Add.UseVisualStyleBackColor = true;
+            Button_Project_Add.Click += Button_Project_Add_Click;
+            // 
+            // Button_Project_Edit
+            // 
+            Button_Project_Edit.Enabled = false;
+            Button_Project_Edit.Location = new Point(134, 3);
+            Button_Project_Edit.Name = "Button_Project_Edit";
+            Button_Project_Edit.Size = new Size(125, 23);
+            Button_Project_Edit.TabIndex = 2;
+            Button_Project_Edit.Text = "Edit Project";
+            Button_Project_Edit.UseVisualStyleBackColor = true;
             // 
             // Button_Project_Delete
             // 
-            Button_Project_Delete.Location = new Point(134, 3);
+            Button_Project_Delete.Enabled = false;
+            Button_Project_Delete.Location = new Point(265, 3);
             Button_Project_Delete.Name = "Button_Project_Delete";
             Button_Project_Delete.Size = new Size(125, 23);
             Button_Project_Delete.TabIndex = 1;
@@ -194,5 +210,6 @@
         private FlowLayoutPanel flowLayoutPanel_controls;
         private Button Button_Project_Add;
         private Button Button_Project_Delete;
+        private Button Button_Project_Edit;
     }
 }

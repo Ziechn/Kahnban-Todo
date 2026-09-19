@@ -372,7 +372,7 @@ namespace Kahnban_ToDo
 
         private void LinkLabel_Project_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ProjectForm projectForm = new ProjectForm();
+            ProjectsForm projectForm = new ProjectsForm();
             FormUtilities.NavigateTo(projectForm);
         }
 
