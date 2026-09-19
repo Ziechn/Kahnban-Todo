@@ -120,6 +120,7 @@
             LinkLabel_Start.TabIndex = 5;
             LinkLabel_Start.TabStop = true;
             LinkLabel_Start.Text = "Start";
+            LinkLabel_Start.LinkClicked += LinkLabel_Start_LinkClicked;
             // 
             // label_navigation_separator1
             // 

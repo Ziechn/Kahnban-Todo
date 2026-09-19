@@ -235,7 +235,7 @@ namespace Kahnban_ToDo
         #region Interaction: ComboBox ==============================
         private void ComboBox_Category_SelectedIndexChanged(object sender, EventArgs e)
         {
-            bool isEditing = DataGridView_UserStories.IsCurrentCellInEditMode; 
+            bool isEditing = DataGridView_UserStories.IsCurrentCellInEditMode;
             if (isEditing) return;
 
             DataGridView_UserStories_FilterRows();
@@ -349,7 +349,7 @@ namespace Kahnban_ToDo
 
             bool isStatusColumn = e.ColumnIndex == DataGridView_UserStories.Columns[COLUMN_STATUS].Index;
             if (isStatusColumn == false) return;
-            
+
             DataGridView_UserStories_FilterRows();
         }
 
@@ -412,6 +412,15 @@ namespace Kahnban_ToDo
         {
             OrganizationForm organizationForm = new OrganizationForm();
             FormUtilities.NavigateTo(organizationForm);
+        }
+
+        private void LinkLabel_Start_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Controller controller = new();
+            controller.ResetStore();
+
+            StartForm startForm = new StartForm();
+            FormUtilities.NavigateTo(startForm);
         }
         #endregion Interaction: LinkLabel
 

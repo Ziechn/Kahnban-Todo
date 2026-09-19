@@ -375,6 +375,15 @@ namespace Kahnban_ToDo
             ProjectForm projectForm = new ProjectForm();
             FormUtilities.NavigateTo(projectForm);
         }
+
+        private void LinkLabel_Start_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Controller controller = new();
+            controller.ResetStore();
+
+            StartForm startForm = new StartForm();
+            FormUtilities.NavigateTo(startForm);
+        }
         #endregion Interaction: LinkLabel
 
         #region Interaction: TextBox ===============================
