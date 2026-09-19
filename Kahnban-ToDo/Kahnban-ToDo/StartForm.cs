@@ -9,7 +9,7 @@ using Microsoft.VisualBasic;
 
 namespace Kahnban_ToDo
 {
-    public partial class SelectForm : Form
+    public partial class StartForm : Form
     {
         // CONSTANTS
         private const string COLUMN_DIRECTORY = "directory";
@@ -18,7 +18,7 @@ namespace Kahnban_ToDo
         private const string HEADER_ORGANIZATION = "Organization";
         private const int PROPERTY_WIDTH_ORGANIZATION = 200;
 
-        public SelectForm()
+        public StartForm()
         {
             InitializeComponent();
             DataGridView_Organizations_Initialize();

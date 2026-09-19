@@ -40,7 +40,7 @@ namespace Kahnban_ToDo
             AppStore.path = path;
 
             // Open Select (Organization) Form
-            SelectForm selectForm = new SelectForm();
+            StartForm selectForm = new StartForm();
             FormUtilities.NavigateTo(selectForm);
         }
 
@@ -97,7 +97,7 @@ namespace Kahnban_ToDo
             }
 
             // Open Select (Organization) Form
-            SelectForm selectForm = new SelectForm();
+            StartForm selectForm = new StartForm();
             FormUtilities.NavigateTo(selectForm);
         }
         #endregion Interaction

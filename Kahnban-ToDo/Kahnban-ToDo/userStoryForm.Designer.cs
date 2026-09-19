@@ -30,10 +30,11 @@
         {
             TableLayoutPanel_Body = new TableLayoutPanel();
             FlowLayoutPanel_Navigation = new FlowLayoutPanel();
+            LinkLabel_Start = new LinkLabel();
             LinkLabel_Organization = new LinkLabel();
-            Label_Seperator1 = new Label();
+            label_navigation_separator2 = new Label();
             LinkLabel_Project = new LinkLabel();
-            Label_Seperator2 = new Label();
+            label_navigation_separator3 = new Label();
             Label_UserStory = new Label();
             FlowLayoutPanel_Controls = new FlowLayoutPanel();
             Button_SideBar = new Button();
@@ -62,6 +63,7 @@
             RichTextBox_TaskList = new RichTextBox();
             Label_Summary = new Label();
             Label_TaskList = new Label();
+            label_navigation_separator1 = new Label();
             TableLayoutPanel_Body.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
             FlowLayoutPanel_Controls.SuspendLayout();
@@ -93,10 +95,12 @@
             // 
             // FlowLayoutPanel_Navigation
             // 
+            FlowLayoutPanel_Navigation.Controls.Add(LinkLabel_Start);
+            FlowLayoutPanel_Navigation.Controls.Add(label_navigation_separator1);
             FlowLayoutPanel_Navigation.Controls.Add(LinkLabel_Organization);
-            FlowLayoutPanel_Navigation.Controls.Add(Label_Seperator1);
+            FlowLayoutPanel_Navigation.Controls.Add(label_navigation_separator2);
             FlowLayoutPanel_Navigation.Controls.Add(LinkLabel_Project);
-            FlowLayoutPanel_Navigation.Controls.Add(Label_Seperator2);
+            FlowLayoutPanel_Navigation.Controls.Add(label_navigation_separator3);
             FlowLayoutPanel_Navigation.Controls.Add(Label_UserStory);
             FlowLayoutPanel_Navigation.Dock = DockStyle.Fill;
             FlowLayoutPanel_Navigation.Location = new Point(0, 0);
@@ -105,11 +109,24 @@
             FlowLayoutPanel_Navigation.Size = new Size(944, 30);
             FlowLayoutPanel_Navigation.TabIndex = 1;
             // 
+            // LinkLabel_Start
+            // 
+            LinkLabel_Start.AutoSize = true;
+            LinkLabel_Start.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            LinkLabel_Start.LinkColor = Color.DodgerBlue;
+            LinkLabel_Start.Location = new Point(3, 0);
+            LinkLabel_Start.Name = "LinkLabel_Start";
+            LinkLabel_Start.Size = new Size(56, 25);
+            LinkLabel_Start.TabIndex = 5;
+            LinkLabel_Start.TabStop = true;
+            LinkLabel_Start.Text = "Start";
+            // 
             // LinkLabel_Organization
             // 
             LinkLabel_Organization.AutoSize = true;
             LinkLabel_Organization.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            LinkLabel_Organization.Location = new Point(3, 0);
+            LinkLabel_Organization.LinkColor = Color.DodgerBlue;
+            LinkLabel_Organization.Location = new Point(91, 0);
             LinkLabel_Organization.Name = "LinkLabel_Organization";
             LinkLabel_Organization.Size = new Size(126, 25);
             LinkLabel_Organization.TabIndex = 0;
@@ -117,22 +134,23 @@
             LinkLabel_Organization.Text = "organization";
             LinkLabel_Organization.LinkClicked += LinkLabel_Organization_LinkClicked;
             // 
-            // Label_Seperator1
+            // label_navigation_separator2
             // 
-            Label_Seperator1.AutoSize = true;
-            Label_Seperator1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label_Seperator1.Location = new Point(132, 0);
-            Label_Seperator1.Margin = new Padding(0);
-            Label_Seperator1.Name = "Label_Seperator1";
-            Label_Seperator1.Size = new Size(20, 25);
-            Label_Seperator1.TabIndex = 1;
-            Label_Seperator1.Text = "/";
+            label_navigation_separator2.AutoSize = true;
+            label_navigation_separator2.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_navigation_separator2.Location = new Point(220, 0);
+            label_navigation_separator2.Margin = new Padding(0);
+            label_navigation_separator2.Name = "label_navigation_separator2";
+            label_navigation_separator2.Size = new Size(20, 25);
+            label_navigation_separator2.TabIndex = 1;
+            label_navigation_separator2.Text = "/";
             // 
             // LinkLabel_Project
             // 
             LinkLabel_Project.AutoSize = true;
             LinkLabel_Project.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            LinkLabel_Project.Location = new Point(155, 0);
+            LinkLabel_Project.LinkColor = Color.DodgerBlue;
+            LinkLabel_Project.Location = new Point(243, 0);
             LinkLabel_Project.Name = "LinkLabel_Project";
             LinkLabel_Project.Size = new Size(75, 25);
             LinkLabel_Project.TabIndex = 2;
@@ -140,22 +158,22 @@
             LinkLabel_Project.Text = "project";
             LinkLabel_Project.LinkClicked += LinkLabel_Project_LinkClicked;
             // 
-            // Label_Seperator2
+            // label_navigation_separator3
             // 
-            Label_Seperator2.AutoSize = true;
-            Label_Seperator2.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label_Seperator2.Location = new Point(233, 0);
-            Label_Seperator2.Margin = new Padding(0);
-            Label_Seperator2.Name = "Label_Seperator2";
-            Label_Seperator2.Size = new Size(20, 25);
-            Label_Seperator2.TabIndex = 3;
-            Label_Seperator2.Text = "/";
+            label_navigation_separator3.AutoSize = true;
+            label_navigation_separator3.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_navigation_separator3.Location = new Point(321, 0);
+            label_navigation_separator3.Margin = new Padding(0);
+            label_navigation_separator3.Name = "label_navigation_separator3";
+            label_navigation_separator3.Size = new Size(20, 25);
+            label_navigation_separator3.TabIndex = 3;
+            label_navigation_separator3.Text = "/";
             // 
             // Label_UserStory
             // 
             Label_UserStory.AutoSize = true;
             Label_UserStory.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label_UserStory.Location = new Point(256, 0);
+            Label_UserStory.Location = new Point(344, 0);
             Label_UserStory.Name = "Label_UserStory";
             Label_UserStory.Size = new Size(99, 25);
             Label_UserStory.TabIndex = 4;
@@ -341,6 +359,7 @@
             DataGridView_References.AllowUserToResizeColumns = false;
             DataGridView_References.AllowUserToResizeRows = false;
             DataGridView_References.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DataGridView_References.BorderStyle = BorderStyle.None;
             DataGridView_References.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_References.Dock = DockStyle.Fill;
             DataGridView_References.Location = new Point(3, 243);
@@ -378,6 +397,7 @@
             DataGridView_Status.AllowUserToDeleteRows = false;
             DataGridView_Status.AllowUserToResizeRows = false;
             DataGridView_Status.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DataGridView_Status.BorderStyle = BorderStyle.None;
             DataGridView_Status.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_Status.Dock = DockStyle.Fill;
             DataGridView_Status.Location = new Point(3, 23);
@@ -439,6 +459,7 @@
             // 
             // RichTextBox_Summary
             // 
+            RichTextBox_Summary.BorderStyle = BorderStyle.None;
             RichTextBox_Summary.Dock = DockStyle.Fill;
             RichTextBox_Summary.Location = new Point(3, 23);
             RichTextBox_Summary.Name = "RichTextBox_Summary";
@@ -450,6 +471,7 @@
             // RichTextBox_TaskList
             // 
             RichTextBox_TaskList.AcceptsTab = true;
+            RichTextBox_TaskList.BorderStyle = BorderStyle.None;
             RichTextBox_TaskList.Dock = DockStyle.Fill;
             RichTextBox_TaskList.Location = new Point(3, 163);
             RichTextBox_TaskList.Name = "RichTextBox_TaskList";
@@ -480,6 +502,16 @@
             Label_TaskList.Text = "Tasks";
             Label_TaskList.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // label_navigation_separator1
+            // 
+            label_navigation_separator1.AutoSize = true;
+            label_navigation_separator1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_navigation_separator1.Location = new Point(65, 0);
+            label_navigation_separator1.Name = "label_navigation_separator1";
+            label_navigation_separator1.Size = new Size(20, 25);
+            label_navigation_separator1.TabIndex = 6;
+            label_navigation_separator1.Text = "/";
+            // 
             // UserStoryForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -508,9 +540,9 @@
         private TableLayoutPanel TableLayoutPanel_Body;
         private LinkLabel LinkLabel_Organization;
         private FlowLayoutPanel flowLayoutPanel1;
-        private Label Label_Seperator1;
+        private Label label_navigation_separator2;
         private LinkLabel LinkLabel_Project;
-        private Label Label_Seperator2;
+        private Label label_navigation_separator3;
         private TableLayoutPanel TableLayoutPanel_Content;
         private Label Label_Summary;
         private Label Label_TaskList;
@@ -544,5 +576,7 @@
         private TextBox TextBox_Category;
         private Label label_pipe2;
         private ComboBox ComboBox_Status;
+        private LinkLabel LinkLabel_Start;
+        private Label label_navigation_separator1;
     }
 }

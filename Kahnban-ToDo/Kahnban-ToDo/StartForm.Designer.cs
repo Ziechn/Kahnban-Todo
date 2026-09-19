@@ -1,6 +1,6 @@
 ﻿namespace Kahnban_ToDo
 {
-    partial class SelectForm
+    partial class StartForm
     {
         /// <summary>
         /// Required designer variable.
@@ -63,15 +63,16 @@
             label_title.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label_title.Location = new Point(3, 0);
             label_title.Name = "label_title";
-            label_title.Size = new Size(212, 25);
+            label_title.Size = new Size(56, 25);
             label_title.TabIndex = 0;
-            label_title.Text = "Select an Organization";
+            label_title.Text = "Start";
             // 
             // DataGridView_Organizations
             // 
             DataGridView_Organizations.AllowUserToAddRows = false;
             DataGridView_Organizations.AllowUserToDeleteRows = false;
             DataGridView_Organizations.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DataGridView_Organizations.BorderStyle = BorderStyle.None;
             DataGridView_Organizations.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_Organizations.Dock = DockStyle.Fill;
             DataGridView_Organizations.Location = new Point(3, 68);
@@ -111,14 +112,14 @@
             Button_Remove.Text = "Remove Organization";
             Button_Remove.UseVisualStyleBackColor = true;
             // 
-            // SelectForm
+            // StartForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(tableLayoutPanel_body);
-            Name = "SelectForm";
-            Text = "SelectForm";
+            Name = "StartForm";
+            Text = "StartForm";
             tableLayoutPanel_body.ResumeLayout(false);
             tableLayoutPanel_body.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridView_Organizations).EndInit();

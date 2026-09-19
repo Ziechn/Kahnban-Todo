@@ -40,6 +40,8 @@
             DataGridView_Projects = new DataGridView();
             flowLayoutPanel_controls = new FlowLayoutPanel();
             Button_Back = new Button();
+            LinkLabel_Start = new LinkLabel();
+            label_navigation_separator = new Label();
             TableLayoutPanel_Body.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
             TableLayoutPanel_Content.SuspendLayout();
@@ -70,6 +72,8 @@
             // 
             // FlowLayoutPanel_Navigation
             // 
+            FlowLayoutPanel_Navigation.Controls.Add(LinkLabel_Start);
+            FlowLayoutPanel_Navigation.Controls.Add(label_navigation_separator);
             FlowLayoutPanel_Navigation.Controls.Add(Label_Organization);
             FlowLayoutPanel_Navigation.Dock = DockStyle.Fill;
             FlowLayoutPanel_Navigation.Location = new Point(0, 0);
@@ -82,7 +86,7 @@
             // 
             Label_Organization.AutoSize = true;
             Label_Organization.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label_Organization.Location = new Point(3, 0);
+            Label_Organization.Location = new Point(91, 0);
             Label_Organization.Name = "Label_Organization";
             Label_Organization.Size = new Size(126, 25);
             Label_Organization.TabIndex = 0;
@@ -136,6 +140,7 @@
             DataGridView_Tags.AllowUserToResizeColumns = false;
             DataGridView_Tags.AllowUserToResizeRows = false;
             DataGridView_Tags.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DataGridView_Tags.BorderStyle = BorderStyle.None;
             DataGridView_Tags.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_Tags.Dock = DockStyle.Fill;
             DataGridView_Tags.Location = new Point(3, 23);
@@ -175,6 +180,7 @@
             DataGridView_Projects.AllowUserToDeleteRows = false;
             DataGridView_Projects.AllowUserToResizeRows = false;
             DataGridView_Projects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DataGridView_Projects.BorderStyle = BorderStyle.None;
             DataGridView_Projects.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_Projects.Dock = DockStyle.Fill;
             DataGridView_Projects.Location = new Point(3, 23);
@@ -204,6 +210,28 @@
             Button_Back.Text = "Back";
             Button_Back.UseVisualStyleBackColor = true;
             Button_Back.Click += Button_Back_Click;
+            // 
+            // LinkLabel_Start
+            // 
+            LinkLabel_Start.AutoSize = true;
+            LinkLabel_Start.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            LinkLabel_Start.LinkColor = Color.DodgerBlue;
+            LinkLabel_Start.Location = new Point(3, 0);
+            LinkLabel_Start.Name = "LinkLabel_Start";
+            LinkLabel_Start.Size = new Size(56, 25);
+            LinkLabel_Start.TabIndex = 1;
+            LinkLabel_Start.TabStop = true;
+            LinkLabel_Start.Text = "Start";
+            // 
+            // label_navigation_separator
+            // 
+            label_navigation_separator.AutoSize = true;
+            label_navigation_separator.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_navigation_separator.Location = new Point(65, 0);
+            label_navigation_separator.Name = "label_navigation_separator";
+            label_navigation_separator.Size = new Size(20, 25);
+            label_navigation_separator.TabIndex = 2;
+            label_navigation_separator.Text = "/";
             // 
             // OrganizationForm
             // 
@@ -241,5 +269,7 @@
         private Label Label_Organization;
         private FlowLayoutPanel flowLayoutPanel_controls;
         private Button Button_Back;
+        private LinkLabel LinkLabel_Start;
+        private Label label_navigation_separator;
     }
 }
