@@ -6,11 +6,11 @@ namespace Kahnban_ToDo
 {
     internal class AppState
     {
-        public string Path { get; set; } = "";
+        public string UserPath { get; set; } = "";
 
-        public AppState(string path)
+        public AppState(string userPath)
         {
-            Path = path;
+            UserPath = userPath;
         }
     }
 }

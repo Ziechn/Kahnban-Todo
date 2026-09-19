@@ -31,6 +31,7 @@
             TableLayoutPanel_Body = new TableLayoutPanel();
             FlowLayoutPanel_Navigation = new FlowLayoutPanel();
             LinkLabel_Start = new LinkLabel();
+            label_navigation_separator1 = new Label();
             LinkLabel_Organization = new LinkLabel();
             label_navigation_separator2 = new Label();
             LinkLabel_Project = new LinkLabel();
@@ -63,7 +64,6 @@
             RichTextBox_TaskList = new RichTextBox();
             Label_Summary = new Label();
             Label_TaskList = new Label();
-            label_navigation_separator1 = new Label();
             TableLayoutPanel_Body.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
             FlowLayoutPanel_Controls.SuspendLayout();
@@ -90,7 +90,7 @@
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_Body.Size = new Size(944, 561);
+            TableLayoutPanel_Body.Size = new Size(984, 561);
             TableLayoutPanel_Body.TabIndex = 0;
             // 
             // FlowLayoutPanel_Navigation
@@ -106,7 +106,7 @@
             FlowLayoutPanel_Navigation.Location = new Point(0, 0);
             FlowLayoutPanel_Navigation.Margin = new Padding(0);
             FlowLayoutPanel_Navigation.Name = "FlowLayoutPanel_Navigation";
-            FlowLayoutPanel_Navigation.Size = new Size(944, 30);
+            FlowLayoutPanel_Navigation.Size = new Size(984, 30);
             FlowLayoutPanel_Navigation.TabIndex = 1;
             // 
             // LinkLabel_Start
@@ -120,6 +120,16 @@
             LinkLabel_Start.TabIndex = 5;
             LinkLabel_Start.TabStop = true;
             LinkLabel_Start.Text = "Start";
+            // 
+            // label_navigation_separator1
+            // 
+            label_navigation_separator1.AutoSize = true;
+            label_navigation_separator1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_navigation_separator1.Location = new Point(65, 0);
+            label_navigation_separator1.Name = "label_navigation_separator1";
+            label_navigation_separator1.Size = new Size(20, 25);
+            label_navigation_separator1.TabIndex = 6;
+            label_navigation_separator1.Text = "/";
             // 
             // LinkLabel_Organization
             // 
@@ -196,7 +206,7 @@
             FlowLayoutPanel_Controls.Dock = DockStyle.Fill;
             FlowLayoutPanel_Controls.Location = new Point(3, 33);
             FlowLayoutPanel_Controls.Name = "FlowLayoutPanel_Controls";
-            FlowLayoutPanel_Controls.Size = new Size(938, 29);
+            FlowLayoutPanel_Controls.Size = new Size(978, 29);
             FlowLayoutPanel_Controls.TabIndex = 0;
             // 
             // Button_SideBar
@@ -328,7 +338,7 @@
             TableLayoutPanel_Content.Name = "TableLayoutPanel_Content";
             TableLayoutPanel_Content.RowCount = 1;
             TableLayoutPanel_Content.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_Content.Size = new Size(944, 476);
+            TableLayoutPanel_Content.Size = new Size(984, 476);
             TableLayoutPanel_Content.TabIndex = 2;
             // 
             // TableLayoutPanel_SideBar
@@ -454,7 +464,7 @@
             TableLayoutPanel_UserStory.RowStyles.Add(new RowStyle(SizeType.Absolute, 120F));
             TableLayoutPanel_UserStory.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_UserStory.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_UserStory.Size = new Size(688, 470);
+            TableLayoutPanel_UserStory.Size = new Size(728, 470);
             TableLayoutPanel_UserStory.TabIndex = 2;
             // 
             // RichTextBox_Summary
@@ -463,7 +473,7 @@
             RichTextBox_Summary.Dock = DockStyle.Fill;
             RichTextBox_Summary.Location = new Point(3, 23);
             RichTextBox_Summary.Name = "RichTextBox_Summary";
-            RichTextBox_Summary.Size = new Size(682, 114);
+            RichTextBox_Summary.Size = new Size(722, 114);
             RichTextBox_Summary.TabIndex = 3;
             RichTextBox_Summary.Text = "";
             RichTextBox_Summary.KeyUp += RichTextBox_Summary_KeyUp;
@@ -475,7 +485,7 @@
             RichTextBox_TaskList.Dock = DockStyle.Fill;
             RichTextBox_TaskList.Location = new Point(3, 163);
             RichTextBox_TaskList.Name = "RichTextBox_TaskList";
-            RichTextBox_TaskList.Size = new Size(682, 304);
+            RichTextBox_TaskList.Size = new Size(722, 304);
             RichTextBox_TaskList.TabIndex = 4;
             RichTextBox_TaskList.Text = "";
             RichTextBox_TaskList.KeyUp += RichTextBox_TaskList_KeyUp;
@@ -486,7 +496,7 @@
             Label_Summary.Location = new Point(3, 3);
             Label_Summary.Margin = new Padding(3);
             Label_Summary.Name = "Label_Summary";
-            Label_Summary.Size = new Size(682, 14);
+            Label_Summary.Size = new Size(722, 14);
             Label_Summary.TabIndex = 2;
             Label_Summary.Text = "Summary";
             Label_Summary.TextAlign = ContentAlignment.MiddleLeft;
@@ -497,26 +507,16 @@
             Label_TaskList.Location = new Point(3, 143);
             Label_TaskList.Margin = new Padding(3);
             Label_TaskList.Name = "Label_TaskList";
-            Label_TaskList.Size = new Size(682, 14);
+            Label_TaskList.Size = new Size(722, 14);
             Label_TaskList.TabIndex = 3;
             Label_TaskList.Text = "Tasks";
             Label_TaskList.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // label_navigation_separator1
-            // 
-            label_navigation_separator1.AutoSize = true;
-            label_navigation_separator1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label_navigation_separator1.Location = new Point(65, 0);
-            label_navigation_separator1.Name = "label_navigation_separator1";
-            label_navigation_separator1.Size = new Size(20, 25);
-            label_navigation_separator1.TabIndex = 6;
-            label_navigation_separator1.Text = "/";
             // 
             // UserStoryForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(944, 561);
+            ClientSize = new Size(984, 561);
             Controls.Add(TableLayoutPanel_Body);
             MinimumSize = new Size(960, 600);
             Name = "UserStoryForm";

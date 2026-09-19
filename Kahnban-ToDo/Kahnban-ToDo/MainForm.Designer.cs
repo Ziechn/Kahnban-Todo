@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
-            ToolStripMenuItem_OpenOrganization = new ToolStripMenuItem();
+            ToolStripMenuItem_SelectFolder = new ToolStripMenuItem();
             ToolStripMenuItem_Exit = new ToolStripMenuItem();
             Panel_Main = new Panel();
             menuStrip1.SuspendLayout();
@@ -48,22 +48,22 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStripMenuItem_OpenOrganization, ToolStripMenuItem_Exit });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStripMenuItem_SelectFolder, ToolStripMenuItem_Exit });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "File";
             // 
-            // ToolStripMenuItem_OpenOrganization
+            // ToolStripMenuItem_SelectFolder
             // 
-            ToolStripMenuItem_OpenOrganization.Name = "ToolStripMenuItem_OpenOrganization";
-            ToolStripMenuItem_OpenOrganization.Size = new Size(139, 22);
-            ToolStripMenuItem_OpenOrganization.Text = "Open Folder";
-            ToolStripMenuItem_OpenOrganization.Click += ToolStripMenuItem_OpenFolder_Click;
+            ToolStripMenuItem_SelectFolder.Name = "ToolStripMenuItem_SelectFolder";
+            ToolStripMenuItem_SelectFolder.Size = new Size(180, 22);
+            ToolStripMenuItem_SelectFolder.Text = "Select Folder";
+            ToolStripMenuItem_SelectFolder.Click += ToolStripMenuItem_SelectFolder_Click;
             // 
             // ToolStripMenuItem_Exit
             // 
             ToolStripMenuItem_Exit.Name = "ToolStripMenuItem_Exit";
-            ToolStripMenuItem_Exit.Size = new Size(139, 22);
+            ToolStripMenuItem_Exit.Size = new Size(180, 22);
             ToolStripMenuItem_Exit.Text = "Exit";
             ToolStripMenuItem_Exit.Click += ToolStripMenuItem_Exit_Click;
             // 
@@ -99,6 +99,6 @@
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem ToolStripMenuItem_Exit;
         private Panel Panel_Main;
-        private ToolStripMenuItem ToolStripMenuItem_OpenOrganization;
+        private ToolStripMenuItem ToolStripMenuItem_SelectFolder;
     }
 }

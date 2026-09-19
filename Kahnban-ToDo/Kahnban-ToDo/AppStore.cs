@@ -6,10 +6,10 @@ namespace Kahnban_ToDo
 {
     internal class AppStore
     {
-        public static string path = "";
         public static Panel? mainPanel;
         public static string organization = "";
         public static string organizationPath = "";
         public static Project? project;
+        public static string userPath = "";
     }
 }

@@ -129,6 +129,15 @@ namespace Kahnban_ToDo
 
             File.Delete(path);
         }
+
+        private void LinkLabel_Start_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Controller controller = new();
+            controller.ResetStore();
+
+            StartForm startForm = new();
+            FormUtilities.NavigateTo(startForm);
+        }
         #endregion Interaction
 
         #region Load ===============================================
@@ -219,5 +228,7 @@ namespace Kahnban_ToDo
             return (isValid, cellValue);
         }
         #endregion Validation
+
+        
     }
 }

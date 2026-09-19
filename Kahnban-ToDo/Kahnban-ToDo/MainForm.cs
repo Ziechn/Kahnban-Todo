@@ -36,8 +36,8 @@ namespace Kahnban_ToDo
 
             if (appState == null) return;
 
-            string path = appState.Path;
-            AppStore.path = path;
+            string userPath = appState.UserPath;
+            AppStore.userPath = userPath;
 
             // Open Select (Organization) Form
             StartForm selectForm = new StartForm();
@@ -64,21 +64,21 @@ namespace Kahnban_ToDo
             Application.Exit();
         }
 
-        private void ToolStripMenuItem_OpenFolder_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem_SelectFolder_Click(object sender, EventArgs e)
         {
             using FolderBrowserDialog dialog = new FolderBrowserDialog();
             dialog.Description = "Pick a folder.";
             DialogResult result = dialog.ShowDialog();
 
             if (result == DialogResult.Cancel) return;
-            string path = dialog.SelectedPath;
+            string userPath = dialog.SelectedPath;
 
-            AppStore.path = path; // User selected folder path;
+            AppStore.userPath = userPath; // User selected folder path;
             string application = Application.ExecutablePath;
             string applicationPath = Path.GetDirectoryName(application);
 
             // Save AppState
-            AppState appState = new(path);
+            AppState appState = new(userPath);
 
             try
             {

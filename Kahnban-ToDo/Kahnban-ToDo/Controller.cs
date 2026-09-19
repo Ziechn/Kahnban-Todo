@@ -108,6 +108,13 @@ namespace Kahnban_ToDo
             return JsonSerializer.Deserialize<T>(json);
         }
 
+        public void ResetStore()
+        {
+            AppStore.organization = "";
+            AppStore.organizationPath = "";
+            AppStore.project = null;
+        }
+
         public void Save<T>(T obj, string filePath, long id, Type? declaredType = null) where T : class
         {
             string fileName = $"{id}.json";

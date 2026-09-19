@@ -34,6 +34,7 @@
             flowLayoutPanel_controls = new FlowLayoutPanel();
             Button_Add = new Button();
             Button_Remove = new Button();
+            label_organizations = new Label();
             tableLayoutPanel_body.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridView_Organizations).BeginInit();
             flowLayoutPanel_controls.SuspendLayout();
@@ -44,17 +45,19 @@
             tableLayoutPanel_body.ColumnCount = 1;
             tableLayoutPanel_body.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel_body.Controls.Add(label_title, 0, 0);
-            tableLayoutPanel_body.Controls.Add(DataGridView_Organizations, 0, 2);
+            tableLayoutPanel_body.Controls.Add(DataGridView_Organizations, 0, 3);
             tableLayoutPanel_body.Controls.Add(flowLayoutPanel_controls, 0, 1);
+            tableLayoutPanel_body.Controls.Add(label_organizations, 0, 2);
             tableLayoutPanel_body.Dock = DockStyle.Fill;
             tableLayoutPanel_body.Location = new Point(0, 0);
             tableLayoutPanel_body.Name = "tableLayoutPanel_body";
-            tableLayoutPanel_body.RowCount = 4;
+            tableLayoutPanel_body.RowCount = 5;
             tableLayoutPanel_body.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
             tableLayoutPanel_body.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel_body.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel_body.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel_body.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel_body.Size = new Size(800, 450);
+            tableLayoutPanel_body.Size = new Size(984, 561);
             tableLayoutPanel_body.TabIndex = 0;
             // 
             // label_title
@@ -75,10 +78,10 @@
             DataGridView_Organizations.BorderStyle = BorderStyle.None;
             DataGridView_Organizations.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_Organizations.Dock = DockStyle.Fill;
-            DataGridView_Organizations.Location = new Point(3, 68);
+            DataGridView_Organizations.Location = new Point(3, 88);
             DataGridView_Organizations.Name = "DataGridView_Organizations";
             DataGridView_Organizations.ReadOnly = true;
-            DataGridView_Organizations.Size = new Size(794, 359);
+            DataGridView_Organizations.Size = new Size(978, 450);
             DataGridView_Organizations.TabIndex = 1;
             DataGridView_Organizations.CellDoubleClick += DataGridView_Organizations_CellDoubleClick;
             // 
@@ -89,7 +92,7 @@
             flowLayoutPanel_controls.Dock = DockStyle.Fill;
             flowLayoutPanel_controls.Location = new Point(3, 33);
             flowLayoutPanel_controls.Name = "flowLayoutPanel_controls";
-            flowLayoutPanel_controls.Size = new Size(794, 29);
+            flowLayoutPanel_controls.Size = new Size(978, 29);
             flowLayoutPanel_controls.TabIndex = 1;
             // 
             // Button_Add
@@ -112,11 +115,22 @@
             Button_Remove.Text = "Remove Organization";
             Button_Remove.UseVisualStyleBackColor = true;
             // 
+            // label_organizations
+            // 
+            label_organizations.AutoSize = true;
+            label_organizations.Dock = DockStyle.Fill;
+            label_organizations.Location = new Point(3, 65);
+            label_organizations.Name = "label_organizations";
+            label_organizations.Size = new Size(978, 20);
+            label_organizations.TabIndex = 2;
+            label_organizations.Text = "Organizations";
+            label_organizations.TextAlign = ContentAlignment.BottomLeft;
+            // 
             // StartForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(984, 561);
             Controls.Add(tableLayoutPanel_body);
             Name = "StartForm";
             Text = "StartForm";
@@ -135,5 +149,6 @@
         private FlowLayoutPanel flowLayoutPanel_controls;
         private Button Button_Add;
         private Button Button_Remove;
+        private Label label_organizations;
     }
 }

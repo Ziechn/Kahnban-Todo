@@ -30,6 +30,8 @@
         {
             TableLayoutPanel_Body = new TableLayoutPanel();
             FlowLayoutPanel_Navigation = new FlowLayoutPanel();
+            LinkLabel_Start = new LinkLabel();
+            label_navigation_separator1 = new Label();
             LinkLabel_Organization = new LinkLabel();
             label_navigation_separator2 = new Label();
             Label_Project = new Label();
@@ -45,8 +47,6 @@
             TableLayoutPanel_UserStories = new TableLayoutPanel();
             label_userStory = new Label();
             DataGridView_UserStories = new DataGridView();
-            LinkLabel_Start = new LinkLabel();
-            label_navigation_separator1 = new Label();
             TableLayoutPanel_Body.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
             flowLayoutPanel_controls.SuspendLayout();
@@ -72,7 +72,7 @@
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_Body.Size = new Size(981, 719);
+            TableLayoutPanel_Body.Size = new Size(984, 561);
             TableLayoutPanel_Body.TabIndex = 0;
             // 
             // FlowLayoutPanel_Navigation
@@ -86,8 +86,30 @@
             FlowLayoutPanel_Navigation.Location = new Point(0, 0);
             FlowLayoutPanel_Navigation.Margin = new Padding(0);
             FlowLayoutPanel_Navigation.Name = "FlowLayoutPanel_Navigation";
-            FlowLayoutPanel_Navigation.Size = new Size(981, 30);
+            FlowLayoutPanel_Navigation.Size = new Size(984, 30);
             FlowLayoutPanel_Navigation.TabIndex = 0;
+            // 
+            // LinkLabel_Start
+            // 
+            LinkLabel_Start.AutoSize = true;
+            LinkLabel_Start.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            LinkLabel_Start.LinkColor = Color.DodgerBlue;
+            LinkLabel_Start.Location = new Point(3, 0);
+            LinkLabel_Start.Name = "LinkLabel_Start";
+            LinkLabel_Start.Size = new Size(56, 25);
+            LinkLabel_Start.TabIndex = 3;
+            LinkLabel_Start.TabStop = true;
+            LinkLabel_Start.Text = "Start";
+            // 
+            // label_navigation_separator1
+            // 
+            label_navigation_separator1.AutoSize = true;
+            label_navigation_separator1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_navigation_separator1.Location = new Point(65, 0);
+            label_navigation_separator1.Name = "label_navigation_separator1";
+            label_navigation_separator1.Size = new Size(20, 25);
+            label_navigation_separator1.TabIndex = 4;
+            label_navigation_separator1.Text = "/";
             // 
             // LinkLabel_Organization
             // 
@@ -132,7 +154,7 @@
             flowLayoutPanel_controls.Dock = DockStyle.Fill;
             flowLayoutPanel_controls.Location = new Point(3, 33);
             flowLayoutPanel_controls.Name = "flowLayoutPanel_controls";
-            flowLayoutPanel_controls.Size = new Size(975, 29);
+            flowLayoutPanel_controls.Size = new Size(978, 29);
             flowLayoutPanel_controls.TabIndex = 2;
             // 
             // Button_SideBar
@@ -187,7 +209,7 @@
             TableLayoutPanel_Content.RowCount = 1;
             TableLayoutPanel_Content.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             TableLayoutPanel_Content.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_Content.Size = new Size(975, 628);
+            TableLayoutPanel_Content.Size = new Size(978, 470);
             TableLayoutPanel_Content.TabIndex = 1;
             // 
             // TableLayoutPanel_TagCount
@@ -203,7 +225,7 @@
             TableLayoutPanel_TagCount.RowCount = 2;
             TableLayoutPanel_TagCount.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_TagCount.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_TagCount.Size = new Size(244, 622);
+            TableLayoutPanel_TagCount.Size = new Size(244, 464);
             TableLayoutPanel_TagCount.TabIndex = 0;
             // 
             // label_status
@@ -229,7 +251,7 @@
             DataGridView_Status.Name = "DataGridView_Status";
             DataGridView_Status.ReadOnly = true;
             DataGridView_Status.ShowCellToolTips = false;
-            DataGridView_Status.Size = new Size(238, 596);
+            DataGridView_Status.Size = new Size(238, 438);
             DataGridView_Status.TabIndex = 1;
             // 
             // TableLayoutPanel_UserStories
@@ -245,7 +267,7 @@
             TableLayoutPanel_UserStories.RowCount = 2;
             TableLayoutPanel_UserStories.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_UserStories.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_UserStories.Size = new Size(719, 622);
+            TableLayoutPanel_UserStories.Size = new Size(722, 464);
             TableLayoutPanel_UserStories.TabIndex = 1;
             // 
             // label_userStory
@@ -253,7 +275,7 @@
             label_userStory.Dock = DockStyle.Fill;
             label_userStory.Location = new Point(3, 0);
             label_userStory.Name = "label_userStory";
-            label_userStory.Size = new Size(713, 20);
+            label_userStory.Size = new Size(716, 20);
             label_userStory.TabIndex = 0;
             label_userStory.Text = "User Stories";
             label_userStory.TextAlign = ContentAlignment.MiddleLeft;
@@ -267,7 +289,7 @@
             DataGridView_UserStories.Location = new Point(3, 23);
             DataGridView_UserStories.Name = "DataGridView_UserStories";
             DataGridView_UserStories.ShowCellToolTips = false;
-            DataGridView_UserStories.Size = new Size(713, 596);
+            DataGridView_UserStories.Size = new Size(716, 438);
             DataGridView_UserStories.TabIndex = 1;
             DataGridView_UserStories.CellDoubleClick += DataGridView_UserStories_CellDoubleClick;
             DataGridView_UserStories.CellEndEdit += DataGridView_UserStories_CellEndEdit;
@@ -275,33 +297,11 @@
             DataGridView_UserStories.CurrentCellDirtyStateChanged += DataGridView_UserStories_CurrentCellDirtyStateChanged;
             DataGridView_UserStories.UserDeletingRow += DataGridView_UserStories_UserDeletingRow;
             // 
-            // LinkLabel_Start
-            // 
-            LinkLabel_Start.AutoSize = true;
-            LinkLabel_Start.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            LinkLabel_Start.LinkColor = Color.DodgerBlue;
-            LinkLabel_Start.Location = new Point(3, 0);
-            LinkLabel_Start.Name = "LinkLabel_Start";
-            LinkLabel_Start.Size = new Size(56, 25);
-            LinkLabel_Start.TabIndex = 3;
-            LinkLabel_Start.TabStop = true;
-            LinkLabel_Start.Text = "Start";
-            // 
-            // label_navigation_separator1
-            // 
-            label_navigation_separator1.AutoSize = true;
-            label_navigation_separator1.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label_navigation_separator1.Location = new Point(65, 0);
-            label_navigation_separator1.Name = "label_navigation_separator1";
-            label_navigation_separator1.Size = new Size(20, 25);
-            label_navigation_separator1.TabIndex = 4;
-            label_navigation_separator1.Text = "/";
-            // 
             // ProjectForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(981, 719);
+            ClientSize = new Size(984, 561);
             Controls.Add(TableLayoutPanel_Body);
             Name = "ProjectForm";
             Text = "projectForm";

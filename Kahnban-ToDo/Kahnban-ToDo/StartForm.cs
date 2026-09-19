@@ -47,7 +47,7 @@ namespace Kahnban_ToDo
         {
             DataGridView_Organizations.Rows.Clear();
 
-            string path = AppStore.path;
+            string path = AppStore.userPath;
             List<string> directories = Directory.GetDirectories(path).ToList();
 
             foreach (string directory in directories)
@@ -69,7 +69,7 @@ namespace Kahnban_ToDo
                 "Organization"
                 );
 
-            string applicationDirectory = AppStore.path;
+            string applicationDirectory = AppStore.userPath;
             string path = Path.Combine(applicationDirectory, result);
 
             Directory.CreateDirectory(path);
