@@ -273,7 +273,5 @@ namespace Kahnban_ToDo
             return (isValid, cellValue);
         }
         #endregion Validation
-
-        
     }
 }

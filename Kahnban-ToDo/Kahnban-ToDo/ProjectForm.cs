@@ -176,9 +176,5 @@ namespace Kahnban_ToDo
             TextBox_Name.Text = _project.Name;
         }
         #endregion Populate
-
-        #region Save ===============================================
-
-        #endregion Save
     }
 }
