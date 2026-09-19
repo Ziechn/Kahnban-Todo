@@ -56,14 +56,14 @@
             // ToolStripMenuItem_SelectFolder
             // 
             ToolStripMenuItem_SelectFolder.Name = "ToolStripMenuItem_SelectFolder";
-            ToolStripMenuItem_SelectFolder.Size = new Size(180, 22);
+            ToolStripMenuItem_SelectFolder.Size = new Size(141, 22);
             ToolStripMenuItem_SelectFolder.Text = "Select Folder";
             ToolStripMenuItem_SelectFolder.Click += ToolStripMenuItem_SelectFolder_Click;
             // 
             // ToolStripMenuItem_Exit
             // 
             ToolStripMenuItem_Exit.Name = "ToolStripMenuItem_Exit";
-            ToolStripMenuItem_Exit.Size = new Size(180, 22);
+            ToolStripMenuItem_Exit.Size = new Size(141, 22);
             ToolStripMenuItem_Exit.Text = "Exit";
             ToolStripMenuItem_Exit.Click += ToolStripMenuItem_Exit_Click;
             // 
@@ -86,7 +86,7 @@
             MainMenuStrip = menuStrip1;
             MinimumSize = new Size(960, 600);
             Name = "MainForm";
-            Text = "Projectz - 0.7.1";
+            Text = "Projectz - 0.8.0";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);

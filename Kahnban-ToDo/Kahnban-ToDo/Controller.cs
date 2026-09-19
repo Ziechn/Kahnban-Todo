@@ -132,14 +132,11 @@ namespace Kahnban_ToDo
             List<string> statusList = new List<string>();
             statusList.Add("BACKLOG");
             statusList.Add("BLOCKED");
-            statusList.Add("BUG");
             statusList.Add("CANCELLED");
             statusList.Add("COMPLETE");
-            statusList.Add("FIXED");
             statusList.Add("PENDING");
             statusList.Add("RELEASED");
-            statusList.Add("RFT");
-            statusList.Add("TODO");
+            statusList.Add("TEST");
             statusList.Add("WIP");
 
             return statusList;
