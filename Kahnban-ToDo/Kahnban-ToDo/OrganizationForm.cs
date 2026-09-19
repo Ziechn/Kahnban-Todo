@@ -123,12 +123,38 @@ namespace Kahnban_ToDo
             Button_Project_Delete.Enabled = isIdValid;
         }
 
+        private void Button_Project_Edit_Click(object sender, EventArgs e)
+        {
+            int rowIndex = DataGridView_Projects.SelectedCells[0].RowIndex;
+            DataGridViewRow row = DataGridView_Projects.Rows[rowIndex];
+            if (row == null) return;
+
+            long id = DataGridViewUtilities.GetCellValue_Long(row, COLUMN_ID);
+
+            ProjectForm projectForm = new ProjectForm(id);
+            projectForm.ShowDialog();
+
+            Projects_Load();
+        }
+
+        private void Button_Project_Edit_State(int rowIndex)
+        {
+            DataGridViewRow row = DataGridView_Projects.Rows[rowIndex];
+            if (row == null) return;
+
+            long id = DataGridViewUtilities.GetCellValue_Long(row, COLUMN_ID);
+            bool isIdValid = id > 0;
+
+            Button_Project_Edit.Enabled = isIdValid;
+        }
+
         private void DataGridView_Projects_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowIndex = e.RowIndex;
             if (rowIndex < 0) return;
 
             Button_Project_Delete_State(rowIndex);
+            Button_Project_Edit_State(rowIndex);
         }
 
         private void DataGridView_Projects_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -247,5 +273,7 @@ namespace Kahnban_ToDo
             return (isValid, cellValue);
         }
         #endregion Validation
+
+        
     }
 }

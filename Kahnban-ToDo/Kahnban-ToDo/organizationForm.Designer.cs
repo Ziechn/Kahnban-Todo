@@ -170,6 +170,7 @@
             Button_Project_Edit.TabIndex = 2;
             Button_Project_Edit.Text = "Edit Project";
             Button_Project_Edit.UseVisualStyleBackColor = true;
+            Button_Project_Edit.Click += Button_Project_Edit_Click;
             // 
             // Button_Project_Delete
             // 

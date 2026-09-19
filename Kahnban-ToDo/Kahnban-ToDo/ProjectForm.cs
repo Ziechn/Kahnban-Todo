@@ -11,6 +11,8 @@ namespace Kahnban_ToDo
 {
     public partial class ProjectForm : Form
     {
+        private Project? _project;
+
         public ProjectForm()
         {
             InitializeComponent();
@@ -24,7 +26,11 @@ namespace Kahnban_ToDo
             InitializeComponent();
             StartPosition = FormStartPosition.CenterParent;
 
-            // Load project
+            _project = LoadProject(id);
+            if (_project == null) return;
+
+            RichTextBox_Description_Populate();
+            TextBox_Name_Populate();
 
             Button_Submit_State();
         }
@@ -33,12 +39,28 @@ namespace Kahnban_ToDo
         private void Button_Cancel_Click(object sender, EventArgs e)
         {
             string name = TextBox_Name.Text;
-            string decription = RichTextBox_Description.Text;
+            string description = RichTextBox_Description.Text;
 
-            bool hasName = string.IsNullOrEmpty(name) == false;
-            bool hasDescription = string.IsNullOrEmpty(decription) == false;
+            bool hasDescription = false;
+            bool hasName = false;
+            bool updateDescription = false;
+            bool updateName = false;
 
-            bool hasUnsavedChanges = hasName || hasDescription;
+            if (_project != null)
+            {
+                string nameToUpdate = _project.Name;
+                string descriptionToUpdate = _project.Description;
+
+                updateDescription = description.Equals(descriptionToUpdate) == false;
+                updateName = name.Equals(nameToUpdate) == false;
+            }
+            else
+            {
+                hasDescription = string.IsNullOrEmpty(description) == false;
+                hasName = string.IsNullOrEmpty(name) == false;
+            }
+
+            bool hasUnsavedChanges = hasName || hasDescription || updateDescription || updateName;
 
             if (hasUnsavedChanges)
             {
@@ -57,22 +79,34 @@ namespace Kahnban_ToDo
 
         private void Button_Submit_Click(object sender, EventArgs e)
         {
-            string name = TextBox_Name.Text.Trim();
-            string description = RichTextBox_Description.Text;
+            long id = -1;
+            string organization = AppStore.organization;
 
             Controller controller = new();
-            long id = controller.GenerateId();
+            Project? project = null;
 
-            string organization = AppStore.organization;
+            if (_project != null)
+            {
+                project = _project;
+                id = _project.Id;
+            }
+            else
+            {
+                project = new Project();
+
+                id = controller.GenerateId();
+                project.Id = id;
+            }
+
+            if (project == null) return;
+            
+            string description = RichTextBox_Description.Text;
+            project.Description = description;
+
+            string name = TextBox_Name.Text.Trim();
+            project.Name = name;
+
             string organizationPath = AppStore.organizationPath;
-
-            Project project = new Project(
-                id,
-                name,
-                description,
-                organization
-                );
-
             try
             {
                 controller.CreateDirectory(organizationPath, id);
@@ -110,5 +144,41 @@ namespace Kahnban_ToDo
             Button_Submit_State();
         }
         #endregion Interaction
+
+        #region Load ===============================================
+        private Project? LoadProject(long id)
+        {
+            string organizationPath = AppStore.organizationPath;
+            Controller controller = new();
+
+            try
+            {
+                return controller.ReadObject<Project>(organizationPath, id);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+                return null;
+            }
+        }
+        #endregion Load
+
+        #region Populate ===========================================
+        private void RichTextBox_Description_Populate()
+        {
+            if (_project == null) return;
+            RichTextBox_Description.Text = _project.Description;
+        }
+
+        private void TextBox_Name_Populate()
+        {
+            if (_project == null) return;
+            TextBox_Name.Text = _project.Name;
+        }
+        #endregion Populate
+
+        #region Save ===============================================
+
+        #endregion Save
     }
 }

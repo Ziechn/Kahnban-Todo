@@ -1,4 +1,6 @@
-﻿namespace Kahnban_ToDo
+﻿using System.Xml.Linq;
+
+namespace Kahnban_ToDo
 {
     public class Project
     {
@@ -9,6 +11,13 @@
         public long Id { get; set; }
         public string Name { get; set; } = "";
         public string Organization { get; set; } = "";
+
+        public Project()
+        {
+            Name = "";
+            Description = "";
+            Organization = "";
+        }
 
         public Project(long id, string name, string description, string organization)
         {
