@@ -1,6 +1,6 @@
 ﻿namespace Kahnban_ToDo
 {
-    partial class ProjectsForm
+    partial class ProjectDetailsForm
     {
         /// <summary>
         /// Required designer variable.

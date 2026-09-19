@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace Kahnban_ToDo
 {
-    public partial class ProjectsForm : Form
+    public partial class ProjectDetailsForm : Form
     {
         // CONSTANTS - ComboBox
         private const string ITEM_CATEGORY_ALL = "All Categories";
@@ -59,7 +59,7 @@ namespace Kahnban_ToDo
         // Local Memory
         private int _categorySelectedIndex = 0;
 
-        public ProjectsForm()
+        public ProjectDetailsForm()
         {
             InitializeComponent();
             DataGridView_UserStories_Intialize();

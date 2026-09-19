@@ -180,7 +180,7 @@ namespace Kahnban_ToDo
 
             AppStore.project = project;
 
-            ProjectsForm projectform = new ProjectsForm();
+            ProjectDetailsForm projectform = new ProjectDetailsForm();
             FormUtilities.NavigateTo(projectform);
         }
 
