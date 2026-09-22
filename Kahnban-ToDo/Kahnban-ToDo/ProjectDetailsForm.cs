@@ -494,7 +494,7 @@ namespace Kahnban_ToDo
 
         private void TextBox_UserStory_KeyUp(object sender, KeyEventArgs e)
         {
-
+            DataGridView_UserStories_FilterRows();
         }
 
         private void TextBox_UserStory_Leave(object sender, EventArgs e)
@@ -553,6 +553,9 @@ namespace Kahnban_ToDo
         #region Logic ==============================================
         private void DataGridView_UserStories_FilterRows()
         {
+            string text = TextBox_UserStory.Text.ToUpper();
+            text = text.Equals(PLACEHOLDER_USER_STORY.ToUpper()) ? string.Empty : text;
+
             string selectedCategory = ComboBox_Category.Text;
             string selectedStatus = ComboBox_Status.Text;
 
@@ -560,9 +563,14 @@ namespace Kahnban_ToDo
             {
                 if (row.IsNewRow) continue;
 
+                string userStory = DataGridViewUtilities.GetCellValue_String(row, COLUMN_USER_STORY).ToUpper();
+                bool containsText = userStory.Contains(text);
+                bool isPlaceholder = userStory.Equals(PLACEHOLDER_USER_STORY);
+                bool matchUserStory = containsText || isPlaceholder;
+
                 string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
                 bool categoryShowAll = selectedCategory == ITEM_CATEGORY_ALL;
-                bool matchCategory = selectedCategory.Contains(category);
+                bool matchCategory = category.Equals(selectedCategory);
                 bool categoryMatches = categoryShowAll || matchCategory;
 
                 string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
@@ -585,7 +593,14 @@ namespace Kahnban_ToDo
                     statusMatches = selectedStatus.Equals(status);
                 }
 
-                row.Visible = categoryMatches && statusMatches;
+                // TEMP DEBUG
+                System.Diagnostics.Debug.WriteLine(
+                    $"row='{userStory}' | text=[{text}] matchUserStory={matchUserStory} " +
+                    $"| category=[{category}] selectedCategory=[{selectedCategory}] catMatch={categoryMatches} " +
+                    $"| status=[{status}] selectedStatus=[{selectedStatus}] statMatch={statusMatches} " +
+                    $"| VISIBLE={categoryMatches && statusMatches && matchUserStory}");
+
+                row.Visible = categoryMatches && statusMatches && matchUserStory;
             }
 
             Label_UserStories_Display();
