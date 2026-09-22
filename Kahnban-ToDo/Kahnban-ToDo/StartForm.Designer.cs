@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             tableLayoutPanel_body = new TableLayoutPanel();
             label_title = new Label();
             DataGridView_Organizations = new DataGridView();
@@ -75,12 +76,22 @@
             DataGridView_Organizations.AllowUserToAddRows = false;
             DataGridView_Organizations.AllowUserToDeleteRows = false;
             DataGridView_Organizations.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DataGridView_Organizations.BackgroundColor = SystemColors.ControlDarkDark;
             DataGridView_Organizations.BorderStyle = BorderStyle.None;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.ControlDark;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            DataGridView_Organizations.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             DataGridView_Organizations.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_Organizations.Dock = DockStyle.Fill;
             DataGridView_Organizations.Location = new Point(3, 88);
             DataGridView_Organizations.Name = "DataGridView_Organizations";
             DataGridView_Organizations.ReadOnly = true;
+            DataGridView_Organizations.RowHeadersVisible = false;
             DataGridView_Organizations.Size = new Size(978, 450);
             DataGridView_Organizations.TabIndex = 1;
             DataGridView_Organizations.CellClick += DataGridView_Organizations_CellClick;
