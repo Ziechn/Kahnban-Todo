@@ -565,8 +565,6 @@ namespace Kahnban_ToDo
 
                 string userStory = DataGridViewUtilities.GetCellValue_String(row, COLUMN_USER_STORY).ToUpper();
                 bool containsText = userStory.Contains(text);
-                bool isPlaceholder = userStory.Equals(PLACEHOLDER_USER_STORY);
-                bool matchUserStory = containsText || isPlaceholder;
 
                 string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
                 bool categoryShowAll = selectedCategory == ITEM_CATEGORY_ALL;
@@ -593,14 +591,7 @@ namespace Kahnban_ToDo
                     statusMatches = selectedStatus.Equals(status);
                 }
 
-                // TEMP DEBUG
-                System.Diagnostics.Debug.WriteLine(
-                    $"row='{userStory}' | text=[{text}] matchUserStory={matchUserStory} " +
-                    $"| category=[{category}] selectedCategory=[{selectedCategory}] catMatch={categoryMatches} " +
-                    $"| status=[{status}] selectedStatus=[{selectedStatus}] statMatch={statusMatches} " +
-                    $"| VISIBLE={categoryMatches && statusMatches && matchUserStory}");
-
-                row.Visible = categoryMatches && statusMatches && matchUserStory;
+                row.Visible = categoryMatches && statusMatches && containsText;
             }
 
             Label_UserStories_Display();
