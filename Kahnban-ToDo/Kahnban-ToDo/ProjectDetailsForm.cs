@@ -21,7 +21,7 @@ namespace Kahnban_ToDo
         // CONSTANTS - DataGridView Columns
         private const string COLUMN_CATEGORY = "category";
         private const string COLUMN_COUNT = "count";
-        private const string COLUMN_DATE_DUE = "dateDue";
+        private const string COLUMN_DATE_END = "dateEnd";
         private const string COLUMN_ID = "id";
         private const string COLUMN_STATUS = "status";
         private const string COLUMN_SUMMARY = "summary";
@@ -36,7 +36,7 @@ namespace Kahnban_ToDo
 
         // CONSTANTS - DataGridView Headers
         private const string HEADER_CATEGORY = "Category";
-        private const string HEADER_DATE_DUE = "Due Date";
+        private const string HEADER_DATE_END = "End Date";
         private const string HEADER_ID = "ID";
         private const string HEADER_STATUS = "Status";
         private const string HEADER_SUMMARY = "Summary";
@@ -47,7 +47,7 @@ namespace Kahnban_ToDo
 
         // CONSTANTS - DataGridView Properties
         private const int PROPERTY_WIDTH_CATEGORY = 100;
-        private const int PROPERTY_WIDTH_DATE_DUE = 100;
+        private const int PROPERTY_WIDTH_DATE_END = 100;
         private const int PROPERTY_WIDTH_STATUS = 100;
         private const int PROPERTY_WIDTH_TASKS = 100;
         private const int PROPERTY_WIDTH_VERSION = 100;
@@ -80,6 +80,20 @@ namespace Kahnban_ToDo
 
             FormUtilities.DisplayPlaceholder(TextBox_UserStory, PLACEHOLDER_USER_STORY);
         }
+
+        #region CRUD ===============================================
+        private void Update_UserStory(int rowIndex)
+        {
+            DataGridViewRow row = DataGridView_UserStories.Rows[rowIndex];
+            if (row == null) return;
+
+            (bool isIdValid, long id) = CellValue_Long_Validate(row, COLUMN_ID);
+            if (isIdValid == false) return;
+
+            UserStoryForm userStoryForm = new UserStoryForm(id);
+            FormUtilities.NavigateTo(userStoryForm);
+        }
+        #endregion CRUD
 
         #region Display ============================================
         private void DataGridView_Status_Display()
@@ -218,24 +232,14 @@ namespace Kahnban_ToDo
             DataGridView_UserStories.Columns.Add(categoryColumn);
 
             // Status
-            Controller controller = new();
-            List<string> statusList = controller.GetStatusList();
-
-            DataGridViewComboBoxCell statusCell = new DataGridViewComboBoxCell();
-            foreach (string status in statusList)
-            {
-                statusCell.Items.Add(status);
-            }
-
             DataGridViewColumn statusColumn = new DataGridViewColumn
             {
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
-                CellTemplate = statusCell,
+                CellTemplate = new DataGridViewTextBoxCell(),
                 HeaderText = HEADER_STATUS,
                 Name = COLUMN_STATUS,
                 Width = PROPERTY_WIDTH_STATUS
             };
-
             DataGridView_UserStories.Columns.Add(statusColumn);
 
             // Task List
@@ -250,18 +254,16 @@ namespace Kahnban_ToDo
                 Name = COLUMN_TASKS,
                 Width = PROPERTY_WIDTH_TASKS
             };
-
             DataGridView_UserStories.Columns.Add(tasksColumn);
 
             DataGridViewColumn dateDueColumn = new DataGridViewColumn
             {
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
                 CellTemplate = new DataGridViewTextBoxCell(),
-                HeaderText = HEADER_DATE_DUE,
-                Name = COLUMN_DATE_DUE,
-                Width = PROPERTY_WIDTH_DATE_DUE
+                HeaderText = HEADER_DATE_END,
+                Name = COLUMN_DATE_END,
+                Width = PROPERTY_WIDTH_DATE_END
             };
-
             DataGridView_UserStories.Columns.Add(dateDueColumn);
 
             DataGridViewColumn versionColumn = new DataGridViewColumn
@@ -272,12 +274,11 @@ namespace Kahnban_ToDo
                 Name = COLUMN_VERSION,
                 Width = PROPERTY_WIDTH_VERSION
             };
-
             DataGridView_UserStories.Columns.Add(versionColumn);
             // END Creating Columns
 
             // Readonly
-            DataGridView_UserStories.Columns[COLUMN_DATE_DUE]?.ReadOnly = true;
+            DataGridView_UserStories.Columns[COLUMN_DATE_END]?.ReadOnly = true;
             DataGridView_UserStories.Columns[COLUMN_TASKS]?.ReadOnly = true;
 
             // Visibility
@@ -291,6 +292,80 @@ namespace Kahnban_ToDo
         private void Button_SideBar_Click(object sender, EventArgs e)
         {
             TableLayoutPanel_Content_Display();
+        }
+
+        private void Button_UserStory_Create_Click(object sender, EventArgs e)
+        {
+            UserStoryForm userStoryForm = new UserStoryForm();
+            FormUtilities.NavigateTo(userStoryForm);
+        }
+
+        private void Button_UserStory_Delete_Click(object sender, EventArgs e)
+        {
+            int rowIndex = DataGridView_UserStories.SelectedCells[0].RowIndex;
+            DataGridViewRow row = DataGridView_UserStories.Rows[rowIndex];
+            if (row == null) return;
+
+            long id = DataGridViewUtilities.GetCellValue_Long(row, COLUMN_ID);
+            string name = DataGridViewUtilities.GetCellValue_String(row, COLUMN_USER_STORY);
+
+            DialogResult result = MessageBox.Show(
+                $"Are you sure you want to delete {name}?",
+                "Confirmation",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+                );
+
+            if (result == DialogResult.No) return;
+
+            Controller controller = new();
+            try
+            {
+                controller.DeleteUserStory(id);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+                return;
+            }
+
+            DataGridView_UserStories_Load();
+
+            ComboBox_Category_Load();
+
+            Label_Status_Display();
+            Label_UserStories_Display();
+        }
+
+        private void Button_UserStory_Delete_State(int rowIndex)
+        {
+            DataGridViewRow row = DataGridView_UserStories.Rows[rowIndex];
+            if (row == null) return;
+
+            long id = DataGridViewUtilities.GetCellValue_Long(row, COLUMN_ID);
+            bool isValid = id > 0;
+
+            Button_UserStory_Delete.Enabled = isValid;
+        }
+
+        private void Button_UserStory_Update_Click(object sender, EventArgs e)
+        {
+            int rowIndex = DataGridView_UserStories.SelectedCells[0].RowIndex;
+            DataGridViewRow row = DataGridView_UserStories.Rows[rowIndex];
+            if (row == null) return;
+
+            Update_UserStory(rowIndex);
+        }
+
+        private void Button_UserStory_Update_State(int rowIndex)
+        {
+            DataGridViewRow row = DataGridView_UserStories.Rows[rowIndex];
+            if (row == null) return;
+
+            long id = DataGridViewUtilities.GetCellValue_Long(row, COLUMN_ID);
+            bool isValid = id > 0;
+
+            Button_UserStory_Update.Enabled = isValid;
         }
         #endregion Interaction: Button
 
@@ -313,6 +388,15 @@ namespace Kahnban_ToDo
         #endregion Interaction: ComboBox
 
         #region Interaction: DataGridView ==========================
+        private void DataGridView_UserStories_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            int rowIndex = e.RowIndex;
+
+            Button_UserStory_Delete_State(rowIndex);
+            Button_UserStory_Update_State(rowIndex);
+        }
+
         private void DataGridView_UserStories_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -389,17 +473,7 @@ namespace Kahnban_ToDo
             int rowIndex = e.RowIndex;
             if (rowIndex < 0) return;
 
-            DataGridViewRow row = DataGridView_UserStories.Rows[rowIndex];
-            if (row == null) return;
-
-            (bool isIdValid, long id) = CellValue_Long_Validate(row, COLUMN_ID);
-            if (isIdValid == false) return;
-
-            long projectId = AppStore.project?.Id ?? -1;
-            string projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
-
-            UserStoryForm userStoryForm = new UserStoryForm(projectPath, id);
-            FormUtilities.NavigateTo(userStoryForm);
+            Update_UserStory(rowIndex);
         }
 
         private void DataGridView_UserStories_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -528,6 +602,7 @@ namespace Kahnban_ToDo
 
         private void DataGridView_UserStories_Load()
         {
+            DataGridView_UserStories.Rows.Clear();
             try
             {
                 long projectId = AppStore.project?.Id ?? -1;
@@ -624,7 +699,7 @@ namespace Kahnban_ToDo
                 userStory.Status,
                 taskList,
                 taskCount,
-                userStory.DateDue?.ToShortDateString() ?? "",
+                userStory.DateEnd?.ToShortDateString() ?? "",
                 userStory.Version
                 );
         }

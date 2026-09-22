@@ -48,7 +48,7 @@ namespace Kahnban_ToDo
         UserStory _userStory;
         bool isLoading = true;
 
-        public UserStoryForm(string projectPath, long id)
+        public UserStoryForm()
         {
             InitializeComponent();
             ComboBox_Status_Initialize();
@@ -57,26 +57,36 @@ namespace Kahnban_ToDo
             DateTimePicker_Start_Initialize();
             DataGridView_StatusCount_Initialize();
 
-            _projectPath = projectPath;
+            long projectId = AppStore.project?.Id ?? -1;
+            _projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
+
+            TextBox_Category_DiplayPlaceholder();
+            DataGridView_Status_Display();
+
+            Controls_Initialize();
+
+            isLoading = false;
+        }
+
+        public UserStoryForm(long id)
+        {
+            InitializeComponent();
+            ComboBox_Status_Initialize();
+            DateTimePicker_Due_Initialize();
+            DateTimePicker_End_Initialize();
+            DateTimePicker_Start_Initialize();
+            DataGridView_StatusCount_Initialize();
+
+            long projectId = AppStore.project?.Id ?? -1;
+            _projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
+
             UserStory_Load(id);
 
             TextBox_Category_DiplayPlaceholder();
             DataGridView_Status_Display();
             References_Load(id);
 
-            // Determine user story editable state based on the status.
-            string status = ComboBox_Status.Text;
-            bool isInProgress = status.Equals(ITEMS_STATUS_RELEASED) == false;
-
-            Button_AddMedia.Enabled = isInProgress;
-            Button_AddText.Enabled = isInProgress;
-            ComboBox_Status.Enabled = isInProgress;
-            DateTimePicker_Due.Enabled = isInProgress;
-            DateTimePicker_End.Enabled = isInProgress;
-            DateTimePicker_Start.Enabled = isInProgress;
-            TextBox_Category.Enabled = isInProgress;
-            RichTextBox_Summary.Enabled = isInProgress;
-            RichTextBox_TaskList.Enabled = isInProgress;
+            Controls_Initialize();
 
             isLoading = false;
         }
@@ -205,6 +215,23 @@ namespace Kahnban_ToDo
             }
 
             ComboBox_Status.SelectedIndex = 0;
+        }
+
+        private void Controls_Initialize()
+        {
+            // Determine user story editable state based on the status.
+            string status = ComboBox_Status.Text;
+            bool isInProgress = status.Equals(ITEMS_STATUS_RELEASED) == false;
+
+            Button_AddMedia.Enabled = isInProgress;
+            Button_AddText.Enabled = isInProgress;
+            ComboBox_Status.Enabled = isInProgress;
+            DateTimePicker_Due.Enabled = isInProgress;
+            DateTimePicker_End.Enabled = isInProgress;
+            DateTimePicker_Start.Enabled = isInProgress;
+            TextBox_Category.Enabled = isInProgress;
+            RichTextBox_Summary.Enabled = isInProgress;
+            RichTextBox_TaskList.Enabled = isInProgress;
         }
 
         private void DataGridView_StatusCount_Initialize()

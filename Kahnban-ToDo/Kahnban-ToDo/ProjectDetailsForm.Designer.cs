@@ -235,6 +235,7 @@
             Button_UserStory_Create.TabIndex = 6;
             Button_UserStory_Create.Text = "Add";
             Button_UserStory_Create.UseVisualStyleBackColor = true;
+            Button_UserStory_Create.Click += Button_UserStory_Create_Click;
             // 
             // Button_UserStory_Update
             // 
@@ -245,6 +246,7 @@
             Button_UserStory_Update.TabIndex = 7;
             Button_UserStory_Update.Text = "Edit";
             Button_UserStory_Update.UseVisualStyleBackColor = true;
+            Button_UserStory_Update.Click += Button_UserStory_Update_Click;
             // 
             // Button_UserStory_Delete
             // 
@@ -255,6 +257,7 @@
             Button_UserStory_Delete.TabIndex = 8;
             Button_UserStory_Delete.Text = "Delete";
             Button_UserStory_Delete.UseVisualStyleBackColor = true;
+            Button_UserStory_Delete.Click += Button_UserStory_Delete_Click;
             // 
             // TableLayoutPanel_Content
             // 
@@ -352,10 +355,12 @@
             DataGridView_UserStories.Dock = DockStyle.Fill;
             DataGridView_UserStories.Location = new Point(3, 23);
             DataGridView_UserStories.Name = "DataGridView_UserStories";
+            DataGridView_UserStories.ReadOnly = true;
             DataGridView_UserStories.RowHeadersVisible = false;
             DataGridView_UserStories.ShowCellToolTips = false;
             DataGridView_UserStories.Size = new Size(716, 438);
             DataGridView_UserStories.TabIndex = 1;
+            DataGridView_UserStories.CellClick += DataGridView_UserStories_CellClick;
             DataGridView_UserStories.CellDoubleClick += DataGridView_UserStories_CellDoubleClick;
             DataGridView_UserStories.CellEndEdit += DataGridView_UserStories_CellEndEdit;
             DataGridView_UserStories.CellValueChanged += DataGridView_UserStories_CellValueChanged;
