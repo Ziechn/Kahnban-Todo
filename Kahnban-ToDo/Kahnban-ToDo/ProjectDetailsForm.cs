@@ -52,6 +52,9 @@ namespace Kahnban_ToDo
         private const int PROPERTY_WIDTH_TASKS = 100;
         private const int PROPERTY_WIDTH_VERSION = 100;
 
+        // CONSTANTS - PLACEHOLDERS
+        private const string PLACEHOLDER_USER_STORY = "Search...";
+
         // CONSTANTS - TABLE LAYOUT PANELS
         private const int COLUMN_SIDEBAR_INDEX = 0;
         private const float COLUMN_SIDEBAR_SIZE = 250f;
@@ -74,6 +77,8 @@ namespace Kahnban_ToDo
 
             Label_Status_Display();
             Label_UserStories_Display();
+
+            FormUtilities.DisplayPlaceholder(TextBox_UserStory, PLACEHOLDER_USER_STORY);
         }
 
         #region Display ============================================
@@ -480,6 +485,23 @@ namespace Kahnban_ToDo
             FormUtilities.NavigateTo(startForm);
         }
         #endregion Interaction: LinkLabel
+
+        #region Interaction: TextBox ===============================
+        private void TextBox_UserStory_Enter(object sender, EventArgs e)
+        {
+            FormUtilities.DisplayPlaceholder(TextBox_UserStory, PLACEHOLDER_USER_STORY);
+        }
+
+        private void TextBox_UserStory_KeyUp(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void TextBox_UserStory_Leave(object sender, EventArgs e)
+        {
+            FormUtilities.DisplayPlaceholder(TextBox_UserStory, PLACEHOLDER_USER_STORY);
+        }
+        #endregion Interaction: TextBox
 
         #region Load ===============================================
         private void ComboBox_Category_Load()

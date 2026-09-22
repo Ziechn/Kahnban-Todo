@@ -38,8 +38,13 @@
             flowLayoutPanel_controls = new FlowLayoutPanel();
             Button_SideBar = new Button();
             label_pipe = new Label();
+            TextBox_UserStory = new TextBox();
             ComboBox_Category = new ComboBox();
             ComboBox_Status = new ComboBox();
+            label_pipe2 = new Label();
+            Button_UserStory_Create = new Button();
+            Button_UserStory_Update = new Button();
+            Button_UserStory_Delete = new Button();
             TableLayoutPanel_Content = new TableLayoutPanel();
             TableLayoutPanel_TagCount = new TableLayoutPanel();
             Label_Status = new Label();
@@ -150,8 +155,13 @@
             // 
             flowLayoutPanel_controls.Controls.Add(Button_SideBar);
             flowLayoutPanel_controls.Controls.Add(label_pipe);
+            flowLayoutPanel_controls.Controls.Add(TextBox_UserStory);
             flowLayoutPanel_controls.Controls.Add(ComboBox_Category);
             flowLayoutPanel_controls.Controls.Add(ComboBox_Status);
+            flowLayoutPanel_controls.Controls.Add(label_pipe2);
+            flowLayoutPanel_controls.Controls.Add(Button_UserStory_Create);
+            flowLayoutPanel_controls.Controls.Add(Button_UserStory_Update);
+            flowLayoutPanel_controls.Controls.Add(Button_UserStory_Delete);
             flowLayoutPanel_controls.Dock = DockStyle.Fill;
             flowLayoutPanel_controls.Location = new Point(3, 33);
             flowLayoutPanel_controls.Name = "flowLayoutPanel_controls";
@@ -177,11 +187,21 @@
             label_pipe.Text = "|";
             label_pipe.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // TextBox_UserStory
+            // 
+            TextBox_UserStory.Location = new Point(125, 3);
+            TextBox_UserStory.Name = "TextBox_UserStory";
+            TextBox_UserStory.Size = new Size(125, 23);
+            TextBox_UserStory.TabIndex = 4;
+            TextBox_UserStory.Enter += TextBox_UserStory_Enter;
+            TextBox_UserStory.KeyUp += TextBox_UserStory_KeyUp;
+            TextBox_UserStory.Leave += TextBox_UserStory_Leave;
+            // 
             // ComboBox_Category
             // 
             ComboBox_Category.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_Category.FormattingEnabled = true;
-            ComboBox_Category.Location = new Point(125, 3);
+            ComboBox_Category.Location = new Point(256, 3);
             ComboBox_Category.Name = "ComboBox_Category";
             ComboBox_Category.Size = new Size(150, 23);
             ComboBox_Category.TabIndex = 2;
@@ -191,11 +211,50 @@
             // 
             ComboBox_Status.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_Status.FormattingEnabled = true;
-            ComboBox_Status.Location = new Point(281, 3);
+            ComboBox_Status.Location = new Point(412, 3);
             ComboBox_Status.Name = "ComboBox_Status";
             ComboBox_Status.Size = new Size(150, 23);
             ComboBox_Status.TabIndex = 3;
             ComboBox_Status.SelectedIndexChanged += ComboBox_Status_SelectedIndexChanged;
+            // 
+            // label_pipe2
+            // 
+            label_pipe2.Location = new Point(568, 0);
+            label_pipe2.Name = "label_pipe2";
+            label_pipe2.RightToLeft = RightToLeft.Yes;
+            label_pipe2.Size = new Size(10, 23);
+            label_pipe2.TabIndex = 5;
+            label_pipe2.Text = "|";
+            label_pipe2.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // Button_UserStory_Create
+            // 
+            Button_UserStory_Create.Location = new Point(584, 3);
+            Button_UserStory_Create.Name = "Button_UserStory_Create";
+            Button_UserStory_Create.Size = new Size(100, 23);
+            Button_UserStory_Create.TabIndex = 6;
+            Button_UserStory_Create.Text = "Add";
+            Button_UserStory_Create.UseVisualStyleBackColor = true;
+            // 
+            // Button_UserStory_Update
+            // 
+            Button_UserStory_Update.Enabled = false;
+            Button_UserStory_Update.Location = new Point(690, 3);
+            Button_UserStory_Update.Name = "Button_UserStory_Update";
+            Button_UserStory_Update.Size = new Size(100, 23);
+            Button_UserStory_Update.TabIndex = 7;
+            Button_UserStory_Update.Text = "Edit";
+            Button_UserStory_Update.UseVisualStyleBackColor = true;
+            // 
+            // Button_UserStory_Delete
+            // 
+            Button_UserStory_Delete.Enabled = false;
+            Button_UserStory_Delete.Location = new Point(796, 3);
+            Button_UserStory_Delete.Name = "Button_UserStory_Delete";
+            Button_UserStory_Delete.Size = new Size(100, 23);
+            Button_UserStory_Delete.TabIndex = 8;
+            Button_UserStory_Delete.Text = "Delete";
+            Button_UserStory_Delete.UseVisualStyleBackColor = true;
             // 
             // TableLayoutPanel_Content
             // 
@@ -285,6 +344,7 @@
             // 
             // DataGridView_UserStories
             // 
+            DataGridView_UserStories.AllowUserToAddRows = false;
             DataGridView_UserStories.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             DataGridView_UserStories.BackgroundColor = SystemColors.ControlDarkDark;
             DataGridView_UserStories.BorderStyle = BorderStyle.None;
@@ -314,6 +374,7 @@
             FlowLayoutPanel_Navigation.ResumeLayout(false);
             FlowLayoutPanel_Navigation.PerformLayout();
             flowLayoutPanel_controls.ResumeLayout(false);
+            flowLayoutPanel_controls.PerformLayout();
             TableLayoutPanel_Content.ResumeLayout(false);
             TableLayoutPanel_TagCount.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)DataGridView_Status).EndInit();
@@ -343,5 +404,10 @@
         private ComboBox ComboBox_Status;
         private LinkLabel LinkLabel_Start;
         private Label label_navigation_separator1;
+        private TextBox TextBox_UserStory;
+        private Label label_pipe2;
+        private Button Button_UserStory_Create;
+        private Button Button_UserStory_Update;
+        private Button Button_UserStory_Delete;
     }
 }
