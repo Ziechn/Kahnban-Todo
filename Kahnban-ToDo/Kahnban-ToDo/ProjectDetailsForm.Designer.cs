@@ -42,7 +42,7 @@
             ComboBox_Status = new ComboBox();
             TableLayoutPanel_Content = new TableLayoutPanel();
             TableLayoutPanel_TagCount = new TableLayoutPanel();
-            this.Label_Status = new Label();
+            Label_Status = new Label();
             DataGridView_Status = new DataGridView();
             TableLayoutPanel_UserStories = new TableLayoutPanel();
             Label_UserStories = new Label();
@@ -245,12 +245,14 @@
             DataGridView_Status.AllowUserToDeleteRows = false;
             DataGridView_Status.AllowUserToResizeColumns = false;
             DataGridView_Status.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DataGridView_Status.BackgroundColor = SystemColors.ControlDarkDark;
             DataGridView_Status.BorderStyle = BorderStyle.None;
             DataGridView_Status.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_Status.Dock = DockStyle.Fill;
             DataGridView_Status.Location = new Point(3, 23);
             DataGridView_Status.Name = "DataGridView_Status";
             DataGridView_Status.ReadOnly = true;
+            DataGridView_Status.RowHeadersVisible = false;
             DataGridView_Status.ShowCellToolTips = false;
             DataGridView_Status.Size = new Size(238, 438);
             DataGridView_Status.TabIndex = 1;
@@ -284,11 +286,13 @@
             // DataGridView_UserStories
             // 
             DataGridView_UserStories.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            DataGridView_UserStories.BackgroundColor = SystemColors.ControlDarkDark;
             DataGridView_UserStories.BorderStyle = BorderStyle.None;
             DataGridView_UserStories.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_UserStories.Dock = DockStyle.Fill;
             DataGridView_UserStories.Location = new Point(3, 23);
             DataGridView_UserStories.Name = "DataGridView_UserStories";
+            DataGridView_UserStories.RowHeadersVisible = false;
             DataGridView_UserStories.ShowCellToolTips = false;
             DataGridView_UserStories.Size = new Size(716, 438);
             DataGridView_UserStories.TabIndex = 1;
@@ -298,13 +302,13 @@
             DataGridView_UserStories.CurrentCellDirtyStateChanged += DataGridView_UserStories_CurrentCellDirtyStateChanged;
             DataGridView_UserStories.UserDeletingRow += DataGridView_UserStories_UserDeletingRow;
             // 
-            // ProjectsForm
+            // ProjectDetailsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(984, 561);
             Controls.Add(TableLayoutPanel_Body);
-            Name = "ProjectsForm";
+            Name = "ProjectDetailsForm";
             Text = "projectForm";
             TableLayoutPanel_Body.ResumeLayout(false);
             FlowLayoutPanel_Navigation.ResumeLayout(false);

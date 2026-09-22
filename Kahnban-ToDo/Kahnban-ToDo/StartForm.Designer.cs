@@ -88,11 +88,12 @@
             DataGridView_Organizations.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             DataGridView_Organizations.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_Organizations.Dock = DockStyle.Fill;
-            DataGridView_Organizations.Location = new Point(3, 88);
+            DataGridView_Organizations.Location = new Point(6, 91);
+            DataGridView_Organizations.Margin = new Padding(6);
             DataGridView_Organizations.Name = "DataGridView_Organizations";
             DataGridView_Organizations.ReadOnly = true;
             DataGridView_Organizations.RowHeadersVisible = false;
-            DataGridView_Organizations.Size = new Size(978, 450);
+            DataGridView_Organizations.Size = new Size(972, 444);
             DataGridView_Organizations.TabIndex = 1;
             DataGridView_Organizations.CellClick += DataGridView_Organizations_CellClick;
             DataGridView_Organizations.CellDoubleClick += DataGridView_Organizations_CellDoubleClick;
