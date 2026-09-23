@@ -348,6 +348,7 @@
             // DataGridView_UserStories
             // 
             DataGridView_UserStories.AllowUserToAddRows = false;
+            DataGridView_UserStories.AllowUserToDeleteRows = false;
             DataGridView_UserStories.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             DataGridView_UserStories.BackgroundColor = SystemColors.ControlDarkDark;
             DataGridView_UserStories.BorderStyle = BorderStyle.None;

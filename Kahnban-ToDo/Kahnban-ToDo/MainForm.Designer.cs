@@ -86,7 +86,7 @@
             MainMenuStrip = menuStrip1;
             MinimumSize = new Size(960, 600);
             Name = "MainForm";
-            Text = "Projectz - 0.8.0";
+            Text = "Projectz - 0.9.0";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);

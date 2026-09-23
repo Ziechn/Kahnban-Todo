@@ -227,6 +227,7 @@ namespace Kahnban_ToDo
                 CellTemplate = new DataGridViewTextBoxCell(),
                 HeaderText = HEADER_CATEGORY,
                 Name = COLUMN_CATEGORY,
+                SortMode = DataGridViewColumnSortMode.Automatic,
                 Width = PROPERTY_WIDTH_CATEGORY
             };
             DataGridView_UserStories.Columns.Add(categoryColumn);
@@ -238,6 +239,7 @@ namespace Kahnban_ToDo
                 CellTemplate = new DataGridViewTextBoxCell(),
                 HeaderText = HEADER_STATUS,
                 Name = COLUMN_STATUS,
+                SortMode = DataGridViewColumnSortMode.Automatic,
                 Width = PROPERTY_WIDTH_STATUS
             };
             DataGridView_UserStories.Columns.Add(statusColumn);
@@ -252,19 +254,21 @@ namespace Kahnban_ToDo
                 CellTemplate = new DataGridViewTextBoxCell(),
                 HeaderText = HEADER_TASKS,
                 Name = COLUMN_TASKS,
+                SortMode = DataGridViewColumnSortMode.Automatic,
                 Width = PROPERTY_WIDTH_TASKS
             };
             DataGridView_UserStories.Columns.Add(tasksColumn);
 
-            DataGridViewColumn dateDueColumn = new DataGridViewColumn
+            DataGridViewColumn endDateColumn = new DataGridViewColumn
             {
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
                 CellTemplate = new DataGridViewTextBoxCell(),
                 HeaderText = HEADER_DATE_END,
                 Name = COLUMN_DATE_END,
+                SortMode = DataGridViewColumnSortMode.Automatic,
                 Width = PROPERTY_WIDTH_DATE_END
             };
-            DataGridView_UserStories.Columns.Add(dateDueColumn);
+            DataGridView_UserStories.Columns.Add(endDateColumn);
 
             DataGridViewColumn versionColumn = new DataGridViewColumn
             {
@@ -272,14 +276,11 @@ namespace Kahnban_ToDo
                 CellTemplate = new DataGridViewTextBoxCell(),
                 HeaderText = HEADER_VERSION,
                 Name = COLUMN_VERSION,
+                SortMode = DataGridViewColumnSortMode.Automatic,
                 Width = PROPERTY_WIDTH_VERSION
             };
             DataGridView_UserStories.Columns.Add(versionColumn);
             // END Creating Columns
-
-            // Readonly
-            DataGridView_UserStories.Columns[COLUMN_DATE_END]?.ReadOnly = true;
-            DataGridView_UserStories.Columns[COLUMN_TASKS]?.ReadOnly = true;
 
             // Visibility
             DataGridView_UserStories.Columns[COLUMN_ID]?.Visible = false;

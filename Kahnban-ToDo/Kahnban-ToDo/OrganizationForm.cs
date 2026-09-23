@@ -52,6 +52,7 @@ namespace Kahnban_ToDo
                 CellTemplate = new DataGridViewTextBoxCell(),
                 HeaderText = HEADER_PROJECT,
                 Name = COLUMN_PROJECT,
+                SortMode = DataGridViewColumnSortMode.Automatic,
                 Width = PROPERTY_WIDTH_PROJECT
             };
 
