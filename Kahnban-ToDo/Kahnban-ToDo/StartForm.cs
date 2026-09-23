@@ -107,6 +107,7 @@ namespace Kahnban_ToDo
 
         private void Button_Remove_State(int rowIndex)
         {
+            if (rowIndex < 0) return;
             DataGridViewRow row = DataGridView_Organizations.Rows[rowIndex];
             if (row == null) return;
 
