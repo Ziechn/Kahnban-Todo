@@ -14,6 +14,7 @@ namespace Kahnban_ToDo
     public partial class UserStoryForm : Form
     {
         // CONSTANTS - COMBOBOX
+        private const string ITEMS_STATUS_PENDING = "PENDING";
         private const string ITEMS_STATUS_RELEASED = "RELEASED";
         private const string ITEMS_STATUS_SELECT = "Select Status...";
 
@@ -30,6 +31,8 @@ namespace Kahnban_ToDo
 
         // CONSTANTS - PLACEHOLDERS
         private const string PLACEHOLDER_CATEGORY = "Enter Category...";
+        private const string PLACEHOLDER_USERSTORY = "Enter a User Story...";
+        private const string PLACEHOLDER_VERSION = "Enter Version...";
 
         // CONSTANTS - TABLE LAYOUT PANELS
         private const int COLUMN_SIDEBAR_INDEX = 0;
@@ -45,22 +48,27 @@ namespace Kahnban_ToDo
 
         // Local Memory
         string _projectPath = "";
-        UserStory _userStory;
+        UserStory? _userStory;
         bool isLoading = true;
 
         public UserStoryForm()
         {
             InitializeComponent();
             ComboBox_Status_Initialize();
-            DateTimePicker_Due_Initialize();
             DateTimePicker_End_Initialize();
             DateTimePicker_Start_Initialize();
             DataGridView_StatusCount_Initialize();
 
-            long projectId = AppStore.project?.Id ?? -1;
+            Project? project = AppStore.project;
+            long projectId = project?.Id ?? -1;
             _projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
 
+            LinkLabel_Organization_Display(project);
+            LinkLabel_Project_Display(project);
+
             TextBox_Category_DiplayPlaceholder();
+            TextBox_UserStoryName_Display();
+            TextBox_Version_Display();
             DataGridView_Status_Display();
 
             Controls_Initialize();
@@ -72,7 +80,6 @@ namespace Kahnban_ToDo
         {
             InitializeComponent();
             ComboBox_Status_Initialize();
-            DateTimePicker_Due_Initialize();
             DateTimePicker_End_Initialize();
             DateTimePicker_Start_Initialize();
             DataGridView_StatusCount_Initialize();
@@ -83,6 +90,7 @@ namespace Kahnban_ToDo
             UserStory_Load(id);
 
             TextBox_Category_DiplayPlaceholder();
+            TextBox_Version_Display();
             DataGridView_Status_Display();
             References_Load(id);
 
@@ -131,13 +139,6 @@ namespace Kahnban_ToDo
             DataGridView_References.DataSource = dataTable;
         }
 
-        private void DateTimePicker_Due_Display(UserStory userStory)
-        {
-            if (userStory.DateDue == null) return;
-            DateTimePicker_Due.Value = userStory.DateDue.Value;
-            DateTimePicker_Due.Checked = true;
-        }
-
         private void DateTimePicker_End_Display(UserStory userStory)
         {
             if (userStory.DateEnd == null) return;
@@ -152,14 +153,21 @@ namespace Kahnban_ToDo
             DateTimePicker_Start.Checked = true;
         }
 
-        private void Label_UserStory_Display(UserStory userStory)
+        private void LinkLabel_Organization_Display(Project? project)
         {
-            Label_UserStory.Text = userStory.Name;
+            if (project == null) return;
+            LinkLabel_Organization.Text = project.Organization;
         }
 
         private void LinkLabel_Organization_Display(UserStory userStory)
         {
             LinkLabel_Organization.Text = userStory.Organization;
+        }
+
+        private void LinkLabel_Project_Display(Project? project)
+        {
+            if (project == null) return;
+            LinkLabel_Project.Text = project.Name;
         }
 
         private void LinkLabel_Project_Display(UserStory userStory)
@@ -191,6 +199,30 @@ namespace Kahnban_ToDo
         {
             FormUtilities.DisplayPlaceholder(TextBox_Category, PLACEHOLDER_CATEGORY);
         }
+
+        private void TextBox_UserStoryName_Display(UserStory? userStory = null)
+        {
+            if (userStory == null)
+            {
+                FormUtilities.DisplayPlaceholder(TextBox_UserStoryName, PLACEHOLDER_USERSTORY);
+                return;
+            }
+
+            string userStoryName = userStory.Name;
+            TextBox_UserStoryName.Text = userStoryName;
+        }
+
+        private void TextBox_Version_Display(UserStory? userStory = null)
+        {
+            if (userStory == null)
+            {
+                FormUtilities.DisplayPlaceholder(TextBox_Version, PLACEHOLDER_VERSION);
+                return;
+            }
+
+            string version = userStory.Version;
+            TextBox_Version.Text = version;
+        }
         #endregion Display
 
         #region Event Handlers =====================================
@@ -208,13 +240,18 @@ namespace Kahnban_ToDo
 
             Controller controller = new();
             List<string> statusList = controller.GetStatusList();
+            int selectedIndex = 0;
 
-            foreach (string status in statusList)
+            for (int i = 0; i < statusList.Count; i++)
             {
+                string status = statusList[i];
                 ComboBox_Status.Items.Add(status);
+
+                if (status.Equals(ITEMS_STATUS_PENDING) == false) continue;
+                selectedIndex = i + 1;
             }
 
-            ComboBox_Status.SelectedIndex = 0;
+            ComboBox_Status.SelectedIndex = selectedIndex;
         }
 
         private void Controls_Initialize()
@@ -226,7 +263,6 @@ namespace Kahnban_ToDo
             Button_AddMedia.Enabled = isInProgress;
             Button_AddText.Enabled = isInProgress;
             ComboBox_Status.Enabled = isInProgress;
-            DateTimePicker_Due.Enabled = isInProgress;
             DateTimePicker_End.Enabled = isInProgress;
             DateTimePicker_Start.Enabled = isInProgress;
             TextBox_Category.Enabled = isInProgress;
@@ -238,12 +274,6 @@ namespace Kahnban_ToDo
         {
             DataGridView_Status.Columns.Add(COLUMN_STATUS, HEADER_STATUS);
             DataGridView_Status.Columns.Add(COLUMN_COUNT, HEADER_COUNT);
-        }
-
-        private void DateTimePicker_Due_Initialize()
-        {
-            DateTimePicker_Due.ShowCheckBox = true;
-            DateTimePicker_Due.Checked = false;
         }
 
         private void DateTimePicker_End_Initialize()
@@ -361,11 +391,6 @@ namespace Kahnban_ToDo
         #endregion Interaction: DataGridView
 
         #region Interaction: DateTimePicker ========================
-        private void DateTimePicker_Due_ValueChanged(object sender, EventArgs e)
-        {
-            SaveUserStory();
-        }
-
         private void DateTimePicker_End_ValueChanged(object sender, EventArgs e)
         {
             SaveUserStory();
@@ -428,6 +453,36 @@ namespace Kahnban_ToDo
         {
             TextBox_Category_DiplayPlaceholder();
         }
+
+        private void TextBox_UserStoryName_Enter(object sender, EventArgs e)
+        {
+            FormUtilities.DisplayPlaceholder(TextBox_UserStoryName, PLACEHOLDER_USERSTORY);
+        }
+
+        private void TextBox_UserStoryName_KeyUp(object sender, KeyEventArgs e)
+        {
+            SaveUserStory();
+        }
+
+        private void TextBox_UserStoryName_Leave(object sender, EventArgs e)
+        {
+            FormUtilities.DisplayPlaceholder(TextBox_UserStoryName, PLACEHOLDER_USERSTORY);
+        }
+
+        private void TextBox_Version_Enter(object sender, EventArgs e)
+        {
+            FormUtilities.DisplayPlaceholder(TextBox_Version, PLACEHOLDER_VERSION);
+        }
+
+        private void TextBox_Version_KeyUp(object sender, KeyEventArgs e)
+        {
+            SaveUserStory();
+        }
+
+        private void TextBox_Version_Leave(object sender, EventArgs e)
+        {
+            FormUtilities.DisplayPlaceholder(TextBox_Version, PLACEHOLDER_VERSION);
+        }
         #endregion Interaction: TextBox
 
         #region Load ===============================================
@@ -489,15 +544,15 @@ namespace Kahnban_ToDo
             _userStory = userStory;
 
             ComboBox_Status_Display(userStory);
-            DateTimePicker_Due_Display(userStory);
             DateTimePicker_End_Display(userStory);
             DateTimePicker_Start_Display(userStory);
             LinkLabel_Organization_Display(userStory);
             LinkLabel_Project_Display(userStory);
-            Label_UserStory_Display(userStory);
             RichTextBox_Summary_Populate(userStory);
             RichTextBox_TaskList_Populate(userStory);
             TextBox_Category_Display(userStory);
+            TextBox_UserStoryName_Display(userStory);
+            TextBox_Version_Display(userStory);
         }
         #endregion Load
 
@@ -517,7 +572,36 @@ namespace Kahnban_ToDo
         private void SaveUserStory()
         {
             if (isLoading) return;
-            UserStory userStory = _userStory;
+
+            Controller controller = new();
+            UserStory? userStory = null;
+
+            long id = -1;
+
+            if (_userStory == null)
+            {
+                userStory = new UserStory();
+                id = controller.GenerateId();
+                userStory.Id = id;
+
+                Project? project = AppStore.project;
+                string organization = project.Organization;
+                userStory.Organization = organization;
+
+                string projectName = project.Name;
+                userStory.Project = projectName;
+            }
+            else
+            {
+                userStory = _userStory;
+                id = userStory.Id;
+            }
+
+            if (userStory == null) return;
+
+            string userStoryNameText = TextBox_UserStoryName.Text;
+            string userStoryName = userStoryNameText.Equals(PLACEHOLDER_USERSTORY) ? "" : userStoryNameText;
+            userStory.Name = userStoryName;
 
             string categoryText = TextBox_Category.Text;
             string category = categoryText.Equals(PLACEHOLDER_CATEGORY) ? "" : categoryText;
@@ -527,14 +611,15 @@ namespace Kahnban_ToDo
             string status = statusText.Equals(ITEMS_STATUS_SELECT) ? "" : statusText;
             userStory.Status = status;
 
+            string versionText = TextBox_Version.Text;
+            string version = versionText.Equals(PLACEHOLDER_VERSION) ? "" : versionText;
+            userStory.Version = version;
+
             string summary = RichTextBox_Summary.Text;
             userStory.Summary = summary;
 
             string taskList = RichTextBox_TaskList.Text;
             userStory.TaskList = taskList;
-
-            DateTime? dueDate = DateTimePicker_Due.Checked ? DateTimePicker_Due.Value : null;
-            userStory.DateDue = dueDate;
 
             DateTime? endDate = DateTimePicker_End.Checked ? DateTimePicker_End.Value : null;
             userStory.DateEnd = endDate;
@@ -542,13 +627,20 @@ namespace Kahnban_ToDo
             DateTime? startDate = DateTimePicker_Start.Checked ? DateTimePicker_Start.Value : null;
             userStory.DateStart = startDate;
 
-            long id = userStory.Id;
-
-            Controller controller = new();
-
             try
             {
+                controller.CreateDirectory(_projectPath, id);
                 controller.Save(userStory, _projectPath, id);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
+
+            if (_userStory != null) return;
+            try
+            {
+                _userStory = controller.GetUserStory(_projectPath, id);
             }
             catch (Exception exception)
             {

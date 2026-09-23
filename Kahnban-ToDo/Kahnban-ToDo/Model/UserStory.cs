@@ -7,7 +7,6 @@ namespace Kahnban_ToDo
     public class UserStory
     {
         public string Category { get; set; } = "";
-        public DateTime? DateDue { get; set; }
         public DateTime? DateEnd { get; set; }
         public DateTime? DateStart { get; set; }
         public long Id { get; set; }

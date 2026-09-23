@@ -36,18 +36,17 @@
             label_navigation_separator2 = new Label();
             LinkLabel_Project = new LinkLabel();
             label_navigation_separator3 = new Label();
-            Label_UserStory = new Label();
+            TextBox_UserStoryName = new TextBox();
             FlowLayoutPanel_Controls = new FlowLayoutPanel();
             Button_SideBar = new Button();
             Button_Summary = new Button();
             label_pipe = new Label();
             TextBox_Category = new TextBox();
             ComboBox_Status = new ComboBox();
+            TextBox_Version = new TextBox();
             label_pipe2 = new Label();
             label_start = new Label();
             DateTimePicker_Start = new DateTimePicker();
-            label_due = new Label();
-            DateTimePicker_Due = new DateTimePicker();
             label_end = new Label();
             DateTimePicker_End = new DateTimePicker();
             TableLayoutPanel_Content = new TableLayoutPanel();
@@ -101,7 +100,7 @@
             FlowLayoutPanel_Navigation.Controls.Add(label_navigation_separator2);
             FlowLayoutPanel_Navigation.Controls.Add(LinkLabel_Project);
             FlowLayoutPanel_Navigation.Controls.Add(label_navigation_separator3);
-            FlowLayoutPanel_Navigation.Controls.Add(Label_UserStory);
+            FlowLayoutPanel_Navigation.Controls.Add(TextBox_UserStoryName);
             FlowLayoutPanel_Navigation.Dock = DockStyle.Fill;
             FlowLayoutPanel_Navigation.Location = new Point(0, 0);
             FlowLayoutPanel_Navigation.Margin = new Padding(0);
@@ -180,15 +179,15 @@
             label_navigation_separator3.TabIndex = 3;
             label_navigation_separator3.Text = "/";
             // 
-            // Label_UserStory
+            // TextBox_UserStoryName
             // 
-            Label_UserStory.AutoSize = true;
-            Label_UserStory.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Label_UserStory.Location = new Point(344, 0);
-            Label_UserStory.Name = "Label_UserStory";
-            Label_UserStory.Size = new Size(99, 25);
-            Label_UserStory.TabIndex = 4;
-            Label_UserStory.Text = "userStory";
+            TextBox_UserStoryName.Location = new Point(344, 3);
+            TextBox_UserStoryName.Name = "TextBox_UserStoryName";
+            TextBox_UserStoryName.Size = new Size(200, 23);
+            TextBox_UserStoryName.TabIndex = 7;
+            TextBox_UserStoryName.Enter += TextBox_UserStoryName_Enter;
+            TextBox_UserStoryName.KeyUp += TextBox_UserStoryName_KeyUp;
+            TextBox_UserStoryName.Leave += TextBox_UserStoryName_Leave;
             // 
             // FlowLayoutPanel_Controls
             // 
@@ -197,11 +196,10 @@
             FlowLayoutPanel_Controls.Controls.Add(label_pipe);
             FlowLayoutPanel_Controls.Controls.Add(TextBox_Category);
             FlowLayoutPanel_Controls.Controls.Add(ComboBox_Status);
+            FlowLayoutPanel_Controls.Controls.Add(TextBox_Version);
             FlowLayoutPanel_Controls.Controls.Add(label_pipe2);
             FlowLayoutPanel_Controls.Controls.Add(label_start);
             FlowLayoutPanel_Controls.Controls.Add(DateTimePicker_Start);
-            FlowLayoutPanel_Controls.Controls.Add(label_due);
-            FlowLayoutPanel_Controls.Controls.Add(DateTimePicker_Due);
             FlowLayoutPanel_Controls.Controls.Add(label_end);
             FlowLayoutPanel_Controls.Controls.Add(DateTimePicker_End);
             FlowLayoutPanel_Controls.Dock = DockStyle.Fill;
@@ -259,9 +257,19 @@
             ComboBox_Status.TabIndex = 15;
             ComboBox_Status.SelectedIndexChanged += ComboBox_Status_SelectedIndexChanged;
             // 
+            // TextBox_Version
+            // 
+            TextBox_Version.Location = new Point(493, 3);
+            TextBox_Version.Name = "TextBox_Version";
+            TextBox_Version.Size = new Size(100, 23);
+            TextBox_Version.TabIndex = 16;
+            TextBox_Version.Enter += TextBox_Version_Enter;
+            TextBox_Version.KeyUp += TextBox_Version_KeyUp;
+            TextBox_Version.Leave += TextBox_Version_Leave;
+            // 
             // label_pipe2
             // 
-            label_pipe2.Location = new Point(493, 0);
+            label_pipe2.Location = new Point(599, 0);
             label_pipe2.Name = "label_pipe2";
             label_pipe2.Size = new Size(10, 23);
             label_pipe2.TabIndex = 14;
@@ -270,7 +278,7 @@
             // 
             // label_start
             // 
-            label_start.Location = new Point(509, 0);
+            label_start.Location = new Point(615, 0);
             label_start.Margin = new Padding(3, 0, 0, 0);
             label_start.Name = "label_start";
             label_start.Size = new Size(35, 23);
@@ -281,34 +289,15 @@
             // DateTimePicker_Start
             // 
             DateTimePicker_Start.Format = DateTimePickerFormat.Short;
-            DateTimePicker_Start.Location = new Point(547, 3);
+            DateTimePicker_Start.Location = new Point(653, 3);
             DateTimePicker_Start.Name = "DateTimePicker_Start";
             DateTimePicker_Start.Size = new Size(100, 23);
             DateTimePicker_Start.TabIndex = 6;
             DateTimePicker_Start.ValueChanged += DateTimePicker_Start_ValueChanged;
             // 
-            // label_due
-            // 
-            label_due.Location = new Point(653, 0);
-            label_due.Margin = new Padding(3, 0, 0, 0);
-            label_due.Name = "label_due";
-            label_due.Size = new Size(31, 23);
-            label_due.TabIndex = 9;
-            label_due.Text = "Due:";
-            label_due.TextAlign = ContentAlignment.BottomRight;
-            // 
-            // DateTimePicker_Due
-            // 
-            DateTimePicker_Due.Format = DateTimePickerFormat.Short;
-            DateTimePicker_Due.Location = new Point(687, 3);
-            DateTimePicker_Due.Name = "DateTimePicker_Due";
-            DateTimePicker_Due.Size = new Size(100, 23);
-            DateTimePicker_Due.TabIndex = 10;
-            DateTimePicker_Due.ValueChanged += DateTimePicker_Due_ValueChanged;
-            // 
             // label_end
             // 
-            label_end.Location = new Point(793, 0);
+            label_end.Location = new Point(759, 0);
             label_end.Margin = new Padding(3, 0, 0, 0);
             label_end.Name = "label_end";
             label_end.Size = new Size(31, 23);
@@ -319,7 +308,7 @@
             // DateTimePicker_End
             // 
             DateTimePicker_End.Format = DateTimePickerFormat.Short;
-            DateTimePicker_End.Location = new Point(827, 3);
+            DateTimePicker_End.Location = new Point(793, 3);
             DateTimePicker_End.Name = "DateTimePicker_End";
             DateTimePicker_End.Size = new Size(100, 23);
             DateTimePicker_End.TabIndex = 12;
@@ -567,12 +556,9 @@
         private RichTextBox RichTextBox_Summary;
         private RichTextBox RichTextBox_TaskList;
         private Label Label_Status;
-        private Label Label_UserStory;
         private Label label_pipe;
         private Label label_start;
         private DateTimePicker DateTimePicker_Start;
-        private Label label_due;
-        private DateTimePicker DateTimePicker_Due;
         private Button Button_AddMedia;
         private Button Button_AddText;
         private Panel panel_referenceControls;
@@ -583,5 +569,7 @@
         private ComboBox ComboBox_Status;
         private LinkLabel LinkLabel_Start;
         private Label label_navigation_separator1;
+        private TextBox TextBox_UserStoryName;
+        private TextBox TextBox_Version;
     }
 }
