@@ -71,7 +71,7 @@ namespace Kahnban_ToDo
             TextBox_Version_Display();
             DataGridView_Status_Display();
 
-            Controls_Initialize();
+            Controls_State();
 
             isLoading = false;
         }
@@ -94,7 +94,7 @@ namespace Kahnban_ToDo
             DataGridView_Status_Display();
             References_Load(id);
 
-            Controls_Initialize();
+            Controls_State();
 
             isLoading = false;
         }
@@ -254,20 +254,30 @@ namespace Kahnban_ToDo
             ComboBox_Status.SelectedIndex = selectedIndex;
         }
 
-        private void Controls_Initialize()
+        private void Controls_State()
         {
-            // Determine user story editable state based on the status.
+            // Determine user story editable state based on the status and user story
+            string userStoryNameText = TextBox_UserStoryName.Text;
+            string userStoryName = userStoryNameText.Equals(PLACEHOLDER_USERSTORY) ? "" : userStoryNameText;
+            bool hasUserStoryName = userStoryName.Equals("") == false;
+
             string status = ComboBox_Status.Text;
             bool isInProgress = status.Equals(ITEMS_STATUS_RELEASED) == false;
 
-            Button_AddMedia.Enabled = isInProgress;
-            Button_AddText.Enabled = isInProgress;
-            ComboBox_Status.Enabled = isInProgress;
-            DateTimePicker_End.Enabled = isInProgress;
-            DateTimePicker_Start.Enabled = isInProgress;
-            TextBox_Category.Enabled = isInProgress;
-            RichTextBox_Summary.Enabled = isInProgress;
-            RichTextBox_TaskList.Enabled = isInProgress;
+            Button_AddMedia.Enabled = isInProgress && hasUserStoryName;
+            Button_AddText.Enabled = isInProgress && hasUserStoryName;
+            DateTimePicker_End.Enabled = isInProgress && hasUserStoryName;
+            DateTimePicker_Start.Enabled = isInProgress && hasUserStoryName;
+            TextBox_Category.Enabled = isInProgress && hasUserStoryName;
+            TextBox_Version.Enabled = isInProgress && hasUserStoryName;
+            RichTextBox_Summary.Enabled = isInProgress && hasUserStoryName;
+            RichTextBox_TaskList.Enabled = isInProgress && hasUserStoryName;
+
+            // This can be edited even if the project is set to "RELEASED"
+            ComboBox_Status.Enabled = hasUserStoryName;
+
+            // This can only be edited if this is in progress
+            TextBox_UserStoryName.Enabled = isInProgress;
         }
 
         private void DataGridView_StatusCount_Initialize()
@@ -323,6 +333,7 @@ namespace Kahnban_ToDo
         private void ComboBox_Status_SelectedIndexChanged(object sender, EventArgs e)
         {
             SaveUserStory();
+            Controls_State();
         }
         #endregion Interaction: ComboBox
 
@@ -462,6 +473,7 @@ namespace Kahnban_ToDo
         private void TextBox_UserStoryName_KeyUp(object sender, KeyEventArgs e)
         {
             SaveUserStory();
+            Controls_State();
         }
 
         private void TextBox_UserStoryName_Leave(object sender, EventArgs e)
