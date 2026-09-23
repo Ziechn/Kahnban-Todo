@@ -46,6 +46,10 @@ namespace Kahnban_ToDo
         private const string REFERENCE_FILE = "File";
         private const string REFERENCE_TEXT = "Text";
 
+        // Constants - Status Counts
+        private const string STATUS_COMPLETE = "COMPLETE";
+        private const string TEXT_TASKS = "Tasks";
+
         // Local Memory
         string _projectPath = "";
         UserStory? _userStory;
@@ -57,19 +61,18 @@ namespace Kahnban_ToDo
             ComboBox_Status_Initialize();
             DateTimePicker_End_Initialize();
             DateTimePicker_Start_Initialize();
-            DataGridView_StatusCount_Initialize();
 
             Project? project = AppStore.project;
             long projectId = project?.Id ?? -1;
             _projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
 
+            Label_TaskList_Display();
             LinkLabel_Organization_Display(project);
             LinkLabel_Project_Display(project);
 
             TextBox_Category_DiplayPlaceholder();
             TextBox_UserStoryName_Display();
             TextBox_Version_Display();
-            DataGridView_Status_Display();
 
             Controls_State();
 
@@ -82,16 +85,15 @@ namespace Kahnban_ToDo
             ComboBox_Status_Initialize();
             DateTimePicker_End_Initialize();
             DateTimePicker_Start_Initialize();
-            DataGridView_StatusCount_Initialize();
 
             long projectId = AppStore.project?.Id ?? -1;
             _projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
 
             UserStory_Load(id);
 
+            Label_TaskList_Display();
             TextBox_Category_DiplayPlaceholder();
             TextBox_Version_Display();
-            DataGridView_Status_Display();
             References_Load(id);
 
             Controls_State();
@@ -105,33 +107,25 @@ namespace Kahnban_ToDo
             ComboBox_Status.Text = userStory.Status;
         }
 
-        private void DataGridView_Status_Display()
+        private void Label_TaskList_Display()
         {
-            string textBoxText = RichTextBox_TaskList.Text.ToUpper();
+            string taskList = RichTextBox_TaskList.Text.ToUpper();
 
-            Controller controller = new();
-            List<StatusCount> statusCounts = controller.CountStatuses(textBoxText);
-            foreach (StatusCount statusCount in statusCounts)
+            int taskCount = 0;
+            if (taskList.Length > 0)
             {
-                string status = statusCount.Status;
-                DataGridViewRow? row = DataGridView_Status
-                    .Rows
-                    .Cast<DataGridViewRow>()
-                    .FirstOrDefault(
-                        row => row.Cells[COLUMN_STATUS].Value?.ToString() == status
-                        );
-
-                if (row == null)
-                {
-                    int index = DataGridView_Status.Rows.Add();
-                    row = DataGridView_Status.Rows[index];
-                    row.Cells[COLUMN_STATUS].Value = status;
-                }
-
-                int count = statusCount.Count;
-                row.Cells[COLUMN_COUNT].Value = count;
-                row.Visible = count > 0;
+                taskCount = taskList.Split('\n').Count(line => string.IsNullOrWhiteSpace(line) == false);
             }
+
+            // Count completed tasks.
+            Controller controller = new();
+            List<StatusCount> statusCounts = controller.CountStatuses(taskList);
+            int completeCount = statusCounts.FirstOrDefault(statusCount => statusCount.Status.Equals(STATUS_COMPLETE))?.Count ?? 0;
+            taskCount -= completeCount;
+
+            if (taskCount < 0) taskCount = 0;
+
+            Label_TaskList.Text = $"{TEXT_TASKS} (remaining: {taskCount})";
         }
 
         private void DataGridView_References_Display(DataTable dataTable)
@@ -280,12 +274,6 @@ namespace Kahnban_ToDo
             TextBox_UserStoryName.Enabled = isInProgress;
         }
 
-        private void DataGridView_StatusCount_Initialize()
-        {
-            DataGridView_Status.Columns.Add(COLUMN_STATUS, HEADER_STATUS);
-            DataGridView_Status.Columns.Add(COLUMN_COUNT, HEADER_COUNT);
-        }
-
         private void DateTimePicker_End_Initialize()
         {
             DateTimePicker_End.ShowCheckBox = true;
@@ -422,7 +410,7 @@ namespace Kahnban_ToDo
         private void RichTextBox_TaskList_KeyUp(object sender, KeyEventArgs e)
         {
             SaveUserStory();
-            DataGridView_Status_Display();
+            Label_TaskList_Display();
         }
         #endregion Interaction: RichTextBox
 
