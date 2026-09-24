@@ -33,13 +33,15 @@
             fileToolStripMenuItem = new ToolStripMenuItem();
             ToolStripMenuItem_SelectFolder = new ToolStripMenuItem();
             ToolStripMenuItem_Exit = new ToolStripMenuItem();
+            preferencesToolStripMenuItem = new ToolStripMenuItem();
+            ToolStripMenuItem_AssigneeManagement = new ToolStripMenuItem();
             Panel_Main = new Panel();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, preferencesToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1094, 24);
@@ -66,6 +68,20 @@
             ToolStripMenuItem_Exit.Size = new Size(141, 22);
             ToolStripMenuItem_Exit.Text = "Exit";
             ToolStripMenuItem_Exit.Click += ToolStripMenuItem_Exit_Click;
+            // 
+            // preferencesToolStripMenuItem
+            // 
+            preferencesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStripMenuItem_AssigneeManagement });
+            preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
+            preferencesToolStripMenuItem.Size = new Size(80, 20);
+            preferencesToolStripMenuItem.Text = "Preferences";
+            // 
+            // ToolStripMenuItem_AssigneeManagement
+            // 
+            ToolStripMenuItem_AssigneeManagement.Name = "ToolStripMenuItem_AssigneeManagement";
+            ToolStripMenuItem_AssigneeManagement.Size = new Size(180, 22);
+            ToolStripMenuItem_AssigneeManagement.Text = "Manage Contacts";
+            ToolStripMenuItem_AssigneeManagement.Click += ToolStripMenuItem_AssigneeManagement_Click;
             // 
             // Panel_Main
             // 
@@ -100,5 +116,7 @@
         private ToolStripMenuItem ToolStripMenuItem_Exit;
         private Panel Panel_Main;
         private ToolStripMenuItem ToolStripMenuItem_SelectFolder;
+        private ToolStripMenuItem preferencesToolStripMenuItem;
+        private ToolStripMenuItem ToolStripMenuItem_AssigneeManagement;
     }
 }

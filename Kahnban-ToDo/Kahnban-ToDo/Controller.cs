@@ -127,6 +127,12 @@ namespace Kahnban_ToDo
             return Directory.GetFiles(path, "*.json").ToList();
         }
 
+        public string GetFile(string path, string fileName)
+        {
+            string fullPath = Path.Combine(path, $"{fileName}.json");
+            return File.Exists(fullPath) ? fullPath : null;
+        }
+
         public List<string> GetStatusList()
         {
             List<string> statusList = new List<string>();

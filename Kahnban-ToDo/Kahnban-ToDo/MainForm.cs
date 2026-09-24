@@ -59,6 +59,12 @@ namespace Kahnban_ToDo
         #endregion Initialize
 
         #region Interaction ========================================
+        private void ToolStripMenuItem_AssigneeManagement_Click(object sender, EventArgs e)
+        {
+            ContactManagementForm form = new ContactManagementForm();
+            form.ShowDialog();
+        }
+
         private void ToolStripMenuItem_Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
