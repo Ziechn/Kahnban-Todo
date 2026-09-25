@@ -19,6 +19,7 @@ namespace Kahnban_ToDo
         private const string ITEM_STATUS_RELEASED = "RELEASED";
 
         // CONSTANTS - DataGridView Columns
+        private const string COLUMN_ASSIGNEE = "asignee";
         private const string COLUMN_CATEGORY = "category";
         private const string COLUMN_COUNT = "count";
         private const string COLUMN_DATE_END = "dateEnd";
@@ -35,6 +36,7 @@ namespace Kahnban_ToDo
         private const int DEFAULT_TASKS = 0;
 
         // CONSTANTS - DataGridView Headers
+        private const string HEADER_ASSIGNEE = "Asignee";
         private const string HEADER_CATEGORY = "Category";
         private const string HEADER_DATE_END = "End Date";
         private const string HEADER_ID = "ID";
@@ -263,10 +265,12 @@ namespace Kahnban_ToDo
             {
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
                 CellTemplate = new DataGridViewTextBoxCell(),
+                DefaultCellStyle = new DataGridViewCellStyle { Format = "MM/dd/yyyy" },
                 HeaderText = HEADER_DATE_END,
                 Name = COLUMN_DATE_END,
                 SortMode = DataGridViewColumnSortMode.Automatic,
-                Width = PROPERTY_WIDTH_DATE_END
+                Width = PROPERTY_WIDTH_DATE_END,
+                ValueType = typeof(DateTime)
             };
             DataGridView_UserStories.Columns.Add(endDateColumn);
 
@@ -700,7 +704,7 @@ namespace Kahnban_ToDo
                 userStory.Status,
                 taskList,
                 taskCount,
-                userStory.DateEnd?.ToShortDateString() ?? "",
+                userStory.DateEnd,
                 userStory.Version
                 );
         }
