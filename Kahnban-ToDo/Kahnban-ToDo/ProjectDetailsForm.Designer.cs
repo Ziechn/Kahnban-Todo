@@ -363,10 +363,6 @@
             DataGridView_UserStories.TabIndex = 1;
             DataGridView_UserStories.CellClick += DataGridView_UserStories_CellClick;
             DataGridView_UserStories.CellDoubleClick += DataGridView_UserStories_CellDoubleClick;
-            DataGridView_UserStories.CellEndEdit += DataGridView_UserStories_CellEndEdit;
-            DataGridView_UserStories.CellValueChanged += DataGridView_UserStories_CellValueChanged;
-            DataGridView_UserStories.CurrentCellDirtyStateChanged += DataGridView_UserStories_CurrentCellDirtyStateChanged;
-            DataGridView_UserStories.UserDeletingRow += DataGridView_UserStories_UserDeletingRow;
             // 
             // ProjectDetailsForm
             // 

@@ -19,13 +19,11 @@ namespace Kahnban_ToDo
         private const string ITEM_STATUS_RELEASED = "RELEASED";
 
         // CONSTANTS - DataGridView Columns
-        private const string COLUMN_ASSIGNEE = "asignee";
         private const string COLUMN_CATEGORY = "category";
         private const string COLUMN_COUNT = "count";
         private const string COLUMN_DATE_END = "dateEnd";
         private const string COLUMN_ID = "id";
         private const string COLUMN_STATUS = "status";
-        private const string COLUMN_SUMMARY = "summary";
         private const string COLUMN_TASKLIST = "taskList";
         private const string COLUMN_TASKS = "tasks";
         private const string COLUMN_USER_STORY = "userStory";
@@ -36,12 +34,10 @@ namespace Kahnban_ToDo
         private const int DEFAULT_TASKS = 0;
 
         // CONSTANTS - DataGridView Headers
-        private const string HEADER_ASSIGNEE = "Asignee";
         private const string HEADER_CATEGORY = "Category";
         private const string HEADER_DATE_END = "End Date";
         private const string HEADER_ID = "ID";
         private const string HEADER_STATUS = "Status";
-        private const string HEADER_SUMMARY = "Summary";
         private const string HEADER_TASKLIST = "Task List";
         private const string HEADER_TASKS = "Tasks";
         private const string HEADER_USER_STORY = "User Story";
@@ -220,7 +216,6 @@ namespace Kahnban_ToDo
             // Id Column
             DataGridView_UserStories.Columns.Add(COLUMN_ID, HEADER_ID);
             DataGridView_UserStories.Columns.Add(COLUMN_USER_STORY, HEADER_USER_STORY);
-            DataGridView_UserStories.Columns.Add(COLUMN_SUMMARY, HEADER_SUMMARY);
 
             // Category
             DataGridViewColumn categoryColumn = new DataGridViewColumn
@@ -288,7 +283,6 @@ namespace Kahnban_ToDo
 
             // Visibility
             DataGridView_UserStories.Columns[COLUMN_ID]?.Visible = false;
-            DataGridView_UserStories.Columns[COLUMN_SUMMARY]?.Visible = false;
             DataGridView_UserStories.Columns[COLUMN_TASKLIST]?.Visible = false;
         }
         #endregion Initialize
@@ -402,149 +396,12 @@ namespace Kahnban_ToDo
             Button_UserStory_Update_State(rowIndex);
         }
 
-        private void DataGridView_UserStories_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-            int rowIndex = e.RowIndex;
-
-            DataGridViewRow row = DataGridView_UserStories.Rows[rowIndex];
-            if (row == null) return;
-            if (row.IsNewRow) return;
-
-            Controller controller = new();
-
-            long projectId = AppStore.project?.Id ?? -1;
-            string projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
-
-            (bool isUserStoryValid, string userStoryName) = CellValue_String_Validate(row, COLUMN_USER_STORY);
-            if (isUserStoryValid == false) return;
-
-            UserStory? userStory = null;
-
-            (bool isIdValid, long id) = CellValue_Long_Validate(row, COLUMN_ID);
-            if (isIdValid)
-            {
-                userStory = controller.GetUserStory(projectPath, id);
-            }
-            else
-            {
-                id = controller.GenerateId();
-                row.Cells[COLUMN_ID]?.Value = id;
-                row.Cells[COLUMN_STATUS]?.Value = DEFAULT_STATUS;
-                row.Cells[COLUMN_TASKS]?.Value = DEFAULT_TASKS;
-
-                userStory = new UserStory();
-                userStory.Id = id;
-
-                userStory.Organization = AppStore.organization;
-                userStory.Project = AppStore.project?.Name ?? "";
-            }
-
-            if (userStory == null)
-            {
-                Debug.WriteLine("Error loading User Story");
-                return;
-            }
-
-            // BEGIN Map to User Story object
-            userStory.Name = userStoryName;
-
-            string category = DataGridViewUtilities.GetCellValue_String(row, COLUMN_CATEGORY);
-            userStory.Category = category;
-
-            string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
-            userStory.Status = status;
-
-            string version = DataGridViewUtilities.GetCellValue_String(row, COLUMN_VERSION);
-            userStory.Version = version;
-            // END Map to User Story object
-
-            // Create a Directory is non exists
-            controller.CreateDirectory(projectPath, id);
-            try
-            {
-                controller.Save(userStory, projectPath, id);
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception);
-            }
-
-            BeginInvoke(() => DataGridView_UserStories_FilterRows());
-        }
-
         private void DataGridView_UserStories_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowIndex = e.RowIndex;
             if (rowIndex < 0) return;
 
             Update_UserStory(rowIndex);
-        }
-
-        private void DataGridView_UserStories_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-
-            DataGridView_Status_Display();
-            ComboBox_Category_Load();
-
-            bool isStatusColumn = e.ColumnIndex == DataGridView_UserStories.Columns[COLUMN_STATUS].Index;
-            if (isStatusColumn == false) return;
-
-            DataGridView_UserStories_FilterRows();
-        }
-
-        private void DataGridView_UserStories_CurrentCellDirtyStateChanged(object sender, EventArgs e)
-        {
-            if (DataGridView_UserStories.IsCurrentCellDirty)
-            {
-                DataGridView_UserStories.CommitEdit(DataGridViewDataErrorContexts.Commit);
-            }
-        }
-
-        private void DataGridView_UserStories_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
-        {
-            if (e.Row == null) return;
-
-            DialogResult result = MessageBox.Show(
-                "Send this user story to the recycling bin?",
-                "Confirmation",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning
-                );
-
-            if (result == DialogResult.No)
-            {
-                e.Cancel = true;
-                return;
-            }
-
-            DataGridViewRow row = e.Row;
-            long userStoryId = DataGridViewUtilities.GetCellValue_Long(row, COLUMN_ID);
-
-            string organizationPath = AppStore.organizationPath;
-            string projectId = AppStore.project?.Id.ToString() ?? "";
-
-            string directoryPath = Path.Combine(organizationPath, projectId, userStoryId.ToString());
-            if (Directory.Exists(directoryPath))
-            {
-                FileSystem.DeleteDirectory(
-                    directoryPath,
-                    UIOption.OnlyErrorDialogs,
-                    RecycleOption.SendToRecycleBin
-                );
-            }
-
-            string fileName = $"{userStoryId}.json";
-            string filePath = Path.Combine(organizationPath, projectId, fileName);
-            if (File.Exists(filePath))
-            {
-                FileSystem.DeleteFile(
-                    filePath,
-                    UIOption.OnlyErrorDialogs,
-                    RecycleOption.SendToRecycleBin
-                );
-            }
         }
         #endregion Interaction: DataGridView
 
@@ -699,7 +556,6 @@ namespace Kahnban_ToDo
             DataGridView_UserStories.Rows.Add(
                 userStory.Id,
                 userStory.Name,
-                userStory.Summary,
                 userStory.Category,
                 userStory.Status,
                 taskList,
@@ -715,13 +571,6 @@ namespace Kahnban_ToDo
         {
             long cellValue = DataGridViewUtilities.GetCellValue_Long(row, columnName);
             bool isValid = cellValue > 0;
-            return (isValid, cellValue);
-        }
-
-        private (bool, string) CellValue_String_Validate(DataGridViewRow row, string columnName)
-        {
-            string cellValue = DataGridViewUtilities.GetCellValue_String(row, columnName);
-            bool isValid = cellValue.Equals("") == false;
             return (isValid, cellValue);
         }
         #endregion Validation

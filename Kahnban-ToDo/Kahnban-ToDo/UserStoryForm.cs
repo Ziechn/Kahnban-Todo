@@ -113,7 +113,7 @@ namespace Kahnban_ToDo
         #region Display ============================================
         private void ComboBox_Assignee_Display(UserStory userStory)
         {
-            long assigneeId = userStory.AssigneeId;
+            long assigneeId = userStory.AssigneeId ?? 0;
             if (assigneeId <= 0)
             {
                 ComboBox_Assignee.SelectedIndex = 0;
