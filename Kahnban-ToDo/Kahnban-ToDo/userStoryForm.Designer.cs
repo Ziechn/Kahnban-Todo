@@ -49,6 +49,7 @@
             Label_References = new Label();
             Label_Contact = new Label();
             flowLayoutPanel_assignee = new FlowLayoutPanel();
+            ComboBox_Assignee = new ComboBox();
             label_assignee = new Label();
             flowLayoutPanel_dateEnd = new FlowLayoutPanel();
             DateTimePicker_End = new DateTimePicker();
@@ -70,7 +71,6 @@
             RichTextBox_TaskList = new RichTextBox();
             Label_Summary = new Label();
             Label_TaskList = new Label();
-            ComboBox_Assignee = new ComboBox();
             TableLayoutPanel_Body.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
             FlowLayoutPanel_Controls.SuspendLayout();
@@ -365,6 +365,16 @@
             flowLayoutPanel_assignee.Size = new Size(238, 29);
             flowLayoutPanel_assignee.TabIndex = 4;
             // 
+            // ComboBox_Assignee
+            // 
+            ComboBox_Assignee.DropDownStyle = ComboBoxStyle.DropDownList;
+            ComboBox_Assignee.FormattingEnabled = true;
+            ComboBox_Assignee.Location = new Point(85, 3);
+            ComboBox_Assignee.Name = "ComboBox_Assignee";
+            ComboBox_Assignee.Size = new Size(150, 23);
+            ComboBox_Assignee.TabIndex = 1;
+            ComboBox_Assignee.SelectedIndexChanged += ComboBox_Assignee_SelectedIndexChanged;
+            // 
             // label_assignee
             // 
             label_assignee.AutoSize = true;
@@ -599,15 +609,6 @@
             Label_TaskList.TabIndex = 3;
             Label_TaskList.Text = "Tasks";
             Label_TaskList.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // ComboBox_Assignee
-            // 
-            ComboBox_Assignee.DropDownStyle = ComboBoxStyle.DropDownList;
-            ComboBox_Assignee.FormattingEnabled = true;
-            ComboBox_Assignee.Location = new Point(85, 3);
-            ComboBox_Assignee.Name = "ComboBox_Assignee";
-            ComboBox_Assignee.Size = new Size(150, 23);
-            ComboBox_Assignee.TabIndex = 1;
             // 
             // UserStoryForm
             // 

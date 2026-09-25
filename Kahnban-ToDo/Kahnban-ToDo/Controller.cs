@@ -10,6 +10,9 @@ namespace Kahnban_ToDo
 {
     internal class Controller
     {
+        // Constants
+        private const string FILENAME_CONTACT = "contacts";
+
         public int CountStatus(string status, string textBoxText)
         {
             return textBoxText.Split(status).Length - 1;
@@ -156,6 +159,29 @@ namespace Kahnban_ToDo
 
             UserStory? userStory = JsonSerializer.Deserialize<UserStory>(json);
             return userStory;
+        }
+
+        public List<Contact> ReadContacts()
+        {
+            string applicationPath = AppContext.BaseDirectory;
+
+            try
+            {
+                string? filePath = GetFile(applicationPath, FILENAME_CONTACT);
+
+                if (filePath is null)
+                {
+                    return new List<Contact>(); // no file yet, start empty
+                }
+
+                string json = File.ReadAllText(filePath);
+                return JsonSerializer.Deserialize<List<Contact>>(json) ?? new List<Contact>();
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+                return new List<Contact>();
+            }
         }
 
         public T? ReadObject<T>(string path, long id)

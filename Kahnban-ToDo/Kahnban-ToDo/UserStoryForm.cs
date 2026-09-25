@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Text;
 using System.Text.Json;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Kahnban_ToDo
@@ -17,6 +18,10 @@ namespace Kahnban_ToDo
         private const string ITEMS_STATUS_PENDING = "PENDING";
         private const string ITEMS_STATUS_RELEASED = "RELEASED";
         private const string ITEMS_STATUS_SELECT = "Select Status...";
+
+        // CONSTANTS - CONTACT METHOD
+        private const string CONTACT_EMAIL = "EMAIL";
+        private const string CONTACT_PHONE = "PHONE";
 
         // CONSTANTS - DATATABLEVIEW - References
         private const string HEADER_ID = "Id";
@@ -58,9 +63,11 @@ namespace Kahnban_ToDo
         public UserStoryForm()
         {
             InitializeComponent();
+            ComboBox_Assignee_Initialize();
             ComboBox_Status_Initialize();
             DateTimePicker_End_Initialize();
             DateTimePicker_Start_Initialize();
+            Label_Contact_Display();
 
             Project? project = AppStore.project;
             long projectId = project?.Id ?? -1;
@@ -82,9 +89,11 @@ namespace Kahnban_ToDo
         public UserStoryForm(long id)
         {
             InitializeComponent();
+            ComboBox_Assignee_Initialize();
             ComboBox_Status_Initialize();
             DateTimePicker_End_Initialize();
             DateTimePicker_Start_Initialize();
+            Label_Contact_Display();
 
             long projectId = AppStore.project?.Id ?? -1;
             _projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
@@ -102,6 +111,18 @@ namespace Kahnban_ToDo
         }
 
         #region Display ============================================
+        private void ComboBox_Assignee_Display(UserStory userStory)
+        {
+            long assigneeId = userStory.AssigneeId;
+            if (assigneeId <= 0)
+            {
+                ComboBox_Assignee.SelectedIndex = 0;
+                return;
+            }
+
+            ComboBox_Assignee.SelectedValue = assigneeId;
+        }
+        
         private void ComboBox_Status_Display(UserStory userStory)
         {
             ComboBox_Status.Text = userStory.Status;
@@ -145,6 +166,64 @@ namespace Kahnban_ToDo
             if (userStory.DateStart == null) return;
             DateTimePicker_Start.Value = userStory.DateStart.Value;
             DateTimePicker_Start.Checked = true;
+        }
+
+        private void Label_Contact_Display(Contact? contact = null)
+        {
+            string text = "";
+
+            if (contact == null)
+            {
+                Controller controller = new();
+                List<Contact> contacts = new List<Contact>();
+
+                try
+                {
+                    contacts = controller.ReadContacts();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    return;
+                }
+
+                Contact? selectedContact = ComboBox_Assignee.SelectedItem as Contact;
+                if (selectedContact == null)
+                {
+                    Label_Contact.Text = "";
+                    return;
+                }
+
+                contact = selectedContact;
+            }
+
+            string primaryContactMethod = contact.PrimaryContactMethod;
+
+            bool isEmptyContact = primaryContactMethod.Equals("");
+            bool isEmailContact = primaryContactMethod.ToUpper().Contains(CONTACT_EMAIL);
+            bool isPhoneContact = primaryContactMethod.ToUpper().Contains(CONTACT_PHONE);
+
+            if (isEmptyContact)
+            {
+                text = "";
+            }
+            else if (isPhoneContact)
+            {
+                string phoneNumber = contact.PhoneNumber;
+                text = $"Phone Number: {phoneNumber}";
+            }
+            else if (isEmailContact)
+            {
+                string email = contact.Email;
+                text = $"email: {email}";
+            }
+            else
+            {
+                string primaryContact = contact.PrimaryContact;
+                text = $"{primaryContactMethod} (username): {primaryContact}";
+            }
+
+            Label_Contact.Text = text;
         }
 
         private void LinkLabel_Organization_Display(Project? project)
@@ -227,6 +306,42 @@ namespace Kahnban_ToDo
         #endregion Event Handlers
 
         #region Initialize =========================================
+        private void ComboBox_Assignee_Initialize()
+        {
+            ComboBox_Assignee.Items.Clear();
+            List<Contact> contacts = new List<Contact>();
+            Contact contact = new(
+                "",
+                -1,
+                "Select an Assignee...",
+                "",
+                "",
+                ""
+                );
+
+            contacts.Add(contact);
+
+            Controller controller = new();
+            try
+            {
+                List<Contact> contactsToAdd = controller.ReadContacts();
+                contacts.AddRange(contactsToAdd);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return;
+            }
+
+            if (contacts.Count < 1) return;
+
+            ComboBox_Assignee.DataSource = contacts;
+            ComboBox_Assignee.DisplayMember = "Name";
+            ComboBox_Assignee.ValueMember = "Id";
+
+            ComboBox_Assignee.SelectedIndex = 0;
+        }
+
         private void ComboBox_Status_Initialize()
         {
             ComboBox_Status.Items.Clear();
@@ -260,6 +375,7 @@ namespace Kahnban_ToDo
 
             Button_AddMedia.Enabled = isInProgress && hasUserStoryName;
             Button_AddText.Enabled = isInProgress && hasUserStoryName;
+            ComboBox_Assignee.Enabled = isInProgress && hasUserStoryName;
             DateTimePicker_End.Enabled = isInProgress && hasUserStoryName;
             DateTimePicker_Start.Enabled = isInProgress && hasUserStoryName;
             TextBox_Category.Enabled = isInProgress && hasUserStoryName;
@@ -322,6 +438,14 @@ namespace Kahnban_ToDo
         {
             SaveUserStory();
             Controls_State();
+        }
+
+        private void ComboBox_Assignee_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SaveUserStory();
+
+            Contact? contact = ComboBox_Assignee.SelectedItem as Contact;
+            Label_Contact_Display(contact);
         }
         #endregion Interaction: ComboBox
 
@@ -543,6 +667,7 @@ namespace Kahnban_ToDo
 
             _userStory = userStory;
 
+            ComboBox_Assignee_Display(userStory);
             ComboBox_Status_Display(userStory);
             DateTimePicker_End_Display(userStory);
             DateTimePicker_Start_Display(userStory);
@@ -553,6 +678,8 @@ namespace Kahnban_ToDo
             TextBox_Category_Display(userStory);
             TextBox_UserStoryName_Display(userStory);
             TextBox_Version_Display(userStory);
+
+            Label_Contact_Display();
         }
         #endregion Load
 
@@ -626,6 +753,9 @@ namespace Kahnban_ToDo
 
             DateTime? startDate = DateTimePicker_Start.Checked ? DateTimePicker_Start.Value : null;
             userStory.DateStart = startDate;
+
+            long assigneeId = (long?)ComboBox_Assignee.SelectedValue ?? -1;
+            userStory.AssigneeId = assigneeId;
 
             try
             {

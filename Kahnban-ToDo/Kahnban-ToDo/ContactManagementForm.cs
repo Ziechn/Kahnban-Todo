@@ -53,17 +53,17 @@ namespace Kahnban_ToDo
 
             long id = DataGridViewUtilities.GetCellValue_Long(row, COLUMN_ID);
 
-            List<Contact>? contacts = Contacts_Load();
-            if (contacts == null || contacts.Count < 1) return;
-
-            int removed = contacts.RemoveAll(contact => contact.Id == id);
-            if (removed == 0) return;
-
             Controller controller = new();
             string application = Application.ExecutablePath;
             string applicationPath = Path.GetDirectoryName(application);
             try
             {
+                List<Contact>? contacts = controller.ReadContacts();
+                if (contacts == null || contacts.Count < 1) return;
+
+                int removed = contacts.RemoveAll(contact => contact.Id == id);
+                if (removed == 0) return;
+
                 controller.Save(contacts, applicationPath, FILENAME_CONTACT);
             }
             catch (Exception exception)
@@ -78,30 +78,6 @@ namespace Kahnban_ToDo
         private void Button_Contact_Delete_State(bool isEnabled)
         {
             Button_Contact_Delete.Enabled = isEnabled;
-        }
-
-        private List<Contact>? Contacts_Load()
-        {
-            Controller controller = new();
-            string applicationPath = AppContext.BaseDirectory;
-
-            try
-            {
-                string? filePath = controller.GetFile(applicationPath, FILENAME_CONTACT);
-
-                if (filePath is null)
-                {
-                    return new List<Contact>(); // no file yet, start empty
-                }
-
-                string json = File.ReadAllText(filePath);
-                return JsonSerializer.Deserialize<List<Contact>>(json) ?? new List<Contact>();
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception);
-                return new List<Contact>();
-            }
         }
 
         private void Contacts_Save()
@@ -168,6 +144,8 @@ namespace Kahnban_ToDo
         private void DataGridView_Contacts_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowIndex = e.RowIndex;
+            if (rowIndex < 0) return;
+
             bool isRowValid = false;
 
             DataGridViewRow row = DataGridView_Contacts.Rows[rowIndex];
@@ -210,8 +188,20 @@ namespace Kahnban_ToDo
         {
             DataGridView_Contacts.Rows.Clear();
 
-            List<Contact>? contacts = Contacts_Load();
-            if (contacts == null || contacts.Count < 1) return;
+            Controller controller = new();
+            List<Contact> contacts = new List<Contact>();
+
+            try
+            {
+                contacts = controller.ReadContacts();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return;
+            }
+
+            if (contacts.Count < 1) return;
 
             foreach (Contact contact in contacts)
             {
