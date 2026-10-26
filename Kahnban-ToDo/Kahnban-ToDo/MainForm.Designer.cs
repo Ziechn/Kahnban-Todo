@@ -79,7 +79,7 @@
             // ToolStripMenuItem_AssigneeManagement
             // 
             ToolStripMenuItem_AssigneeManagement.Name = "ToolStripMenuItem_AssigneeManagement";
-            ToolStripMenuItem_AssigneeManagement.Size = new Size(180, 22);
+            ToolStripMenuItem_AssigneeManagement.Size = new Size(167, 22);
             ToolStripMenuItem_AssigneeManagement.Text = "Manage Contacts";
             ToolStripMenuItem_AssigneeManagement.Click += ToolStripMenuItem_AssigneeManagement_Click;
             // 
@@ -102,7 +102,7 @@
             MainMenuStrip = menuStrip1;
             MinimumSize = new Size(960, 600);
             Name = "MainForm";
-            Text = "Projectz - 0.9.0";
+            Text = "Projectz - 0.9.1";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
