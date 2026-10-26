@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             TableLayoutPanel_Body = new TableLayoutPanel();
+            tableLayoutPanel_Navigtion = new TableLayoutPanel();
             FlowLayoutPanel_Navigation = new FlowLayoutPanel();
             LinkLabel_Start = new LinkLabel();
             label_navigation_separator1 = new Label();
@@ -72,6 +73,7 @@
             Label_Summary = new Label();
             Label_TaskList = new Label();
             TableLayoutPanel_Body.SuspendLayout();
+            tableLayoutPanel_Navigtion.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
             FlowLayoutPanel_Controls.SuspendLayout();
             TableLayoutPanel_Content.SuspendLayout();
@@ -91,7 +93,7 @@
             // 
             TableLayoutPanel_Body.ColumnCount = 1;
             TableLayoutPanel_Body.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_Body.Controls.Add(FlowLayoutPanel_Navigation, 0, 0);
+            TableLayoutPanel_Body.Controls.Add(tableLayoutPanel_Navigtion, 0, 0);
             TableLayoutPanel_Body.Controls.Add(FlowLayoutPanel_Controls, 0, 1);
             TableLayoutPanel_Body.Controls.Add(TableLayoutPanel_Content, 0, 2);
             TableLayoutPanel_Body.Dock = DockStyle.Fill;
@@ -105,21 +107,37 @@
             TableLayoutPanel_Body.Size = new Size(984, 561);
             TableLayoutPanel_Body.TabIndex = 0;
             // 
+            // tableLayoutPanel_Navigtion
+            // 
+            tableLayoutPanel_Navigtion.ColumnCount = 2;
+            tableLayoutPanel_Navigtion.ColumnStyles.Add(new ColumnStyle());
+            tableLayoutPanel_Navigtion.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel_Navigtion.Controls.Add(FlowLayoutPanel_Navigation, 0, 0);
+            tableLayoutPanel_Navigtion.Controls.Add(TextBox_UserStoryName, 1, 0);
+            tableLayoutPanel_Navigtion.Dock = DockStyle.Fill;
+            tableLayoutPanel_Navigtion.Location = new Point(0, 0);
+            tableLayoutPanel_Navigtion.Margin = new Padding(0);
+            tableLayoutPanel_Navigtion.Name = "tableLayoutPanel_Navigtion";
+            tableLayoutPanel_Navigtion.RowCount = 1;
+            tableLayoutPanel_Navigtion.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel_Navigtion.Size = new Size(984, 30);
+            tableLayoutPanel_Navigtion.TabIndex = 8;
+            // 
             // FlowLayoutPanel_Navigation
             // 
+            FlowLayoutPanel_Navigation.AutoSize = true;
             FlowLayoutPanel_Navigation.Controls.Add(LinkLabel_Start);
             FlowLayoutPanel_Navigation.Controls.Add(label_navigation_separator1);
             FlowLayoutPanel_Navigation.Controls.Add(LinkLabel_Organization);
             FlowLayoutPanel_Navigation.Controls.Add(label_navigation_separator2);
             FlowLayoutPanel_Navigation.Controls.Add(LinkLabel_Project);
             FlowLayoutPanel_Navigation.Controls.Add(label_navigation_separator3);
-            FlowLayoutPanel_Navigation.Controls.Add(TextBox_UserStoryName);
-            FlowLayoutPanel_Navigation.Dock = DockStyle.Fill;
             FlowLayoutPanel_Navigation.Location = new Point(0, 0);
             FlowLayoutPanel_Navigation.Margin = new Padding(0);
             FlowLayoutPanel_Navigation.Name = "FlowLayoutPanel_Navigation";
-            FlowLayoutPanel_Navigation.Size = new Size(984, 30);
+            FlowLayoutPanel_Navigation.Size = new Size(341, 25);
             FlowLayoutPanel_Navigation.TabIndex = 1;
+            FlowLayoutPanel_Navigation.WrapContents = false;
             // 
             // LinkLabel_Start
             // 
@@ -194,9 +212,10 @@
             // 
             // TextBox_UserStoryName
             // 
+            TextBox_UserStoryName.Dock = DockStyle.Fill;
             TextBox_UserStoryName.Location = new Point(344, 3);
             TextBox_UserStoryName.Name = "TextBox_UserStoryName";
-            TextBox_UserStoryName.Size = new Size(200, 23);
+            TextBox_UserStoryName.Size = new Size(637, 23);
             TextBox_UserStoryName.TabIndex = 7;
             TextBox_UserStoryName.Enter += TextBox_UserStoryName_Enter;
             TextBox_UserStoryName.KeyUp += TextBox_UserStoryName_KeyUp;
@@ -620,6 +639,8 @@
             Name = "UserStoryForm";
             Text = "userStoryForm";
             TableLayoutPanel_Body.ResumeLayout(false);
+            tableLayoutPanel_Navigtion.ResumeLayout(false);
+            tableLayoutPanel_Navigtion.PerformLayout();
             FlowLayoutPanel_Navigation.ResumeLayout(false);
             FlowLayoutPanel_Navigation.PerformLayout();
             FlowLayoutPanel_Controls.ResumeLayout(false);
@@ -692,5 +713,6 @@
         private FlowLayoutPanel flowLayoutPanel_category;
         private Label label_category;
         private ComboBox ComboBox_Assignee;
+        private TableLayoutPanel tableLayoutPanel_Navigtion;
     }
 }
