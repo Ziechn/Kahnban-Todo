@@ -124,14 +124,8 @@ namespace Kahnban_ToDo
         private void Button_Submit_State()
         {
             string name = TextBox_Name.Text.Trim();
-            string description = RichTextBox_Description.Text.Trim();
-
             bool hasName = string.IsNullOrEmpty(name) == false;
-            bool hasDescription = string.IsNullOrEmpty(description) == false;
-
-            bool isEnabled = hasName && hasDescription;
-
-            Button_Submit.Enabled = isEnabled;
+            Button_Submit.Enabled = hasName;
         }
 
         private void RichTextBox_Description_KeyUp(object sender, KeyEventArgs e)
