@@ -147,9 +147,10 @@ namespace Kahnban_ToDo
                 string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
 
                 bool isCancelled = status.Equals(ITEM_STATUS_CANCELLED);
+                bool isComplete = status.Equals(ITEM_STATUS_COMPLETE);
                 bool isReleased = status.Equals(ITEM_STATUS_RELEASED);
 
-                bool doNotAddToRemainingCount = isReleased || isCancelled;
+                bool doNotAddToRemainingCount = isReleased || isComplete || isCancelled;
                 if (doNotAddToRemainingCount) continue;
 
                 remaining += count;
@@ -171,9 +172,10 @@ namespace Kahnban_ToDo
                 string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
 
                 bool isCancelled = status.Equals(ITEM_STATUS_CANCELLED);
+                bool isComplete = status.Equals(ITEM_STATUS_COMPLETE);
                 bool isReleased = status.Equals(ITEM_STATUS_RELEASED);
 
-                bool doNotCount = isReleased || isCancelled;
+                bool doNotCount = isReleased || isComplete || isCancelled;
                 if (doNotCount) continue;
 
                 int tasks = DataGridViewUtilities.GetCellValue_Int(row, COLUMN_TASKS);
