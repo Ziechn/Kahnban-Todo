@@ -14,6 +14,7 @@ namespace Kahnban_ToDo
         private const string ITEM_CATEGORY_ALL = "All Categories";
         private const string ITEM_STATUS_BACKLOG = "BACKLOG";
         private const string ITEM_STATUS_CANCELLED = "CANCELLED";
+        private const string ITEM_STATUS_COMPLETE = "COMPLETE";
         private const string ITEM_STATUS_ALL = "All Statuses";
         private const string ITEM_STATUS_ALL_ACTIVE = "All Active Statuses";
         private const string ITEM_STATUS_RELEASED = "RELEASED";
@@ -532,6 +533,7 @@ namespace Kahnban_ToDo
 
                 string status = DataGridViewUtilities.GetCellValue_String(row, COLUMN_STATUS);
                 bool defaultHiddenStatus = status.Equals(ITEM_STATUS_CANCELLED)
+                    || status.Equals(ITEM_STATUS_COMPLETE)
                     || status.Equals(ITEM_STATUS_RELEASED)
                     || status.Equals(ITEM_STATUS_BACKLOG);
 
