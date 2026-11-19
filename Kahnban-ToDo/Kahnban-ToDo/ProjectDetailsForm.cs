@@ -59,6 +59,7 @@ namespace Kahnban_ToDo
 
         // Local Memory
         private int _categorySelectedIndex = 0;
+        private bool _isLoading = true;
 
         public ProjectDetailsForm()
         {
@@ -76,7 +77,12 @@ namespace Kahnban_ToDo
             Label_Status_Display();
             Label_UserStories_Display();
 
-            FormUtilities.DisplayPlaceholder(TextBox_UserStory, PLACEHOLDER_USER_STORY);
+            _isLoading = false;
+
+            // Select Filters
+            ComboBox_Category_Select();
+            ComboBox_Status_Select();
+            TextBox_UserStory_Select();
         }
 
         #region CRUD ===============================================
@@ -371,18 +377,20 @@ namespace Kahnban_ToDo
         #region Interaction: ComboBox ==============================
         private void ComboBox_Category_SelectedIndexChanged(object sender, EventArgs e)
         {
-            bool isEditing = DataGridView_UserStories.IsCurrentCellInEditMode;
-            if (isEditing) return;
-
             DataGridView_UserStories_FilterRows();
+
+            if (_isLoading) return;
+            int selectedIndex = ComboBox_Category.SelectedIndex;
+            AppStore.projectFilterCategory = selectedIndex;
         }
 
         private void ComboBox_Status_SelectedIndexChanged(object sender, EventArgs e)
         {
-            bool isEditing = DataGridView_UserStories.IsCurrentCellInEditMode;
-            if (isEditing) return;
-
             DataGridView_UserStories_FilterRows();
+
+            if (_isLoading) return;
+            int selectedIndex = ComboBox_Status.SelectedIndex;
+            AppStore.projectFilterStatus = selectedIndex;
         }
         #endregion Interaction: ComboBox
 
@@ -428,14 +436,28 @@ namespace Kahnban_ToDo
             FormUtilities.DisplayPlaceholder(TextBox_UserStory, PLACEHOLDER_USER_STORY);
         }
 
-        private void TextBox_UserStory_KeyUp(object sender, KeyEventArgs e)
-        {
-            DataGridView_UserStories_FilterRows();
-        }
-
         private void TextBox_UserStory_Leave(object sender, EventArgs e)
         {
             FormUtilities.DisplayPlaceholder(TextBox_UserStory, PLACEHOLDER_USER_STORY);
+        }
+
+        private void TextBox_UserStory_TextChanged(object sender, EventArgs e)
+        {
+            DataGridView_UserStories_FilterRows();
+
+            // Save the value of the search box if it's not empty nor the placeholder
+            string searchText = TextBox_UserStory.Text;
+            bool isEmpty = string.IsNullOrEmpty(searchText);
+            bool isPlaceholder = searchText.EndsWith(PLACEHOLDER_USER_STORY);
+
+            bool clearSave = isEmpty && isPlaceholder;
+            if (clearSave)
+            {
+                AppStore.projectFilterSearch = "";
+                return;
+            }
+
+            AppStore.projectFilterSearch = searchText;
         }
         #endregion Interaction: TextBox
 
@@ -565,6 +587,39 @@ namespace Kahnban_ToDo
                 );
         }
         #endregion Populate: DataGridView
+
+        #region Select =============================================
+        private void ComboBox_Category_Select()
+        {
+            int categoryStoreIndex = AppStore.projectFilterCategory;
+            bool isCategoryNull = categoryStoreIndex < 0;
+            if (isCategoryNull) return;
+
+            ComboBox_Category.SelectedIndex = categoryStoreIndex;
+        }
+
+        private void ComboBox_Status_Select()
+        {
+            int statusStoreIndex = AppStore.projectFilterStatus;
+            bool isStatusNull = statusStoreIndex < 0;
+            if (isStatusNull) return;
+
+            ComboBox_Status.SelectedIndex = statusStoreIndex;
+        }
+
+        private void TextBox_UserStory_Select()
+        {
+            string searchStoreValue = AppStore.projectFilterSearch;
+            bool isSearchNull = string.IsNullOrEmpty(searchStoreValue);
+            if (isSearchNull)
+            {
+                FormUtilities.DisplayPlaceholder(TextBox_UserStory, PLACEHOLDER_USER_STORY);
+                return;
+            }
+
+            TextBox_UserStory.Text = searchStoreValue;
+        }
+        #endregion Select
 
         #region Validation =========================================
         private (bool, long) CellValue_Long_Validate(DataGridViewRow row, string columnName)

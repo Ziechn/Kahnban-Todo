@@ -27,7 +27,11 @@ namespace Kahnban_ToDo
             Label_Organization_Display();
             Projects_Load();
 
+            // Reset the store
             AppStore.project = null;
+            AppStore.projectFilterCategory = -1;
+            AppStore.projectFilterSearch = "";
+            AppStore.projectFilterStatus = -1;
         }
 
         #region Display ============================================

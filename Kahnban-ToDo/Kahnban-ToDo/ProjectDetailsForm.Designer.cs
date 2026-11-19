@@ -193,8 +193,8 @@
             TextBox_UserStory.Name = "TextBox_UserStory";
             TextBox_UserStory.Size = new Size(125, 23);
             TextBox_UserStory.TabIndex = 4;
+            TextBox_UserStory.TextChanged += TextBox_UserStory_TextChanged;
             TextBox_UserStory.Enter += TextBox_UserStory_Enter;
-            TextBox_UserStory.KeyUp += TextBox_UserStory_KeyUp;
             TextBox_UserStory.Leave += TextBox_UserStory_Leave;
             // 
             // ComboBox_Category

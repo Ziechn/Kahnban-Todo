@@ -10,6 +10,9 @@ namespace Kahnban_ToDo
         public static string organization = "";
         public static string organizationPath = "";
         public static Project? project;
+        public static int projectFilterCategory = -1;
+        public static string projectFilterSearch = "";
+        public static int projectFilterStatus = -1;
         public static string userPath = "";
     }
 }
