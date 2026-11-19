@@ -82,6 +82,7 @@ namespace Kahnban_ToDo
             TextBox_Version_Display();
 
             Controls_State();
+            LinkLabel_DisableTabStop();
 
             isLoading = false;
         }
@@ -106,6 +107,7 @@ namespace Kahnban_ToDo
             References_Load(id);
 
             Controls_State();
+            LinkLabel_DisableTabStop();
 
             isLoading = false;
         }
@@ -122,7 +124,7 @@ namespace Kahnban_ToDo
 
             ComboBox_Assignee.SelectedValue = assigneeId;
         }
-        
+
         private void ComboBox_Status_Display(UserStory userStory)
         {
             ComboBox_Status.Text = userStory.Status;
@@ -302,6 +304,12 @@ namespace Kahnban_ToDo
         private void DataGridView_References_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             DataGridView_References.Columns[HEADER_ID]?.Visible = false;
+        }
+
+        private void UserStoryForm_Load(object sender, EventArgs e)
+        {
+            ActiveControl = TextBox_UserStoryName;
+            TextBox_UserStoryName.Focus();
         }
         #endregion Event Handlers
 
@@ -539,6 +547,13 @@ namespace Kahnban_ToDo
         #endregion Interaction: RichTextBox
 
         #region Interaction: LinkLabel =============================
+        private void LinkLabel_DisableTabStop()
+        {
+            LinkLabel_Organization.TabStop = false;
+            LinkLabel_Project.TabStop = false;
+            LinkLabel_Start.TabStop = false;
+        }
+
         private void LinkLabel_Organization_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             OrganizationForm organizationForm = new OrganizationForm();
