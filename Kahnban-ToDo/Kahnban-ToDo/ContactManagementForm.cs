@@ -181,7 +181,7 @@ namespace Kahnban_ToDo
 
         private void DataGridView_Contacts_KeyUp(object sender, KeyEventArgs e)
         {
-            Contacts_Save();
+            
         }
 
         private void DataGridView_Contacts_Populate()
@@ -214,6 +214,11 @@ namespace Kahnban_ToDo
                     contact.PrimaryContact
                     );
             }
+        }
+
+        private void DataGridView_Contacts_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            Contacts_Save();
         }
     }
 }

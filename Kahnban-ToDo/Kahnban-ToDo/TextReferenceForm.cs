@@ -27,6 +27,7 @@ namespace Kahnban_ToDo
         public TextReferenceForm(long userStoryId, long referenceId)
         {
             InitializeComponent();
+            StartPosition = FormStartPosition.CenterParent;
             _userStoryId = userStoryId;
 
             _textReference = ReadTextReference(referenceId);

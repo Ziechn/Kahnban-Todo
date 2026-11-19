@@ -65,7 +65,7 @@
             DataGridView_Contacts.Size = new Size(578, 300);
             DataGridView_Contacts.TabIndex = 1;
             DataGridView_Contacts.CellClick += DataGridView_Contacts_CellClick;
-            DataGridView_Contacts.KeyUp += DataGridView_Contacts_KeyUp;
+            DataGridView_Contacts.CellValueChanged += DataGridView_Contacts_CellValueChanged;
             // 
             // flowLayoutPanel_controls
             // 
