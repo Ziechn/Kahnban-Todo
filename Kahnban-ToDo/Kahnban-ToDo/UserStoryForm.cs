@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Text;
 using System.Text.Json;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Kahnban_ToDo
 {
@@ -27,12 +19,6 @@ namespace Kahnban_ToDo
         private const string HEADER_ID = "Id";
         private const string HEADER_TITLE = "Title";
         private const string HEADER_TYPE = "Type";
-
-        // CONSTANTS - DATAGRIDVIEW - Status
-        private const string COLUMN_COUNT = "count";
-        private const string COLUMN_STATUS = "status";
-        private const string HEADER_COUNT = "Count";
-        private const string HEADER_STATUS = "Status";
 
         // CONSTANTS - PLACEHOLDERS
         private const string PLACEHOLDER_CATEGORY = "Enter Category...";
@@ -74,8 +60,8 @@ namespace Kahnban_ToDo
             _projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
 
             Label_TaskList_Display();
-            LinkLabel_Organization_Display(project);
-            LinkLabel_Project_Display(project);
+            LinkLabel_Organization_Display();
+            LinkLabel_Project_Display();
 
             TextBox_Category_DiplayPlaceholder();
             TextBox_UserStoryName_Display();
@@ -100,6 +86,9 @@ namespace Kahnban_ToDo
             _projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
 
             UserStory_Load(id);
+
+            LinkLabel_Organization_Display();
+            LinkLabel_Project_Display();
 
             Label_TaskList_Display();
             TextBox_Category_DiplayPlaceholder();
@@ -228,26 +217,14 @@ namespace Kahnban_ToDo
             Label_Contact.Text = text;
         }
 
-        private void LinkLabel_Organization_Display(Project? project)
+        private void LinkLabel_Organization_Display()
         {
-            if (project == null) return;
-            LinkLabel_Organization.Text = project.Organization;
+            LinkLabel_Organization.Text = AppStore.organization;
         }
 
-        private void LinkLabel_Organization_Display(UserStory userStory)
+        private void LinkLabel_Project_Display()
         {
-            LinkLabel_Organization.Text = userStory.Organization;
-        }
-
-        private void LinkLabel_Project_Display(Project? project)
-        {
-            if (project == null) return;
-            LinkLabel_Project.Text = project.Name;
-        }
-
-        private void LinkLabel_Project_Display(UserStory userStory)
-        {
-            LinkLabel_Project.Text = userStory.Project;
+            LinkLabel_Project.Text = AppStore.project?.Name ?? "";
         }
 
         private void TableLayoutPanel_Content_Display()
@@ -686,8 +663,6 @@ namespace Kahnban_ToDo
             ComboBox_Status_Display(userStory);
             DateTimePicker_End_Display(userStory);
             DateTimePicker_Start_Display(userStory);
-            LinkLabel_Organization_Display(userStory);
-            LinkLabel_Project_Display(userStory);
             RichTextBox_Summary_Populate(userStory);
             RichTextBox_TaskList_Populate(userStory);
             TextBox_Category_Display(userStory);

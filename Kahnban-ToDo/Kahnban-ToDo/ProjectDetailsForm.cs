@@ -1,9 +1,4 @@
-﻿using Microsoft.VisualBasic.FileIO;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text.Json;
 
 namespace Kahnban_ToDo
@@ -29,10 +24,6 @@ namespace Kahnban_ToDo
         private const string COLUMN_TASKS = "tasks";
         private const string COLUMN_USER_STORY = "userStory";
         private const string COLUMN_VERSION = "version";
-
-        // CONSTANTS  DataGridView Defaults
-        private const string DEFAULT_STATUS = "PENDING";
-        private const int DEFAULT_TASKS = 0;
 
         // CONSTANTS - DataGridView Headers
         private const string HEADER_CATEGORY = "Category";

@@ -115,10 +115,18 @@ namespace Kahnban_ToDo
             }
 
             Projects_Load();
+            Button_Project_Delete_State();
+            Button_Project_Edit_State();
         }
 
-        private void Button_Project_Delete_State(int rowIndex)
+        private void Button_Project_Delete_State(int rowIndex = -1)
         {
+            if (rowIndex < 0)
+            {
+                Button_Project_Delete.Enabled = false;
+                return;
+            }
+
             DataGridViewRow row = DataGridView_Projects.Rows[rowIndex];
             if (row == null) return;
 
@@ -140,10 +148,18 @@ namespace Kahnban_ToDo
             projectForm.ShowDialog();
 
             Projects_Load();
+            Button_Project_Delete_State();
+            Button_Project_Edit_State();
         }
 
-        private void Button_Project_Edit_State(int rowIndex)
+        private void Button_Project_Edit_State(int rowIndex = -1)
         {
+            if (rowIndex < 0)
+            {
+                Button_Project_Edit.Enabled = false;
+                return;
+            }
+
             DataGridViewRow row = DataGridView_Projects.Rows[rowIndex];
             if (row == null) return;
 
