@@ -12,7 +12,9 @@ namespace Kahnban_ToDo
         private const string ITEM_STATUS_COMPLETE = "COMPLETE";
         private const string ITEM_STATUS_ALL = "All Statuses";
         private const string ITEM_STATUS_ALL_ACTIVE = "All Active Statuses";
+        private const string ITEMS_STATUS_PENDING = "PENDING";
         private const string ITEM_STATUS_RELEASED = "RELEASED";
+        private const string ITEMS_STATUS_SELECT = "Select Status...";
 
         // CONSTANTS - DataGridView Columns
         private const string COLUMN_CATEGORY = "category";
@@ -44,6 +46,7 @@ namespace Kahnban_ToDo
 
         // CONSTANTS - PLACEHOLDERS
         private const string PLACEHOLDER_USER_STORY = "Search...";
+        private const string PLACEHOLDER_VERSION = "Enter Version...";
 
         // CONSTANTS - TABLE LAYOUT PANELS
         private const int COLUMN_SIDEBAR_INDEX = 0;
@@ -58,16 +61,21 @@ namespace Kahnban_ToDo
             InitializeComponent();
             DataGridView_UserStories_Intialize();
             ComboBox_Status_Initialize();
+            ComboBox_Status_Filter_Initialize();
 
             Label_Project_Display();
             LinkLabel_Organization_Display();
             DataGridView_UserStories_Load();
 
             DataGridView_Status_Display();
-            ComboBox_Category_Load();
+            ComboBox_Category_Filter_Load();
 
             Label_Status_Display();
             Label_UserStories_Display();
+
+            // Load Project
+            ComboBox_Status_Display();
+            TextBox_Version_Display();
 
             _isLoading = false;
 
@@ -148,7 +156,7 @@ namespace Kahnban_ToDo
             }
 
             string text = $"Status (total: {total}, remaining: {remaining})";
-            Label_Status.Text = text;
+            Label_Statuses.Text = text;
         }
 
         private void Label_UserStories_Display()
@@ -188,24 +196,71 @@ namespace Kahnban_ToDo
             bool isHidden = columnWidth == 0;
             TableLayoutPanel_Content.ColumnStyles[COLUMN_SIDEBAR_INDEX].Width = isHidden ? COLUMN_SIDEBAR_SIZE : 0;
         }
+
+        private void ComboBox_Status_Display()
+        {
+            Project? project = AppStore.project;
+            if (project == null) return;
+
+            string status = project.Status;
+            ComboBox_Status.Text = status;
+        }
+
+        private void TextBox_Version_Display()
+        {
+            Project? project = AppStore.project;
+            if (project == null)
+            {
+                FormUtilities.DisplayPlaceholder(Textbox_Version, PLACEHOLDER_VERSION);
+                return;
+            }
+
+            string version = project.Version;
+            bool hasNoVersion = string.IsNullOrEmpty(version);
+            if (hasNoVersion)
+            {
+                FormUtilities.DisplayPlaceholder(Textbox_Version, PLACEHOLDER_VERSION);
+                return;
+            }
+
+            Textbox_Version.Text = version;
+        }
         #endregion Display
 
         #region Initialize =========================================
         private void ComboBox_Status_Initialize()
         {
             ComboBox_Status.Items.Clear();
-            ComboBox_Status.Items.Add(ITEM_STATUS_ALL);
-            ComboBox_Status.Items.Add(ITEM_STATUS_ALL_ACTIVE);
+            ComboBox_Status.Items.Add(ITEMS_STATUS_SELECT);
+
+            Controller controller = new();
+            List<string> statusList = controller.GetStatusList();
+            int selectedIndex = 0;
+
+            for (int i = 0; i < statusList.Count; i++)
+            {
+                string status = statusList[i];
+                ComboBox_Status.Items.Add(status);
+            }
+
+            ComboBox_Status.SelectedIndex = selectedIndex;
+        }
+
+        private void ComboBox_Status_Filter_Initialize()
+        {
+            ComboBox_Status_Filter.Items.Clear();
+            ComboBox_Status_Filter.Items.Add(ITEM_STATUS_ALL);
+            ComboBox_Status_Filter.Items.Add(ITEM_STATUS_ALL_ACTIVE);
 
             Controller controller = new();
             List<string> statusList = controller.GetStatusList();
 
             foreach (string status in statusList)
             {
-                ComboBox_Status.Items.Add(status);
+                ComboBox_Status_Filter.Items.Add(status);
             }
 
-            ComboBox_Status.SelectedIndex = 1;
+            ComboBox_Status_Filter.SelectedIndex = 1;
         }
 
         private void DataGridView_UserStories_Intialize()
@@ -330,7 +385,7 @@ namespace Kahnban_ToDo
 
             DataGridView_UserStories_Load();
 
-            ComboBox_Category_Load();
+            ComboBox_Category_Filter_Load();
 
             Label_Status_Display();
             Label_UserStories_Display();
@@ -369,22 +424,27 @@ namespace Kahnban_ToDo
         #endregion Interaction: Button
 
         #region Interaction: ComboBox ==============================
-        private void ComboBox_Category_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBox_Category_Filter_SelectedIndexChanged(object sender, EventArgs e)
         {
             DataGridView_UserStories_FilterRows();
 
             if (_isLoading) return;
-            int selectedIndex = ComboBox_Category.SelectedIndex;
+            int selectedIndex = ComboBox_Category_Filter.SelectedIndex;
             AppStore.projectFilterCategory = selectedIndex;
         }
 
-        private void ComboBox_Status_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBox_Status_Filter_SelectedIndexChanged(object sender, EventArgs e)
         {
             DataGridView_UserStories_FilterRows();
 
             if (_isLoading) return;
             int selectedIndex = ComboBox_Status.SelectedIndex;
             AppStore.projectFilterStatus = selectedIndex;
+        }
+
+        private void ComboBox_Status_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SaveProjectDetails();
         }
         #endregion Interaction: ComboBox
 
@@ -425,14 +485,29 @@ namespace Kahnban_ToDo
         #endregion Interaction: LinkLabel
 
         #region Interaction: TextBox ===============================
+        private void Textbox_Version_Enter(object sender, EventArgs e)
+        {
+            FormUtilities.DisplayPlaceholder(Textbox_Version, PLACEHOLDER_VERSION);
+        }
+
+        private void Textbox_Version_KeyUp(object sender, KeyEventArgs e)
+        {
+            SaveProjectDetails();
+        }
+
+        private void Textbox_Version_Leave(object sender, EventArgs e)
+        {
+            FormUtilities.DisplayPlaceholder(Textbox_Version, PLACEHOLDER_VERSION);
+        }
+
         private void TextBox_UserStory_Enter(object sender, EventArgs e)
         {
-            FormUtilities.DisplayPlaceholder(TextBox_UserStory, PLACEHOLDER_USER_STORY);
+            FormUtilities.DisplayPlaceholder(TextBox_UserStory_Search, PLACEHOLDER_USER_STORY);
         }
 
         private void TextBox_UserStory_Leave(object sender, EventArgs e)
         {
-            FormUtilities.DisplayPlaceholder(TextBox_UserStory, PLACEHOLDER_USER_STORY);
+            FormUtilities.DisplayPlaceholder(TextBox_UserStory_Search, PLACEHOLDER_USER_STORY);
         }
 
         private void TextBox_UserStory_TextChanged(object sender, EventArgs e)
@@ -440,7 +515,7 @@ namespace Kahnban_ToDo
             DataGridView_UserStories_FilterRows();
 
             // Save the value of the search box if it's not empty nor the placeholder
-            string searchText = TextBox_UserStory.Text;
+            string searchText = TextBox_UserStory_Search.Text;
             bool isEmpty = string.IsNullOrEmpty(searchText);
             bool isPlaceholder = searchText.EndsWith(PLACEHOLDER_USER_STORY);
 
@@ -456,10 +531,10 @@ namespace Kahnban_ToDo
         #endregion Interaction: TextBox
 
         #region Load ===============================================
-        private void ComboBox_Category_Load()
+        private void ComboBox_Category_Filter_Load()
         {
-            ComboBox_Category.Items.Clear();
-            ComboBox_Category.Items.Add(ITEM_CATEGORY_ALL);
+            ComboBox_Category_Filter.Items.Clear();
+            ComboBox_Category_Filter.Items.Add(ITEM_CATEGORY_ALL);
 
             foreach (DataGridViewRow row in DataGridView_UserStories.Rows)
             {
@@ -469,13 +544,13 @@ namespace Kahnban_ToDo
                 bool isEmpty = string.IsNullOrEmpty(category);
                 if (isEmpty) continue;
 
-                bool isInList = ComboBox_Category.Items.Contains(category);
+                bool isInList = ComboBox_Category_Filter.Items.Contains(category);
                 if (isInList) continue;
 
-                ComboBox_Category.Items.Add(category);
+                ComboBox_Category_Filter.Items.Add(category);
             }
 
-            ComboBox_Category.SelectedIndex = _categorySelectedIndex;
+            ComboBox_Category_Filter.SelectedIndex = _categorySelectedIndex;
         }
 
         private void DataGridView_UserStories_Load()
@@ -506,11 +581,11 @@ namespace Kahnban_ToDo
         #region Logic ==============================================
         private void DataGridView_UserStories_FilterRows()
         {
-            string text = TextBox_UserStory.Text.ToUpper();
+            string text = TextBox_UserStory_Search.Text.ToUpper();
             text = text.Equals(PLACEHOLDER_USER_STORY.ToUpper()) ? string.Empty : text;
 
-            string selectedCategory = ComboBox_Category.Text;
-            string selectedStatus = ComboBox_Status.Text;
+            string selectedCategory = ComboBox_Category_Filter.Text;
+            string selectedStatus = ComboBox_Status_Filter.Text;
 
             foreach (DataGridViewRow row in DataGridView_UserStories.Rows)
             {
@@ -583,6 +658,43 @@ namespace Kahnban_ToDo
         }
         #endregion Populate: DataGridView
 
+        #region Save ===============================================
+        private void SaveProjectDetails()
+        {
+            if (_isLoading) return;
+            Controller controller = new();
+
+            Project? project = AppStore.project;
+            if (project == null) return;
+
+            long id = project.Id;
+
+            // Status
+            bool hasStatus = ComboBox_Status.SelectedIndex > 0;
+            string status = hasStatus ? ComboBox_Status.Text : "";
+            project.Status = status;
+
+            // Version
+            string versionText = Textbox_Version.Text;
+            bool hasVersion = versionText.Equals(PLACEHOLDER_VERSION) == false && string.IsNullOrEmpty(versionText) == false;
+            string version = hasVersion ? versionText : "";
+            project.Version = version;
+
+            // Save
+            string organizationPath = AppStore.organizationPath;
+            try
+            {
+                controller.CreateDirectory(organizationPath, id);
+                controller.Save(project, organizationPath, id);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+                return;
+            }
+        }
+        #endregion Save
+
         #region Select =============================================
         private void ComboBox_Category_Select()
         {
@@ -590,7 +702,7 @@ namespace Kahnban_ToDo
             bool isCategoryNull = categoryStoreIndex < 0;
             if (isCategoryNull) return;
 
-            ComboBox_Category.SelectedIndex = categoryStoreIndex;
+            ComboBox_Category_Filter.SelectedIndex = categoryStoreIndex;
         }
 
         private void ComboBox_Status_Select()
@@ -608,11 +720,11 @@ namespace Kahnban_ToDo
             bool isSearchNull = string.IsNullOrEmpty(searchStoreValue);
             if (isSearchNull)
             {
-                FormUtilities.DisplayPlaceholder(TextBox_UserStory, PLACEHOLDER_USER_STORY);
+                FormUtilities.DisplayPlaceholder(TextBox_UserStory_Search, PLACEHOLDER_USER_STORY);
                 return;
             }
 
-            TextBox_UserStory.Text = searchStoreValue;
+            TextBox_UserStory_Search.Text = searchStoreValue;
         }
         #endregion Select
 

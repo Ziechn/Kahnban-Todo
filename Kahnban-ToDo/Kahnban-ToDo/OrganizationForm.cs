@@ -1,4 +1,3 @@
-using System.Data.Common;
 using System.Diagnostics;
 using System.Text.Json;
 
@@ -10,14 +9,20 @@ namespace Kahnban_ToDo
         private const string COLUMN_DESCRIPTION = "description";
         private const string COLUMN_ID = "id";
         private const string COLUMN_PROJECT = "project";
+        private const string COLUMN_STATUS = "status";
+        private const string COLUMN_VERSION = "version";
 
         // CONSTANTS - DataGridView Headers
         private const string HEADER_DESCRIPTION = "Description";
         private const string HEADER_ID = "ID";
         private const string HEADER_PROJECT = "Project";
+        private const string HEADER_STATUS = "Status";
+        private const string HEADER_VERSION = "Version";
 
         // CONSTANTS - DataGridView Properties
         private const int PROPERTY_WIDTH_PROJECT = 250;
+        private const int PROPERTY_WIDTH_STATUS = 100;
+        private const int PROPERTY_WIDTH_VERSION = 100;
 
         public OrganizationForm()
         {
@@ -64,6 +69,32 @@ namespace Kahnban_ToDo
 
             // Description Column
             DataGridView_Projects.Columns.Add(COLUMN_DESCRIPTION, HEADER_DESCRIPTION);
+
+            // Status Column
+            DataGridViewColumn statusColumn = new DataGridViewColumn
+            {
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                CellTemplate = new DataGridViewTextBoxCell(),
+                HeaderText = HEADER_STATUS,
+                Name = COLUMN_STATUS,
+                SortMode = DataGridViewColumnSortMode.Automatic,
+                Width = PROPERTY_WIDTH_STATUS
+            };
+
+            DataGridView_Projects.Columns.Add(statusColumn);
+
+            // Version Column
+            DataGridViewColumn versionColumn = new DataGridViewColumn
+            {
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                CellTemplate = new DataGridViewTextBoxCell(),
+                HeaderText = HEADER_VERSION,
+                Name = COLUMN_VERSION,
+                SortMode = DataGridViewColumnSortMode.Automatic,
+                Width = PROPERTY_WIDTH_VERSION
+            };
+
+            DataGridView_Projects.Columns.Add(versionColumn);
 
             // Formatting
             DataGridView_Projects.Columns[COLUMN_ID]?.Visible = false;
@@ -189,46 +220,25 @@ namespace Kahnban_ToDo
             (bool isIdValid, long id) = CellValue_Long_Validate(row, COLUMN_ID);
             if (isIdValid == false) return;
 
-            string projectName = DataGridViewUtilities.GetCellValue_String(row, COLUMN_PROJECT);
-            string description = DataGridViewUtilities.GetCellValue_String(row, COLUMN_DESCRIPTION);
+            Project? project = null;
+            Controller controller = new();
 
-            Project project = new(
-                id,
-                projectName,
-                description,
-                AppStore.organization
-                );
+            string organizationPath = AppStore.organizationPath;
+
+            try
+            {
+                project = controller.ReadObject<Project>(organizationPath, id);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+                return;
+            }
 
             AppStore.project = project;
 
             ProjectDetailsForm projectform = new ProjectDetailsForm();
             FormUtilities.NavigateTo(projectform);
-        }
-
-        private void DataGridView_Projects_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
-        {
-            if (e.Row == null) return;
-            DataGridViewRow row = e.Row;
-
-            (bool isValid, long id) = CellValue_Long_Validate(row, COLUMN_ID);
-            if (isValid == false) return;
-
-            string projectName = DataGridViewUtilities.GetCellValue_String(row, COLUMN_PROJECT);
-            string message = $"Are you sure you want to delete project: {projectName}?";
-
-            DialogResult result = MessageBox.Show(
-                message,
-                "Confirm Delete",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning
-                );
-
-            if (result == DialogResult.No) return;
-
-            string fileName = $"{id}.json";
-            string path = Path.Combine(AppStore.organizationPath, fileName);
-
-            File.Delete(path);
         }
 
         private void LinkLabel_Start_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -280,7 +290,9 @@ namespace Kahnban_ToDo
                 DataGridView_Projects.Rows.Add(
                 project.Id,
                 project.Name,
-                project.Description
+                project.Description,
+                project.Status,
+                project.Version
                 );
             }
         }

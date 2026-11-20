@@ -148,7 +148,7 @@
             LinkLabel_Start.Name = "LinkLabel_Start";
             LinkLabel_Start.Size = new Size(56, 25);
             LinkLabel_Start.TabIndex = 99;
-            LinkLabel_Start.TabStop = false;
+            LinkLabel_Start.TabStop = true;
             LinkLabel_Start.Text = "Start";
             LinkLabel_Start.LinkClicked += LinkLabel_Start_LinkClicked;
             // 
@@ -171,7 +171,7 @@
             LinkLabel_Organization.Name = "LinkLabel_Organization";
             LinkLabel_Organization.Size = new Size(126, 25);
             LinkLabel_Organization.TabIndex = 99;
-            LinkLabel_Organization.TabStop = false;
+            LinkLabel_Organization.TabStop = true;
             LinkLabel_Organization.Text = "organization";
             LinkLabel_Organization.LinkClicked += LinkLabel_Organization_LinkClicked;
             // 
@@ -195,7 +195,7 @@
             LinkLabel_Project.Name = "LinkLabel_Project";
             LinkLabel_Project.Size = new Size(75, 25);
             LinkLabel_Project.TabIndex = 99;
-            LinkLabel_Project.TabStop = false;
+            LinkLabel_Project.TabStop = true;
             LinkLabel_Project.Text = "project";
             LinkLabel_Project.LinkClicked += LinkLabel_Project_LinkClicked;
             // 

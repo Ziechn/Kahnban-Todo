@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace Kahnban_ToDo
+﻿namespace Kahnban_ToDo
 {
     public class Project
     {
@@ -11,6 +9,8 @@ namespace Kahnban_ToDo
         public long Id { get; set; }
         public string Name { get; set; } = "";
         public string Organization { get; set; } = "";
+        public string Status { get; set; } = "";
+        public string Version { get; set; } = "";
 
         public Project()
         {
@@ -19,12 +19,14 @@ namespace Kahnban_ToDo
             Organization = "";
         }
 
-        public Project(long id, string name, string description, string organization)
+        public Project(long id, string name, string description, string organization, string status, string version)
         {
             Id = id;
             Name = name;
             Description = description;
             Organization = organization;
+            Status = status;
+            Version = version;
         }
     }
 }

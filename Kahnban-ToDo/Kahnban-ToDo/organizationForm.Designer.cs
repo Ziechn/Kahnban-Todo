@@ -130,7 +130,6 @@
             DataGridView_Projects.TabIndex = 1;
             DataGridView_Projects.CellClick += DataGridView_Projects_CellClick;
             DataGridView_Projects.CellDoubleClick += DataGridView_Projects_CellDoubleClick;
-            DataGridView_Projects.UserDeletingRow += DataGridView_Projects_UserDeletingRow;
             // 
             // Label_Projects
             // 
