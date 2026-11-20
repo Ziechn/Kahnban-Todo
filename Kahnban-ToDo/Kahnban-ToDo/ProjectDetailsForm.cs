@@ -438,7 +438,7 @@ namespace Kahnban_ToDo
             DataGridView_UserStories_FilterRows();
 
             if (_isLoading) return;
-            int selectedIndex = ComboBox_Status.SelectedIndex;
+            int selectedIndex = ComboBox_Status_Filter.SelectedIndex;
             AppStore.projectFilterStatus = selectedIndex;
         }
 
@@ -711,7 +711,7 @@ namespace Kahnban_ToDo
             bool isStatusNull = statusStoreIndex < 0;
             if (isStatusNull) return;
 
-            ComboBox_Status.SelectedIndex = statusStoreIndex;
+            ComboBox_Status_Filter.SelectedIndex = statusStoreIndex;
         }
 
         private void TextBox_UserStory_Select()
