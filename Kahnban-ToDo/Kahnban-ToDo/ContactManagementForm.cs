@@ -31,6 +31,9 @@ namespace Kahnban_ToDo
         private const string HEADER_PHONE = "Phone Number";
         private const string HEADER_PRIMARY = "Contact (username)";
 
+        // Local Memory
+        List<long> deletedContactIds = new List<long>();
+        bool hasEditedContacts = false;
 
         public ContactManagementForm()
         {
@@ -39,6 +42,52 @@ namespace Kahnban_ToDo
 
             DataGridView_Contacts_Initialize();
             DataGridView_Contacts_Populate();
+
+            Button_Cancel_State();
+        }
+
+        #region Initialize =========================================
+        private void DataGridView_Contacts_Initialize()
+        {
+            // Create columns
+            DataGridView_Contacts.Columns.Add(COLUMN_ID, HEADER_ID);
+            DataGridView_Contacts.Columns.Add(COLUMN_NAME, HEADER_NAME);
+            DataGridView_Contacts.Columns.Add(COLUMN_PHONE, HEADER_PHONE);
+            DataGridView_Contacts.Columns.Add(COLUMN_EMAIL, HEADER_EMAIL);
+            DataGridView_Contacts.Columns.Add(COLUMN_METHOD, HEADER_METHOD);
+            DataGridView_Contacts.Columns.Add(COLUMN_PRIMARY, HEADER_PRIMARY);
+
+            // Hide the columns
+            DataGridView_Contacts.Columns[COLUMN_ID]?.Visible = false;
+            DataGridView_Contacts.Columns[COLUMN_ID]?.ReadOnly = true;
+        }
+        #endregion Initialize
+
+        #region Interaction: Buttons ===============================
+        private void Button_Cancel_Click(object sender, EventArgs e)
+        {
+            int deletedContactCount = deletedContactIds.Count;
+            bool hasDeletedContacts = deletedContactCount > 0;
+            bool hasUnsavedChanges = hasDeletedContacts || hasEditedContacts;
+
+            if (hasUnsavedChanges)
+            {
+                DialogResult result = MessageBox.Show(
+                    "Discard unsaved changes?",
+                    "Are you sure",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                    );
+
+                if (result == DialogResult.No) return;
+            }
+
+            this.Close();
+        }
+
+        private void Button_Cancel_State(bool isEnabled = true)
+        {
+            Button_Cancel.Enabled = true;
         }
 
         private void Button_Contact_Delete_Click(object sender, EventArgs e)
@@ -52,32 +101,90 @@ namespace Kahnban_ToDo
             if (row == null) return;
 
             long id = DataGridViewUtilities.GetCellValue_Long(row, COLUMN_ID);
-
-            Controller controller = new();
-            string application = Application.ExecutablePath;
-            string applicationPath = Path.GetDirectoryName(application);
-            try
-            {
-                List<Contact>? contacts = controller.ReadContacts();
-                if (contacts == null || contacts.Count < 1) return;
-
-                int removed = contacts.RemoveAll(contact => contact.Id == id);
-                if (removed == 0) return;
-
-                controller.Save(contacts, applicationPath, FILENAME_CONTACT);
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception);
-                return;
-            }
-
-            DataGridView_Contacts_Populate();
+            deletedContactIds.Add(id);
+            DataGridView_Contacts.Rows.Remove(row);
+            Button_Submit_State();
         }
 
         private void Button_Contact_Delete_State(bool isEnabled)
         {
             Button_Contact_Delete.Enabled = isEnabled;
+        }
+
+        private void Button_Submit_Click(object sender, EventArgs e)
+        {
+            Contacts_Delete();
+            Contacts_Save();
+
+            this.Close();
+        }
+
+        private void Button_Submit_State()
+        {
+            int deletedContactCount = deletedContactIds.Count;
+            bool hasDeletedContacts = deletedContactCount > 0;
+            bool hasUnsavedChanges = hasDeletedContacts || hasEditedContacts;
+
+            Button_Submit.Enabled = hasUnsavedChanges;
+        }
+        #endregion Interaction: Buttons
+
+        #region Interaction: DataGridView ==========================
+        private void DataGridView_Contacts_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            if (rowIndex < 0) return;
+
+            bool isRowValid = false;
+
+            DataGridViewRow row = DataGridView_Contacts.Rows[rowIndex];
+            if (row != null)
+            {
+                if (row.IsNewRow || rowIndex < 0)
+                {
+                    isRowValid = false;
+                }
+                else
+                {
+                    isRowValid = true;
+                }
+            }
+
+            Button_Contact_Delete_State(isRowValid);
+        }
+
+        private void DataGridView_Contacts_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            hasEditedContacts = true;
+            Button_Submit_State();
+        }
+        #endregion Interaction: DataGridView
+
+        #region Logic ==============================================
+        private void Contacts_Delete()
+        {
+            Controller controller = new();
+            string application = Application.ExecutablePath;
+            string applicationPath = Path.GetDirectoryName(application);
+
+            foreach (long id in deletedContactIds)
+            {
+                try
+                {
+                    List<Contact>? contacts = controller.ReadContacts();
+                    if (contacts == null || contacts.Count < 1) return;
+
+                    int removed = contacts.RemoveAll(contact => contact.Id == id);
+                    if (removed == 0) return;
+
+                    controller.Save(contacts, applicationPath, FILENAME_CONTACT);
+                }
+                catch (Exception exception)
+                {
+                    Debug.WriteLine(exception);
+                    return;
+                }
+            }
         }
 
         private void Contacts_Save()
@@ -140,50 +247,9 @@ namespace Kahnban_ToDo
                 Debug.WriteLine(exception);
             }
         }
+        #endregion Logic
 
-        private void DataGridView_Contacts_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
-            if (rowIndex < 0) return;
-
-            bool isRowValid = false;
-
-            DataGridViewRow row = DataGridView_Contacts.Rows[rowIndex];
-            if (row != null)
-            {
-                if (row.IsNewRow || rowIndex < 0)
-                {
-                    isRowValid = false;
-                }
-                else
-                {
-                    isRowValid = true;
-                }
-            }
-
-            Button_Contact_Delete_State(isRowValid);
-        }
-
-        private void DataGridView_Contacts_Initialize()
-        {
-            // Create columns
-            DataGridView_Contacts.Columns.Add(COLUMN_ID, HEADER_ID);
-            DataGridView_Contacts.Columns.Add(COLUMN_NAME, HEADER_NAME);
-            DataGridView_Contacts.Columns.Add(COLUMN_PHONE, HEADER_PHONE);
-            DataGridView_Contacts.Columns.Add(COLUMN_EMAIL, HEADER_EMAIL);
-            DataGridView_Contacts.Columns.Add(COLUMN_METHOD, HEADER_METHOD);
-            DataGridView_Contacts.Columns.Add(COLUMN_PRIMARY, HEADER_PRIMARY);
-
-            // Hide the columns
-            DataGridView_Contacts.Columns[COLUMN_ID]?.Visible = false;
-            DataGridView_Contacts.Columns[COLUMN_ID]?.ReadOnly = true;
-        }
-
-        private void DataGridView_Contacts_KeyUp(object sender, KeyEventArgs e)
-        {
-            
-        }
-
+        #region Populate ===========================================
         private void DataGridView_Contacts_Populate()
         {
             DataGridView_Contacts.Rows.Clear();
@@ -215,10 +281,6 @@ namespace Kahnban_ToDo
                     );
             }
         }
-
-        private void DataGridView_Contacts_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-            Contacts_Save();
-        }
+        #endregion Populate
     }
 }
