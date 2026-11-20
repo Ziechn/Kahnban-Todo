@@ -163,11 +163,10 @@ namespace Kahnban_ToDo
 
         public List<Contact> ReadContacts()
         {
-            string applicationPath = AppContext.BaseDirectory;
-
+            string userPath = AppStore.userPath;
             try
             {
-                string? filePath = GetFile(applicationPath, FILENAME_CONTACT);
+                string? filePath = GetFile(userPath, FILENAME_CONTACT);
 
                 if (filePath is null)
                 {

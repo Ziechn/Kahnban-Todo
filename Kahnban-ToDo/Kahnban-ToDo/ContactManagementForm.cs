@@ -236,11 +236,10 @@ namespace Kahnban_ToDo
 
             if (contacts.Count < 1) return;
 
-            string application = Application.ExecutablePath;
-            string applicationPath = Path.GetDirectoryName(application);
+            string userPath = AppStore.userPath;
             try
             {
-                controller.Save(contacts, applicationPath, FILENAME_CONTACT);
+                controller.Save(contacts, userPath, FILENAME_CONTACT);
             }
             catch (Exception exception)
             {
