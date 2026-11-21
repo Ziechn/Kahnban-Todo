@@ -234,5 +234,18 @@ namespace Kahnban_ToDo
             Directory.CreateDirectory(filePath);
             File.WriteAllText(path, json);
         }
+
+        public void PrintPreview(TextReference textReference)
+        {
+            PrintService service = new();
+            string html = service.GenerateHtml(textReference);
+
+            // Write the HTML to a temp file so the browser can open it
+            string path = Path.Combine(Path.GetTempPath(), $"print-preview-{Guid.NewGuid():N}.html");
+            File.WriteAllText(path, html, Encoding.UTF8);
+
+            // Open the file in the default browser
+            Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+        }
     }
 }

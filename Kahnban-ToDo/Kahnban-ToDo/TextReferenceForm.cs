@@ -41,6 +41,7 @@ namespace Kahnban_ToDo
             RichTextBox_Content_Populate();
 
             Button_Save_State();
+            Button_Print_State();
         }
 
         #region Event Handlers =====================================
@@ -155,11 +156,39 @@ namespace Kahnban_ToDo
         private void RichTextBox_Content_KeyUp(object sender, KeyEventArgs e)
         {
             Button_Save_State();
+            Button_Print_State();
         }
 
         private void TextBox_Title_KeyUp(object sender, KeyEventArgs e)
         {
             Button_Save_State();
+            Button_Print_State();
+        }
+
+        private void Button_Print_Click(object sender, EventArgs e)
+        {
+            TextReference textReference = new();
+
+            string title = TextBox_Title.Text.Trim();
+            textReference.Title = title;
+
+            string content = RichTextBox_Content.Text.Trim();
+            textReference.Content = content;
+
+            Controller controller = new();
+            controller.PrintPreview(textReference);
+        }
+
+        private void Button_Print_State()
+        {
+            string title = TextBox_Title.Text.Trim();
+            string content = RichTextBox_Content.Text.Trim();
+
+            bool hasTitle = string.IsNullOrEmpty(title) == false;
+            bool hasContent = string.IsNullOrEmpty(content) == false;
+
+            bool isEnabled = hasTitle && hasContent;
+            Button_Print.Enabled = isEnabled;
         }
         #endregion Interaction
 
