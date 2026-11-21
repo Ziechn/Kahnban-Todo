@@ -47,7 +47,6 @@
             panel_referenceControls = new Panel();
             Button_AddMedia = new Button();
             Button_AddText = new Button();
-            Label_References = new Label();
             Label_Contact = new Label();
             flowLayoutPanel_assignee = new FlowLayoutPanel();
             ComboBox_Assignee = new ComboBox();
@@ -67,6 +66,9 @@
             flowLayoutPanel_category = new FlowLayoutPanel();
             TextBox_Category = new TextBox();
             label_category = new Label();
+            panel_references = new Panel();
+            Button_Delete = new Button();
+            Label_References = new Label();
             TableLayoutPanel_UserStory = new TableLayoutPanel();
             RichTextBox_Summary = new RichTextBox();
             RichTextBox_TaskList = new RichTextBox();
@@ -86,6 +88,7 @@
             flowLayoutPanel_version.SuspendLayout();
             flowLayoutPanel_status.SuspendLayout();
             flowLayoutPanel_category.SuspendLayout();
+            panel_references.SuspendLayout();
             TableLayoutPanel_UserStory.SuspendLayout();
             SuspendLayout();
             // 
@@ -274,7 +277,6 @@
             TableLayoutPanel_SideBar.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             TableLayoutPanel_SideBar.Controls.Add(DataGridView_References, 0, 8);
             TableLayoutPanel_SideBar.Controls.Add(panel_referenceControls, 0, 9);
-            TableLayoutPanel_SideBar.Controls.Add(Label_References, 0, 7);
             TableLayoutPanel_SideBar.Controls.Add(Label_Contact, 0, 6);
             TableLayoutPanel_SideBar.Controls.Add(flowLayoutPanel_assignee, 0, 5);
             TableLayoutPanel_SideBar.Controls.Add(flowLayoutPanel_dateEnd, 0, 4);
@@ -282,6 +284,7 @@
             TableLayoutPanel_SideBar.Controls.Add(flowLayoutPanel_version, 0, 2);
             TableLayoutPanel_SideBar.Controls.Add(flowLayoutPanel_status, 0, 1);
             TableLayoutPanel_SideBar.Controls.Add(flowLayoutPanel_category, 0, 0);
+            TableLayoutPanel_SideBar.Controls.Add(panel_references, 0, 7);
             TableLayoutPanel_SideBar.Dock = DockStyle.Fill;
             TableLayoutPanel_SideBar.Location = new Point(3, 3);
             TableLayoutPanel_SideBar.Name = "TableLayoutPanel_SideBar";
@@ -293,99 +296,9 @@
             TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_SideBar.Size = new Size(244, 470);
             TableLayoutPanel_SideBar.TabIndex = 99;
             // 
@@ -400,13 +313,14 @@
             DataGridView_References.BorderStyle = BorderStyle.None;
             DataGridView_References.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_References.Dock = DockStyle.Fill;
-            DataGridView_References.Location = new Point(3, 253);
+            DataGridView_References.Location = new Point(3, 268);
             DataGridView_References.Name = "DataGridView_References";
             DataGridView_References.ReadOnly = true;
             DataGridView_References.RowHeadersVisible = false;
             DataGridView_References.ShowCellToolTips = false;
-            DataGridView_References.Size = new Size(238, 184);
+            DataGridView_References.Size = new Size(238, 169);
             DataGridView_References.TabIndex = 99;
+            DataGridView_References.CellClick += DataGridView_References_CellClick;
             DataGridView_References.CellDoubleClick += DataGridView_References_CellDoubleClick;
             DataGridView_References.DataBindingComplete += DataGridView_References_DataBindingComplete;
             // 
@@ -440,16 +354,6 @@
             Button_AddText.Text = "Add Text";
             Button_AddText.UseVisualStyleBackColor = true;
             Button_AddText.Click += Button_AddText_Click;
-            // 
-            // Label_References
-            // 
-            Label_References.Dock = DockStyle.Fill;
-            Label_References.Location = new Point(3, 230);
-            Label_References.Name = "Label_References";
-            Label_References.Size = new Size(238, 20);
-            Label_References.TabIndex = 99;
-            Label_References.Text = "References";
-            Label_References.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // Label_Contact
             // 
@@ -655,6 +559,36 @@
             label_category.Text = "Category:";
             label_category.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // panel_references
+            // 
+            panel_references.Controls.Add(Button_Delete);
+            panel_references.Controls.Add(Label_References);
+            panel_references.Dock = DockStyle.Fill;
+            panel_references.Location = new Point(3, 233);
+            panel_references.Name = "panel_references";
+            panel_references.Size = new Size(238, 29);
+            panel_references.TabIndex = 100;
+            // 
+            // Button_Delete
+            // 
+            Button_Delete.Enabled = false;
+            Button_Delete.Location = new Point(135, 3);
+            Button_Delete.Name = "Button_Delete";
+            Button_Delete.Size = new Size(100, 23);
+            Button_Delete.TabIndex = 0;
+            Button_Delete.Text = "Delete";
+            Button_Delete.UseVisualStyleBackColor = true;
+            Button_Delete.Click += Button_Delete_Click;
+            // 
+            // Label_References
+            // 
+            Label_References.Location = new Point(0, 9);
+            Label_References.Name = "Label_References";
+            Label_References.Size = new Size(68, 20);
+            Label_References.TabIndex = 99;
+            Label_References.Text = "References";
+            Label_References.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // TableLayoutPanel_UserStory
             // 
             TableLayoutPanel_UserStory.ColumnCount = 1;
@@ -750,6 +684,7 @@
             flowLayoutPanel_status.PerformLayout();
             flowLayoutPanel_category.ResumeLayout(false);
             flowLayoutPanel_category.PerformLayout();
+            panel_references.ResumeLayout(false);
             TableLayoutPanel_UserStory.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -805,5 +740,7 @@
         private Label label_category;
         private ComboBox ComboBox_Assignee;
         private TableLayoutPanel tableLayoutPanel_Navigtion;
+        private Panel panel_references;
+        private Button Button_Delete;
     }
 }

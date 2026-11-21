@@ -43,7 +43,6 @@ namespace Kahnban_ToDo
 
         // Local Memory
         string _projectPath = "";
-        UserStory? _userStory;
         bool isLoading = true;
 
         public UserStoryForm()
@@ -73,7 +72,7 @@ namespace Kahnban_ToDo
             isLoading = false;
         }
 
-        public UserStoryForm(long id)
+        public UserStoryForm(long userStoryId)
         {
             InitializeComponent();
             ComboBox_Assignee_Initialize();
@@ -85,7 +84,9 @@ namespace Kahnban_ToDo
             long projectId = AppStore.project?.Id ?? -1;
             _projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
 
-            UserStory_Load(id);
+            AppStore.userStoryId = userStoryId;
+
+            UserStory_Load();
 
             LinkLabel_Organization_Display();
             LinkLabel_Project_Display();
@@ -93,7 +94,7 @@ namespace Kahnban_ToDo
             Label_TaskList_Display();
             TextBox_Category_DiplayPlaceholder();
             TextBox_Version_Display();
-            References_Load(id);
+            References_Load();
 
             Controls_State();
             LinkLabel_DisableTabStop();
@@ -389,6 +390,50 @@ namespace Kahnban_ToDo
         #endregion Initialize
 
         #region Interaction: Buttons ===============================
+        private void Button_Delete_Click(object sender, EventArgs e)
+        {
+            // Get the reference ID
+            int rowIndex = DataGridView_References.SelectedCells[0].RowIndex;
+            if (rowIndex < 0) return;
+
+            DataGridViewRow row = DataGridView_References.Rows[rowIndex];
+            if (row == null) return;
+
+            long referenceId = DataGridViewUtilities.GetCellValue_Long(row, HEADER_ID);
+            string referenceTitle = DataGridViewUtilities.GetCellValue_String(row, HEADER_TITLE);
+
+            DialogResult result = MessageBox.Show(
+                $"Delete {referenceTitle}?",
+                "Are you sure?",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+                );
+
+            if (result == DialogResult.No) return;
+
+            // Get the path
+            string organizationPath = AppStore.organizationPath;
+
+            string projectId = AppStore.project?.Id.ToString() ?? "";
+            string projectPath = Path.Combine(organizationPath, projectId);
+
+            string userStoryId = AppStore.userStoryId.ToString();
+            string userStoryPath = Path.Combine(projectPath, userStoryId);
+
+            // Delete the reference
+            Controller controller = new();
+            controller.DeleteReference(userStoryPath, referenceId);
+
+            // Refresh the reference DataGridView
+            References_Load();
+            Button_Delete_State();
+        }
+
+        private void Button_Delete_State(bool isEnabled = false)
+        {
+            Button_Delete.Enabled = isEnabled;
+        }
+
         private void Button_SideBar_Click(object sender, EventArgs e)
         {
             TableLayoutPanel_Content_Display();
@@ -401,20 +446,20 @@ namespace Kahnban_ToDo
 
         private void Button_AddText_Click(object sender, EventArgs e)
         {
-            long userStoryId = _userStory.Id;
+            long userStoryId = AppStore.userStoryId;
             TextReferenceForm textReferenceForm = new TextReferenceForm(userStoryId);
             textReferenceForm.ShowDialog();
 
-            References_Load(userStoryId);
+            References_Load();
         }
 
         private void Button_AddMedia_Click(object sender, EventArgs e)
         {
-            long userStoryId = _userStory.Id;
+            long userStoryId = AppStore.userStoryId;
             FileReferenceForm fileReferenceForm = new FileReferenceForm(userStoryId);
             fileReferenceForm.ShowDialog();
 
-            References_Load(userStoryId);
+            References_Load();
         }
         #endregion Interaction: Buttons
 
@@ -435,6 +480,28 @@ namespace Kahnban_ToDo
         #endregion Interaction: ComboBox
 
         #region Interaction: DataGridView ==========================
+        private void DataGridView_References_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            if (rowIndex < 0)
+            {
+                Button_Delete_State();
+                return;
+            }
+
+            DataGridViewRow row = DataGridView_References.Rows[rowIndex];
+            if (row == null)
+            {
+                Button_Delete_State();
+                return;
+            }
+
+            long referenceId = DataGridViewUtilities.GetCellValue_Long(row, HEADER_ID);
+            bool isReferenceIdValid = referenceId >= 0;
+
+            Button_Delete_State(isReferenceIdValid);
+        }
+
         private void DataGridView_References_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowIndex = e.RowIndex;
@@ -449,7 +516,7 @@ namespace Kahnban_ToDo
             string referenceType = DataGridViewUtilities.GetCellValue_String(row, HEADER_TYPE);
             if (string.IsNullOrEmpty(referenceType)) return;
 
-            long userStoryId = _userStory.Id;
+            long userStoryId = AppStore.userStoryId;
 
             bool isTextReference = referenceType.Equals(REFERENCE_TEXT);
             if (isTextReference)
@@ -464,7 +531,7 @@ namespace Kahnban_ToDo
                 // Find the file
                 string organizaitonPath = AppStore.organizationPath;
                 string projectId = AppStore.project?.Id.ToString() ?? "";
-                string userStoryIdString = _userStory.Id.ToString();
+                string userStoryIdString = userStoryId.ToString();
 
                 string path = Path.Combine(organizaitonPath, projectId, userStoryIdString);
 
@@ -494,7 +561,7 @@ namespace Kahnban_ToDo
                     });
             }
 
-            References_Load(_userStory.Id);
+            References_Load();
         }
         #endregion Interaction: DataGridView
 
@@ -533,12 +600,18 @@ namespace Kahnban_ToDo
 
         private void LinkLabel_Organization_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            Controller controller = new();
+            controller.ResetStore_Organization();
+
             OrganizationForm organizationForm = new OrganizationForm();
             FormUtilities.NavigateTo(organizationForm);
         }
 
         private void LinkLabel_Project_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            Controller controller = new();
+            controller.ResetStore_Project();
+
             ProjectDetailsForm projectForm = new ProjectDetailsForm();
             FormUtilities.NavigateTo(projectForm);
         }
@@ -546,7 +619,7 @@ namespace Kahnban_ToDo
         private void LinkLabel_Start_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Controller controller = new();
-            controller.ResetStore();
+            controller.ResetStore_Start();
 
             StartForm startForm = new StartForm();
             FormUtilities.NavigateTo(startForm);
@@ -602,9 +675,11 @@ namespace Kahnban_ToDo
         #endregion Interaction: TextBox
 
         #region Load ===============================================
-        private void References_Load(long id)
+        private void References_Load()
         {
-            string idString = id.ToString();
+            long userStoryId = AppStore.userStoryId;
+
+            string idString = userStoryId.ToString();
             string organizationPath = AppStore.organizationPath;
             string projectId = AppStore.project?.Id.ToString() ?? "";
 
@@ -643,12 +718,13 @@ namespace Kahnban_ToDo
                 }
             }
 
-            if (dataTable.Rows.Count == 0) return;
             DataGridView_References_Display(dataTable);
         }
 
-        private void UserStory_Load(long id)
+        private void UserStory_Load()
         {
+            long id = AppStore.userStoryId;
+
             Controller controller = new();
             UserStory? userStory = controller.GetUserStory(_projectPath, id);
             if (userStory == null)
@@ -656,8 +732,6 @@ namespace Kahnban_ToDo
                 Debug.WriteLine("Error loading User Story");
                 return;
             }
-
-            _userStory = userStory;
 
             ComboBox_Assignee_Display(userStory);
             ComboBox_Status_Display(userStory);
@@ -691,30 +765,23 @@ namespace Kahnban_ToDo
             if (isLoading) return;
 
             Controller controller = new();
-            UserStory? userStory = null;
+            UserStory userStory = new();
 
-            long id = -1;
-
-            if (_userStory == null)
+            long userStoryId = AppStore.userStoryId;
+            if (userStoryId < 0)
             {
-                userStory = new UserStory();
-                id = controller.GenerateId();
-                userStory.Id = id;
-
-                Project? project = AppStore.project;
-                string organization = project.Organization;
-                userStory.Organization = organization;
-
-                string projectName = project.Name;
-                userStory.Project = projectName;
-            }
-            else
-            {
-                userStory = _userStory;
-                id = userStory.Id;
+                userStoryId = controller.GenerateId();
+                AppStore.userStoryId = userStoryId;
             }
 
-            if (userStory == null) return;
+            userStory.Id = userStoryId;
+
+            string organization = AppStore.organization;
+            userStory.Organization = organization;
+
+            Project? project = AppStore.project;
+            string projectName = project.Name;
+            userStory.Project = projectName;
 
             string userStoryNameText = TextBox_UserStoryName.Text;
             string userStoryName = userStoryNameText.Equals(PLACEHOLDER_USERSTORY) ? "" : userStoryNameText;
@@ -749,18 +816,8 @@ namespace Kahnban_ToDo
 
             try
             {
-                controller.CreateDirectory(_projectPath, id);
-                controller.Save(userStory, _projectPath, id);
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception);
-            }
-
-            if (_userStory != null) return;
-            try
-            {
-                _userStory = controller.GetUserStory(_projectPath, id);
+                controller.CreateDirectory(_projectPath, userStoryId);
+                controller.Save(userStory, _projectPath, userStoryId);
             }
             catch (Exception exception)
             {

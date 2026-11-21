@@ -76,6 +76,20 @@ namespace Kahnban_ToDo
             }
         }
 
+        private void DeleteFile(string fileName, string path)
+        {
+            string filePath = Path.Combine(path, fileName);
+
+            if (File.Exists(filePath))
+            {
+                FileSystem.DeleteFile(
+                    filePath,
+                    UIOption.OnlyErrorDialogs,
+                    RecycleOption.SendToRecycleBin
+                );
+            }
+        }
+
         private void DeleteJson(long id, string path)
         {
             string fileName = $"{id}.json";
@@ -112,6 +126,22 @@ namespace Kahnban_ToDo
 
             DeleteDirectory(id, organizationPath);
             DeleteJson(id, organizationPath);
+        }
+
+        public void DeleteReference(string path, long id)
+        {
+            Reference? reference = ReadObject<Reference>(path, id);
+
+            if (reference is FileReference fileReference)
+            {
+                string fileName = fileReference.FileName;
+                bool isFileNameInvalid = string.IsNullOrEmpty(fileName);
+                if (isFileNameInvalid) return;
+
+                DeleteFile(fileName, path);
+            }
+
+            DeleteJson(id, path);
         }
 
         public void DeleteUserStory(long id)
@@ -201,11 +231,23 @@ namespace Kahnban_ToDo
             return JsonSerializer.Deserialize<T>(json);
         }
 
-        public void ResetStore()
+        public void ResetStore_Start()
         {
             AppStore.organization = "";
             AppStore.organizationPath = "";
             AppStore.project = null;
+            AppStore.userStoryId = -1;
+        }
+
+        public void ResetStore_Organization()
+        {
+            AppStore.project = null;
+            AppStore.userStoryId = -1;
+        }
+
+        public void ResetStore_Project()
+        {
+            AppStore.userStoryId = -1;
         }
 
         public void Save<T>(T obj, string filePath, long id, Type? declaredType = null) where T : class

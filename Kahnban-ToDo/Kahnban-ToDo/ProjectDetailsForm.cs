@@ -477,7 +477,7 @@ namespace Kahnban_ToDo
         private void LinkLabel_Start_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Controller controller = new();
-            controller.ResetStore();
+            controller.ResetStore_Start();
 
             StartForm startForm = new StartForm();
             FormUtilities.NavigateTo(startForm);

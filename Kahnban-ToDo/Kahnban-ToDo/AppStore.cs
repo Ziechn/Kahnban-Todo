@@ -14,5 +14,6 @@ namespace Kahnban_ToDo
         public static string projectFilterSearch = "";
         public static int projectFilterStatus = -1;
         public static string userPath = "";
+        public static long userStoryId = -1;
     }
 }
