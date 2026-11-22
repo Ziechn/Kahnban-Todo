@@ -116,6 +116,8 @@ namespace Kahnban_ToDo
             Contacts_Delete();
             Contacts_Save();
 
+            EventBus.Publish(this, EventEnum.OnContactManaged);
+
             this.Close();
         }
 

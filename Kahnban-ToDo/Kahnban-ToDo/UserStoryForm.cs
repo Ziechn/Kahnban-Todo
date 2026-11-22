@@ -69,6 +69,8 @@ namespace Kahnban_ToDo
             Controls_State();
             LinkLabel_DisableTabStop();
 
+            EventBus.Subscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
+
             isLoading = false;
         }
 
@@ -98,6 +100,8 @@ namespace Kahnban_ToDo
 
             Controls_State();
             LinkLabel_DisableTabStop();
+
+            EventBus.Subscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
 
             isLoading = false;
         }
@@ -289,12 +293,17 @@ namespace Kahnban_ToDo
             ActiveControl = TextBox_UserStoryName;
             TextBox_UserStoryName.Focus();
         }
+
+        private void HandleOnContactManaged()
+        {
+            ComboBox_Assignee_Initialize();
+        }
         #endregion Event Handlers
 
         #region Initialize =========================================
         private void ComboBox_Assignee_Initialize()
         {
-            ComboBox_Assignee.Items.Clear();
+            ComboBox_Assignee.DataSource = null;
             List<Contact> contacts = new List<Contact>();
             Contact contact = new(
                 "",
@@ -603,6 +612,8 @@ namespace Kahnban_ToDo
             Controller controller = new();
             controller.ResetStore_Organization();
 
+            EventBus.Unsubscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
+
             OrganizationForm organizationForm = new OrganizationForm();
             FormUtilities.NavigateTo(organizationForm);
         }
@@ -612,6 +623,8 @@ namespace Kahnban_ToDo
             Controller controller = new();
             controller.ResetStore_Project();
 
+            EventBus.Unsubscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
+
             ProjectDetailsForm projectForm = new ProjectDetailsForm();
             FormUtilities.NavigateTo(projectForm);
         }
@@ -620,6 +633,8 @@ namespace Kahnban_ToDo
         {
             Controller controller = new();
             controller.ResetStore_Start();
+
+            EventBus.Unsubscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
 
             StartForm startForm = new StartForm();
             FormUtilities.NavigateTo(startForm);
