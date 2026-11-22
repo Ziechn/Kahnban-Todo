@@ -61,6 +61,16 @@ namespace Kahnban_ToDo.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NoImage {
+            get {
+                object obj = ResourceManager.GetObject("NoImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to body {
         ///    font-family: &apos;Gill Sans&apos;, &apos;Gill Sans MT&apos;, Calibri, &apos;Trebuchet MS&apos;, sans-serif;
         ///}.
@@ -68,6 +78,16 @@ namespace Kahnban_ToDo.Properties {
         internal static string Style {
             get {
                 return ResourceManager.GetString("Style", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TempImage {
+            get {
+                object obj = ResourceManager.GetObject("TempImage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

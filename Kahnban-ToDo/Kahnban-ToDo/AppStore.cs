@@ -13,6 +13,7 @@ namespace Kahnban_ToDo
         public static int projectFilterCategory = -1;
         public static string projectFilterSearch = "";
         public static int projectFilterStatus = -1;
+        public static string projectPath = "";
         public static string userPath = "";
         public static long userStoryId = -1;
     }

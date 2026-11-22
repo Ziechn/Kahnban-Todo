@@ -42,21 +42,21 @@ namespace Kahnban_ToDo
         private const string TEXT_TASKS = "Tasks";
 
         // Local Memory
-        string _projectPath = "";
         bool isLoading = true;
+        long _projectId = -1;
+        long _userStoryId = -1;
 
-        public UserStoryForm()
+        public UserStoryForm(long projectId)
         {
             InitializeComponent();
+
+            _projectId = projectId;
+
             ComboBox_Assignee_Initialize();
             ComboBox_Status_Initialize();
             DateTimePicker_End_Initialize();
             DateTimePicker_Start_Initialize();
             Label_Contact_Display();
-
-            Project? project = AppStore.project;
-            long projectId = project?.Id ?? -1;
-            _projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
 
             Label_TaskList_Display();
             LinkLabel_Organization_Display();
@@ -74,19 +74,18 @@ namespace Kahnban_ToDo
             isLoading = false;
         }
 
-        public UserStoryForm(long userStoryId)
+        public UserStoryForm(long projectId, long userStoryId)
         {
             InitializeComponent();
+
+            _projectId = projectId;
+            AppStore.userStoryId = userStoryId;
+
             ComboBox_Assignee_Initialize();
             ComboBox_Status_Initialize();
             DateTimePicker_End_Initialize();
             DateTimePicker_Start_Initialize();
             Label_Contact_Display();
-
-            long projectId = AppStore.project?.Id ?? -1;
-            _projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
-
-            AppStore.userStoryId = userStoryId;
 
             UserStory_Load();
 
@@ -650,7 +649,7 @@ namespace Kahnban_ToDo
 
             EventBus.Unsubscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
 
-            ProjectDetailsForm projectForm = new ProjectDetailsForm();
+            ProjectDetailsForm projectForm = new ProjectDetailsForm(_projectId);
             FormUtilities.NavigateTo(projectForm);
         }
 
@@ -763,10 +762,11 @@ namespace Kahnban_ToDo
 
         private void UserStory_Load()
         {
-            long id = AppStore.userStoryId;
+            long userStoreId = AppStore.userStoryId;
+            string projectPath = AppStore.projectPath;
 
             Controller controller = new();
-            UserStory? userStory = controller.GetUserStory(_projectPath, id);
+            UserStory? userStory = controller.GetUserStory(projectPath, userStoreId);
             if (userStory == null)
             {
                 Debug.WriteLine("Error loading User Story");
@@ -854,10 +854,11 @@ namespace Kahnban_ToDo
             long assigneeId = (long?)ComboBox_Assignee.SelectedValue ?? -1;
             userStory.AssigneeId = assigneeId;
 
+            string projectPath = AppStore.projectPath;
             try
             {
-                controller.CreateDirectory(_projectPath, userStoryId);
-                controller.Save(userStory, _projectPath, userStoryId);
+                controller.CreateDirectory(projectPath, userStoryId);
+                controller.Save(userStory, projectPath, userStoryId);
             }
             catch (Exception exception)
             {
@@ -865,7 +866,5 @@ namespace Kahnban_ToDo
             }
         }
         #endregion Save
-
-        
     }
 }

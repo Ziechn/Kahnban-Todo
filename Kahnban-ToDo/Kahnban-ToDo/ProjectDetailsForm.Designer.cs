@@ -48,27 +48,30 @@
             Button_UserStory_Delete = new Button();
             TableLayoutPanel_Content = new TableLayoutPanel();
             TableLayoutPanel_TagCount = new TableLayoutPanel();
-            label_details = new Label();
             DataGridView_Status = new DataGridView();
             Label_Statuses = new Label();
-            flowLayoutPanel_status = new FlowLayoutPanel();
-            ComboBox_Status = new ComboBox();
-            label_status = new Label();
             flowLayoutPanel_version = new FlowLayoutPanel();
             Textbox_Version = new TextBox();
             label_version = new Label();
+            flowLayoutPanel_status = new FlowLayoutPanel();
+            ComboBox_Status = new ComboBox();
+            label_status = new Label();
+            label_details = new Label();
+            PictureBox_Project = new PictureBox();
             TableLayoutPanel_UserStories = new TableLayoutPanel();
             Label_UserStories = new Label();
             DataGridView_UserStories = new DataGridView();
             toolTip_dataGridView_userStories = new ToolTip(components);
+            toolTip_pictureBox_project = new ToolTip(components);
             TableLayoutPanel_Body.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
             flowLayoutPanel_controls.SuspendLayout();
             TableLayoutPanel_Content.SuspendLayout();
             TableLayoutPanel_TagCount.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridView_Status).BeginInit();
-            flowLayoutPanel_status.SuspendLayout();
             flowLayoutPanel_version.SuspendLayout();
+            flowLayoutPanel_status.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)PictureBox_Project).BeginInit();
             TableLayoutPanel_UserStories.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridView_UserStories).BeginInit();
             SuspendLayout();
@@ -290,33 +293,24 @@
             // 
             TableLayoutPanel_TagCount.ColumnCount = 1;
             TableLayoutPanel_TagCount.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            TableLayoutPanel_TagCount.Controls.Add(DataGridView_Status, 0, 5);
+            TableLayoutPanel_TagCount.Controls.Add(Label_Statuses, 0, 4);
+            TableLayoutPanel_TagCount.Controls.Add(flowLayoutPanel_version, 0, 3);
+            TableLayoutPanel_TagCount.Controls.Add(flowLayoutPanel_status, 0, 2);
             TableLayoutPanel_TagCount.Controls.Add(label_details, 0, 0);
-            TableLayoutPanel_TagCount.Controls.Add(DataGridView_Status, 0, 4);
-            TableLayoutPanel_TagCount.Controls.Add(Label_Statuses, 0, 3);
-            TableLayoutPanel_TagCount.Controls.Add(flowLayoutPanel_status, 0, 1);
-            TableLayoutPanel_TagCount.Controls.Add(flowLayoutPanel_version, 0, 2);
+            TableLayoutPanel_TagCount.Controls.Add(PictureBox_Project, 0, 1);
             TableLayoutPanel_TagCount.Dock = DockStyle.Fill;
             TableLayoutPanel_TagCount.Location = new Point(3, 3);
             TableLayoutPanel_TagCount.Name = "TableLayoutPanel_TagCount";
-            TableLayoutPanel_TagCount.RowCount = 5;
+            TableLayoutPanel_TagCount.RowCount = 6;
             TableLayoutPanel_TagCount.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            TableLayoutPanel_TagCount.RowStyles.Add(new RowStyle(SizeType.Absolute, 244F));
             TableLayoutPanel_TagCount.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             TableLayoutPanel_TagCount.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             TableLayoutPanel_TagCount.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_TagCount.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             TableLayoutPanel_TagCount.Size = new Size(244, 464);
             TableLayoutPanel_TagCount.TabIndex = 0;
-            // 
-            // label_details
-            // 
-            label_details.AutoSize = true;
-            label_details.Dock = DockStyle.Fill;
-            label_details.Location = new Point(3, 0);
-            label_details.Name = "label_details";
-            label_details.Size = new Size(238, 20);
-            label_details.TabIndex = 2;
-            label_details.Text = "Project Details";
-            label_details.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // DataGridView_Status
             // 
@@ -328,23 +322,55 @@
             DataGridView_Status.BorderStyle = BorderStyle.None;
             DataGridView_Status.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             DataGridView_Status.Dock = DockStyle.Fill;
-            DataGridView_Status.Location = new Point(3, 113);
+            DataGridView_Status.Location = new Point(3, 357);
             DataGridView_Status.Name = "DataGridView_Status";
             DataGridView_Status.ReadOnly = true;
             DataGridView_Status.RowHeadersVisible = false;
             DataGridView_Status.ShowCellToolTips = false;
-            DataGridView_Status.Size = new Size(238, 348);
+            DataGridView_Status.Size = new Size(238, 104);
             DataGridView_Status.TabIndex = 1;
             // 
             // Label_Statuses
             // 
             Label_Statuses.Dock = DockStyle.Fill;
-            Label_Statuses.Location = new Point(3, 90);
+            Label_Statuses.Location = new Point(3, 334);
             Label_Statuses.Name = "Label_Statuses";
             Label_Statuses.Size = new Size(238, 20);
             Label_Statuses.TabIndex = 0;
             Label_Statuses.Text = "Statuses";
             Label_Statuses.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // flowLayoutPanel_version
+            // 
+            flowLayoutPanel_version.Controls.Add(Textbox_Version);
+            flowLayoutPanel_version.Controls.Add(label_version);
+            flowLayoutPanel_version.Dock = DockStyle.Fill;
+            flowLayoutPanel_version.FlowDirection = FlowDirection.RightToLeft;
+            flowLayoutPanel_version.Location = new Point(3, 302);
+            flowLayoutPanel_version.Name = "flowLayoutPanel_version";
+            flowLayoutPanel_version.Size = new Size(238, 29);
+            flowLayoutPanel_version.TabIndex = 4;
+            // 
+            // Textbox_Version
+            // 
+            Textbox_Version.Location = new Point(85, 3);
+            Textbox_Version.Name = "Textbox_Version";
+            Textbox_Version.Size = new Size(150, 23);
+            Textbox_Version.TabIndex = 0;
+            Textbox_Version.Enter += Textbox_Version_Enter;
+            Textbox_Version.KeyUp += Textbox_Version_KeyUp;
+            Textbox_Version.Leave += Textbox_Version_Leave;
+            // 
+            // label_version
+            // 
+            label_version.AutoSize = true;
+            label_version.Dock = DockStyle.Fill;
+            label_version.Location = new Point(31, 0);
+            label_version.Name = "label_version";
+            label_version.Size = new Size(48, 29);
+            label_version.TabIndex = 1;
+            label_version.Text = "Version:";
+            label_version.TextAlign = ContentAlignment.MiddleRight;
             // 
             // flowLayoutPanel_status
             // 
@@ -352,7 +378,7 @@
             flowLayoutPanel_status.Controls.Add(label_status);
             flowLayoutPanel_status.Dock = DockStyle.Fill;
             flowLayoutPanel_status.FlowDirection = FlowDirection.RightToLeft;
-            flowLayoutPanel_status.Location = new Point(3, 23);
+            flowLayoutPanel_status.Location = new Point(3, 267);
             flowLayoutPanel_status.Name = "flowLayoutPanel_status";
             flowLayoutPanel_status.Size = new Size(238, 29);
             flowLayoutPanel_status.TabIndex = 3;
@@ -378,37 +404,30 @@
             label_status.Text = "Status:";
             label_status.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // flowLayoutPanel_version
+            // label_details
             // 
-            flowLayoutPanel_version.Controls.Add(Textbox_Version);
-            flowLayoutPanel_version.Controls.Add(label_version);
-            flowLayoutPanel_version.Dock = DockStyle.Fill;
-            flowLayoutPanel_version.FlowDirection = FlowDirection.RightToLeft;
-            flowLayoutPanel_version.Location = new Point(3, 58);
-            flowLayoutPanel_version.Name = "flowLayoutPanel_version";
-            flowLayoutPanel_version.Size = new Size(238, 29);
-            flowLayoutPanel_version.TabIndex = 4;
+            label_details.AutoSize = true;
+            label_details.Dock = DockStyle.Fill;
+            label_details.Location = new Point(3, 0);
+            label_details.Name = "label_details";
+            label_details.Size = new Size(238, 20);
+            label_details.TabIndex = 2;
+            label_details.Text = "Project Details";
+            label_details.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // Textbox_Version
+            // PictureBox_Project
             // 
-            Textbox_Version.Location = new Point(85, 3);
-            Textbox_Version.Name = "Textbox_Version";
-            Textbox_Version.Size = new Size(150, 23);
-            Textbox_Version.TabIndex = 0;
-            Textbox_Version.Enter += Textbox_Version_Enter;
-            Textbox_Version.KeyUp += Textbox_Version_KeyUp;
-            Textbox_Version.Leave += Textbox_Version_Leave;
-            // 
-            // label_version
-            // 
-            label_version.AutoSize = true;
-            label_version.Dock = DockStyle.Fill;
-            label_version.Location = new Point(31, 0);
-            label_version.Name = "label_version";
-            label_version.Size = new Size(48, 29);
-            label_version.TabIndex = 1;
-            label_version.Text = "Version:";
-            label_version.TextAlign = ContentAlignment.MiddleRight;
+            PictureBox_Project.Dock = DockStyle.Fill;
+            PictureBox_Project.Location = new Point(6, 26);
+            PictureBox_Project.Margin = new Padding(6);
+            PictureBox_Project.Name = "PictureBox_Project";
+            PictureBox_Project.Size = new Size(232, 232);
+            PictureBox_Project.SizeMode = PictureBoxSizeMode.StretchImage;
+            PictureBox_Project.TabIndex = 5;
+            PictureBox_Project.TabStop = false;
+            PictureBox_Project.DoubleClick += PictureBox_Project_DoubleClick;
+            PictureBox_Project.MouseLeave += PictureBox_Project_MouseLeave;
+            PictureBox_Project.MouseMove += PictureBox_Project_MouseMove;
             // 
             // TableLayoutPanel_UserStories
             // 
@@ -478,10 +497,11 @@
             TableLayoutPanel_TagCount.ResumeLayout(false);
             TableLayoutPanel_TagCount.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridView_Status).EndInit();
-            flowLayoutPanel_status.ResumeLayout(false);
-            flowLayoutPanel_status.PerformLayout();
             flowLayoutPanel_version.ResumeLayout(false);
             flowLayoutPanel_version.PerformLayout();
+            flowLayoutPanel_status.ResumeLayout(false);
+            flowLayoutPanel_status.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)PictureBox_Project).EndInit();
             TableLayoutPanel_UserStories.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)DataGridView_UserStories).EndInit();
             ResumeLayout(false);
@@ -521,5 +541,7 @@
         private ComboBox ComboBox_Status_Filter;
         private TextBox Textbox_Version;
         private ToolTip toolTip_dataGridView_userStories;
+        private PictureBox PictureBox_Project;
+        private ToolTip toolTip_pictureBox_project;
     }
 }

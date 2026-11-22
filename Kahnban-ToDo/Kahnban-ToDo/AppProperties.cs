@@ -8,5 +8,6 @@ namespace Kahnban_ToDo
     {
         public static (int x, int y) TOOLTIP_OFFSET = (15, 20);
         public static string TOOLTIP_MESSAGE_DATAGRIDVIEW = "Double click to view details.";
+        public static string TOOLTIP_MESSAGE_PICTUREBOX = "Double click to change picture.";
     }
 }

@@ -114,6 +114,8 @@ namespace Kahnban_ToDo
         private void DataGridView_Organizations_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowIndex = e.RowIndex;
+            if (rowIndex < 0) return;
+
             DataGridViewRow? row = DataGridView_Organizations.Rows[rowIndex];
             if (row == null) return;
 

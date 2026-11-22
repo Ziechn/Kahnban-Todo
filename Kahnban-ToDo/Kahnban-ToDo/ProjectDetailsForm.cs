@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Kahnban_ToDo.Properties;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Kahnban_ToDo
@@ -55,10 +56,16 @@ namespace Kahnban_ToDo
         // Local Memory
         private int _categorySelectedIndex = 0;
         private bool _isLoading = true;
+        private Project _project;
+        private long _projectId;
 
-        public ProjectDetailsForm()
+        public ProjectDetailsForm(long projectId)
         {
             InitializeComponent();
+
+            _projectId = projectId;
+            Project_Load(projectId);
+
             DataGridView_UserStories_Intialize();
             ComboBox_Status_Initialize();
             ComboBox_Status_Filter_Initialize();
@@ -77,6 +84,8 @@ namespace Kahnban_ToDo
             ComboBox_Status_Display();
             TextBox_Version_Display();
 
+            PictureBox_Project_Display();
+
             _isLoading = false;
 
             // Select Filters
@@ -91,10 +100,10 @@ namespace Kahnban_ToDo
             DataGridViewRow row = DataGridView_UserStories.Rows[rowIndex];
             if (row == null) return;
 
-            (bool isIdValid, long id) = CellValue_Long_Validate(row, COLUMN_ID);
+            (bool isIdValid, long userStoryId) = CellValue_Long_Validate(row, COLUMN_ID);
             if (isIdValid == false) return;
 
-            UserStoryForm userStoryForm = new UserStoryForm(id);
+            UserStoryForm userStoryForm = new UserStoryForm(_projectId, userStoryId);
             FormUtilities.NavigateTo(userStoryForm);
         }
         #endregion CRUD
@@ -128,7 +137,8 @@ namespace Kahnban_ToDo
 
         private void Label_Project_Display()
         {
-            Label_Project.Text = AppStore.project?.Name ?? "";
+            string projectName = _project?.Name ?? "";
+            Label_Project.Text = projectName;
         }
 
         private void Label_Status_Display()
@@ -190,6 +200,21 @@ namespace Kahnban_ToDo
             LinkLabel_Organization.Text = AppStore.organization;
         }
 
+        private void PictureBox_Project_Display()
+        {
+            string fileLocation = _project.ImageFileLocation;
+            bool hasImage = string.IsNullOrEmpty(fileLocation) == false;
+
+            if (hasImage == false)
+            {
+                PictureBox_Project.Image = Resources.NoImage;
+                return;
+            }
+
+            Image projectImage = Image.FromFile(fileLocation);
+            PictureBox_Project.Image = projectImage;
+        }
+
         private void TableLayoutPanel_Content_Display()
         {
             float columnWidth = TableLayoutPanel_Content.ColumnStyles[COLUMN_SIDEBAR_INDEX].Width;
@@ -199,7 +224,7 @@ namespace Kahnban_ToDo
 
         private void ComboBox_Status_Display()
         {
-            Project? project = AppStore.project;
+            Project? project = _project;
             if (project == null) return;
 
             string status = project.Status;
@@ -208,7 +233,7 @@ namespace Kahnban_ToDo
 
         private void TextBox_Version_Display()
         {
-            Project? project = AppStore.project;
+            Project? project = _project;
             if (project == null)
             {
                 FormUtilities.DisplayPlaceholder(Textbox_Version, PLACEHOLDER_VERSION);
@@ -350,7 +375,7 @@ namespace Kahnban_ToDo
 
         private void Button_UserStory_Create_Click(object sender, EventArgs e)
         {
-            UserStoryForm userStoryForm = new UserStoryForm();
+            UserStoryForm userStoryForm = new UserStoryForm(_projectId);
             FormUtilities.NavigateTo(userStoryForm);
         }
 
@@ -509,6 +534,37 @@ namespace Kahnban_ToDo
         }
         #endregion Interaction: LinkLabel
 
+        #region Interaction: PictureBox ============================
+        private void PictureBox_Project_DoubleClick(object sender, EventArgs e)
+        {
+            // Browse
+            FileBrowseForm fileBrowseForm = new FileBrowseForm(_projectId);
+            fileBrowseForm.ShowDialog();
+
+            // Reload the project
+            Project_Load(_projectId);
+
+            // Display
+            PictureBox_Project_Display();
+        }
+
+        private void PictureBox_Project_MouseLeave(object sender, EventArgs e)
+        {
+            toolTip_pictureBox_project.Hide(DataGridView_UserStories);
+        }
+
+        private void PictureBox_Project_MouseMove(object sender, MouseEventArgs e)
+        {
+            Point point = PictureBox_Project.PointToClient(Cursor.Position);
+            toolTip_pictureBox_project.Show(
+                AppProperties.TOOLTIP_MESSAGE_PICTUREBOX,
+                PictureBox_Project,
+                point.X + AppProperties.TOOLTIP_OFFSET.x,
+                point.Y + AppProperties.TOOLTIP_OFFSET.y
+                );
+        }
+        #endregion Interaction: PictureBox
+
         #region Interaction: TextBox ===============================
         private void Textbox_Version_Enter(object sender, EventArgs e)
         {
@@ -583,8 +639,7 @@ namespace Kahnban_ToDo
             DataGridView_UserStories.Rows.Clear();
             try
             {
-                long projectId = AppStore.project?.Id ?? -1;
-                string projectPath = Path.Combine(AppStore.organizationPath, projectId.ToString());
+                string projectPath = AppStore.projectPath;
                 string[] jsonFiles = Directory.GetFiles(projectPath, "*.json");
 
                 foreach (string jsonFile in jsonFiles)
@@ -600,6 +655,29 @@ namespace Kahnban_ToDo
             {
                 Debug.WriteLine(exception);
             }
+        }
+
+        private void Project_Load(long projectId)
+        {
+            Controller controller = new();
+
+            string organizationPath = AppStore.organizationPath;
+
+            try
+            {
+                _project = controller.ReadObject<Project>(organizationPath, projectId);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+                return;
+            }
+
+            if (_project == null) return;
+
+            string projectPath = Path.Combine(organizationPath, projectId.ToString());
+            AppStore.projectPath = projectPath;
+            AppStore.project = _project;
         }
         #endregion Load
 
@@ -689,10 +767,10 @@ namespace Kahnban_ToDo
             if (_isLoading) return;
             Controller controller = new();
 
-            Project? project = AppStore.project;
+            Project? project = _project;
             if (project == null) return;
 
-            long id = project.Id;
+            long projectId = project.Id;
 
             // Status
             bool hasStatus = ComboBox_Status.SelectedIndex > 0;
@@ -709,8 +787,8 @@ namespace Kahnban_ToDo
             string organizationPath = AppStore.organizationPath;
             try
             {
-                controller.CreateDirectory(organizationPath, id);
-                controller.Save(project, organizationPath, id);
+                controller.CreateDirectory(organizationPath, projectId);
+                controller.Save(project, organizationPath, projectId);
             }
             catch (Exception exception)
             {

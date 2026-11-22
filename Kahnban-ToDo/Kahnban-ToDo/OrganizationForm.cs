@@ -217,27 +217,10 @@ namespace Kahnban_ToDo
             DataGridViewRow row = DataGridView_Projects.Rows[rowIndex];
             if (row == null) return;
 
-            (bool isIdValid, long id) = CellValue_Long_Validate(row, COLUMN_ID);
+            (bool isIdValid, long projectId) = CellValue_Long_Validate(row, COLUMN_ID);
             if (isIdValid == false) return;
 
-            Project? project = null;
-            Controller controller = new();
-
-            string organizationPath = AppStore.organizationPath;
-
-            try
-            {
-                project = controller.ReadObject<Project>(organizationPath, id);
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception);
-                return;
-            }
-
-            AppStore.project = project;
-
-            ProjectDetailsForm projectform = new ProjectDetailsForm();
+            ProjectDetailsForm projectform = new ProjectDetailsForm(projectId);
             FormUtilities.NavigateTo(projectform);
         }
 
