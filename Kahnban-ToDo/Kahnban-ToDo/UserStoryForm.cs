@@ -572,6 +572,31 @@ namespace Kahnban_ToDo
 
             References_Load();
         }
+
+        private void DataGridView_References_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            toolTip_dataGridView_references.Hide(DataGridView_References);
+        }
+
+        private void DataGridView_References_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            int columnIndex = e.ColumnIndex;
+
+            bool isValidRow = rowIndex >= 0;
+            bool isColumnValid = columnIndex >= 0;
+
+            if (isValidRow && isColumnValid)
+            {
+                Point point = DataGridView_References.PointToClient(Cursor.Position);
+                toolTip_dataGridView_references.Show(
+                    AppProperties.TOOLTIP_MESSAGE_DATAGRIDVIEW,
+                    DataGridView_References,
+                    point.X + AppProperties.TOOLTIP_OFFSET.x,
+                    point.Y + AppProperties.TOOLTIP_OFFSET.y
+                    );
+            }
+        }
         #endregion Interaction: DataGridView
 
         #region Interaction: DateTimePicker ========================
@@ -840,5 +865,7 @@ namespace Kahnban_ToDo
             }
         }
         #endregion Save
+
+        
     }
 }

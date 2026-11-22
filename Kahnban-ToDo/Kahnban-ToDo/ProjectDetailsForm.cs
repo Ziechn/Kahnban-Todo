@@ -465,6 +465,31 @@ namespace Kahnban_ToDo
 
             Update_UserStory(rowIndex);
         }
+
+        private void DataGridView_UserStories_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            toolTip_dataGridView_userStories.Hide(DataGridView_UserStories);
+        }
+
+        private void DataGridView_UserStories_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            int columnIndex = e.ColumnIndex;
+
+            bool isValidRow = rowIndex >= 0;
+            bool isColumnValid = columnIndex >= 0;
+
+            if (isValidRow && isColumnValid)
+            {
+                Point point = DataGridView_UserStories.PointToClient(Cursor.Position);
+                toolTip_dataGridView_userStories.Show(
+                    AppProperties.TOOLTIP_MESSAGE_DATAGRIDVIEW,
+                    DataGridView_UserStories,
+                    point.X + AppProperties.TOOLTIP_OFFSET.x,
+                    point.Y + AppProperties.TOOLTIP_OFFSET.y
+                    );
+            }
+        }
         #endregion Interaction: DataGridView
 
         #region Interaction: LinkLabel =============================

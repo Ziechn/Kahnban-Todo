@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using Microsoft.VisualBasic;
+﻿using Microsoft.VisualBasic;
 
 namespace Kahnban_ToDo
 {
@@ -68,7 +61,7 @@ namespace Kahnban_ToDo
         }
         #endregion DataGridView
 
-        #region Interaction ========================================
+        #region Interaction: Buttons ===============================
         private void Button_Add_Click(object sender, EventArgs e)
         {
             string result = Interaction.InputBox(
@@ -115,7 +108,9 @@ namespace Kahnban_ToDo
             string organizationName = DataGridViewUtilities.GetCellValue_String(row, COLUMN_ORGANIZATION);
             Button_Remove.Enabled = string.IsNullOrEmpty(organizationName) == false;
         }
+        #endregion Interaction: Buttons
 
+        #region Interaction: DataGridView ==========================
         private void DataGridView_Organizations_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowIndex = e.RowIndex;
@@ -132,6 +127,31 @@ namespace Kahnban_ToDo
             OrganizationForm organizationForm = new OrganizationForm();
             FormUtilities.NavigateTo(organizationForm);
         }
-        #endregion Interaction
+
+        private void DataGridView_Organizations_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            toolTip_dataGridView_organzations.Hide(DataGridView_Organizations);
+        }
+        #endregion Interaction: DataGridView
+
+        private void DataGridView_Organizations_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            int columnIndex = e.ColumnIndex;
+
+            bool isValidRow = rowIndex >= 0;
+            bool isColumnValid = columnIndex >= 0;
+
+            if (isValidRow && isColumnValid)
+            {
+                Point point = DataGridView_Organizations.PointToClient(Cursor.Position);
+                toolTip_dataGridView_organzations.Show(
+                    AppProperties.TOOLTIP_MESSAGE_DATAGRIDVIEW,
+                    DataGridView_Organizations,
+                    point.X + AppProperties.TOOLTIP_OFFSET.x,
+                    point.Y + AppProperties.TOOLTIP_OFFSET.y
+                    );
+            }
+        }
     }
 }

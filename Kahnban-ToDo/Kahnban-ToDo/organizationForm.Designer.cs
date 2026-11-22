@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             TableLayoutPanel_Body = new TableLayoutPanel();
             FlowLayoutPanel_Navigation = new FlowLayoutPanel();
             LinkLabel_Start = new LinkLabel();
@@ -39,6 +40,7 @@
             Button_Project_Add = new Button();
             Button_Project_Edit = new Button();
             Button_Project_Delete = new Button();
+            toolTip_dataGridView_projects = new ToolTip(components);
             TableLayoutPanel_Body.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridView_Projects).BeginInit();
@@ -130,6 +132,8 @@
             DataGridView_Projects.TabIndex = 1;
             DataGridView_Projects.CellClick += DataGridView_Projects_CellClick;
             DataGridView_Projects.CellDoubleClick += DataGridView_Projects_CellDoubleClick;
+            DataGridView_Projects.CellMouseLeave += DataGridView_Projects_CellMouseLeave;
+            DataGridView_Projects.CellMouseMove += DataGridView_Projects_CellMouseMove;
             // 
             // Label_Projects
             // 
@@ -185,6 +189,10 @@
             Button_Project_Delete.UseVisualStyleBackColor = true;
             Button_Project_Delete.Click += Button_Project_Delete_Click;
             // 
+            // toolTip_dataGridView_projects
+            // 
+            toolTip_dataGridView_projects.AutomaticDelay = 5000;
+            // 
             // OrganizationForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -215,5 +223,6 @@
         private Button Button_Project_Add;
         private Button Button_Project_Delete;
         private Button Button_Project_Edit;
+        private ToolTip toolTip_dataGridView_projects;
     }
 }

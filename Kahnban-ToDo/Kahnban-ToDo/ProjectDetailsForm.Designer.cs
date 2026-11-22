@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             TableLayoutPanel_Body = new TableLayoutPanel();
             FlowLayoutPanel_Navigation = new FlowLayoutPanel();
             LinkLabel_Start = new LinkLabel();
@@ -59,6 +60,7 @@
             TableLayoutPanel_UserStories = new TableLayoutPanel();
             Label_UserStories = new Label();
             DataGridView_UserStories = new DataGridView();
+            toolTip_dataGridView_userStories = new ToolTip(components);
             TableLayoutPanel_Body.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
             flowLayoutPanel_controls.SuspendLayout();
@@ -452,6 +454,12 @@
             DataGridView_UserStories.TabIndex = 1;
             DataGridView_UserStories.CellClick += DataGridView_UserStories_CellClick;
             DataGridView_UserStories.CellDoubleClick += DataGridView_UserStories_CellDoubleClick;
+            DataGridView_UserStories.CellMouseLeave += DataGridView_UserStories_CellMouseLeave;
+            DataGridView_UserStories.CellMouseMove += DataGridView_UserStories_CellMouseMove;
+            // 
+            // toolTip_dataGridView_userStories
+            // 
+            toolTip_dataGridView_userStories.AutomaticDelay = 5000;
             // 
             // ProjectDetailsForm
             // 
@@ -512,5 +520,6 @@
         private ComboBox ComboBox_Category_Filter;
         private ComboBox ComboBox_Status_Filter;
         private TextBox Textbox_Version;
+        private ToolTip toolTip_dataGridView_userStories;
     }
 }

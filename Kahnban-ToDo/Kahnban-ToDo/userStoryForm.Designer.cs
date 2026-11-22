@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             TableLayoutPanel_Body = new TableLayoutPanel();
             tableLayoutPanel_Navigtion = new TableLayoutPanel();
             FlowLayoutPanel_Navigation = new FlowLayoutPanel();
@@ -74,6 +75,7 @@
             RichTextBox_TaskList = new RichTextBox();
             Label_Summary = new Label();
             Label_TaskList = new Label();
+            toolTip_dataGridView_references = new ToolTip(components);
             TableLayoutPanel_Body.SuspendLayout();
             tableLayoutPanel_Navigtion.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
@@ -322,6 +324,8 @@
             DataGridView_References.TabIndex = 99;
             DataGridView_References.CellClick += DataGridView_References_CellClick;
             DataGridView_References.CellDoubleClick += DataGridView_References_CellDoubleClick;
+            DataGridView_References.CellMouseLeave += DataGridView_References_CellMouseLeave;
+            DataGridView_References.CellMouseMove += DataGridView_References_CellMouseMove;
             DataGridView_References.DataBindingComplete += DataGridView_References_DataBindingComplete;
             // 
             // panel_referenceControls
@@ -653,6 +657,10 @@
             Label_TaskList.Text = "Tasks";
             Label_TaskList.TextAlign = ContentAlignment.MiddleLeft;
             // 
+            // toolTip_dataGridView_references
+            // 
+            toolTip_dataGridView_references.AutomaticDelay = 5000;
+            // 
             // UserStoryForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -742,5 +750,6 @@
         private TableLayoutPanel tableLayoutPanel_Navigtion;
         private Panel panel_references;
         private Button Button_Delete;
+        private ToolTip toolTip_dataGridView_references;
     }
 }

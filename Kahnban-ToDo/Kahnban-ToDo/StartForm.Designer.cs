@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             tableLayoutPanel_body = new TableLayoutPanel();
             label_title = new Label();
@@ -36,6 +37,7 @@
             Button_Add = new Button();
             Button_Remove = new Button();
             label_organizations = new Label();
+            toolTip_dataGridView_organzations = new ToolTip(components);
             tableLayoutPanel_body.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridView_Organizations).BeginInit();
             flowLayoutPanel_controls.SuspendLayout();
@@ -93,10 +95,13 @@
             DataGridView_Organizations.Name = "DataGridView_Organizations";
             DataGridView_Organizations.ReadOnly = true;
             DataGridView_Organizations.RowHeadersVisible = false;
+            DataGridView_Organizations.ShowCellToolTips = false;
             DataGridView_Organizations.Size = new Size(972, 444);
             DataGridView_Organizations.TabIndex = 1;
             DataGridView_Organizations.CellClick += DataGridView_Organizations_CellClick;
             DataGridView_Organizations.CellDoubleClick += DataGridView_Organizations_CellDoubleClick;
+            DataGridView_Organizations.CellMouseLeave += DataGridView_Organizations_CellMouseLeave;
+            DataGridView_Organizations.CellMouseMove += DataGridView_Organizations_CellMouseMove;
             // 
             // flowLayoutPanel_controls
             // 
@@ -140,6 +145,10 @@
             label_organizations.Text = "Organizations";
             label_organizations.TextAlign = ContentAlignment.BottomLeft;
             // 
+            // toolTip_dataGridView_organzations
+            // 
+            toolTip_dataGridView_organzations.AutomaticDelay = 1000;
+            // 
             // StartForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -164,5 +173,6 @@
         private Button Button_Add;
         private Button Button_Remove;
         private Label label_organizations;
+        private ToolTip toolTip_dataGridView_organzations;
     }
 }

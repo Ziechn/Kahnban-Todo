@@ -241,6 +241,32 @@ namespace Kahnban_ToDo
             FormUtilities.NavigateTo(projectform);
         }
 
+        private void DataGridView_Projects_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            toolTip_dataGridView_projects.Hide(DataGridView_Projects);
+
+        }
+
+        private void DataGridView_Projects_CellMouseMove(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            int columnIndex = e.ColumnIndex;
+
+            bool isValidRow = rowIndex >= 0;
+            bool isColumnValid = columnIndex >= 0;
+
+            if (isValidRow && isColumnValid)
+            {
+                Point point = DataGridView_Projects.PointToClient(Cursor.Position);
+                toolTip_dataGridView_projects.Show(
+                    AppProperties.TOOLTIP_MESSAGE_DATAGRIDVIEW,
+                    DataGridView_Projects,
+                    point.X + AppProperties.TOOLTIP_OFFSET.x,
+                    point.Y + AppProperties.TOOLTIP_OFFSET.y
+                    );
+            }
+        }
+
         private void LinkLabel_Start_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Controller controller = new();
