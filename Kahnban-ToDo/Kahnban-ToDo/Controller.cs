@@ -146,11 +146,7 @@ namespace Kahnban_ToDo
 
         public void DeleteUserStory(long id)
         {
-            string organizationPath = AppStore.organizationPath;
-            string projectId = AppStore.project?.Id.ToString() ?? "";
-
-            string projectPath = Path.Combine(organizationPath, projectId);
-
+            string projectPath = AppStore.projectPath;
             DeleteDirectory(id, projectPath);
             DeleteJson(id, projectPath);
         }
@@ -235,19 +231,6 @@ namespace Kahnban_ToDo
         {
             AppStore.organization = "";
             AppStore.organizationPath = "";
-            AppStore.project = null;
-            AppStore.userStoryId = -1;
-        }
-
-        public void ResetStore_Organization()
-        {
-            AppStore.project = null;
-            AppStore.userStoryId = -1;
-        }
-
-        public void ResetStore_Project()
-        {
-            AppStore.userStoryId = -1;
         }
 
         public void Save<T>(T obj, string filePath, long id, Type? declaredType = null) where T : class

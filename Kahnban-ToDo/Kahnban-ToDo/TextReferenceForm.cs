@@ -97,10 +97,9 @@ namespace Kahnban_ToDo
 
         private void Button_Save_Click(object sender, EventArgs e)
         {
-            string organizationPath = AppStore.organizationPath;
-            string projectId = AppStore.project?.Id.ToString() ?? "";
+            string projectPath = AppStore.projectPath;
             string userStoryId = _userStoryId.ToString();
-            string filePath = Path.Combine(organizationPath, projectId, userStoryId);
+            string filePath = Path.Combine(projectPath, userStoryId);
 
             TextReference? textReference = null;
             long referenceId = -1;
@@ -208,10 +207,9 @@ namespace Kahnban_ToDo
         // Read methods return an object or value.
         private TextReference? ReadTextReference(long referenceId)
         {
-            string organizationPath = AppStore.organizationPath;
-            string projectId = AppStore.project?.Id.ToString() ?? "";
+            string projectPath = AppStore.projectPath;
             string userStoryId = _userStoryId.ToString();
-            string filePath = Path.Combine(organizationPath, projectId, userStoryId);
+            string filePath = Path.Combine(projectPath, userStoryId);
 
             Controller controller = new();
             return controller.ReadObject<TextReference>(filePath, referenceId);

@@ -671,10 +671,9 @@ namespace Kahnban_ToDo
 
         private void Project_Load(long projectId)
         {
-            Controller controller = new();
-
             string organizationPath = AppStore.organizationPath;
 
+            Controller controller = new();
             try
             {
                 _project = controller.ReadObject<Project>(organizationPath, projectId);
@@ -689,7 +688,6 @@ namespace Kahnban_ToDo
 
             string projectPath = Path.Combine(organizationPath, projectId.ToString());
             AppStore.projectPath = projectPath;
-            AppStore.project = _project;
         }
         #endregion Load
 

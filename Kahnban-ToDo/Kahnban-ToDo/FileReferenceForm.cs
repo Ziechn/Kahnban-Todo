@@ -69,29 +69,26 @@ namespace Kahnban_ToDo
         private void Button_Save_Click(object sender, EventArgs e)
         {
             string title = TextBox_Title.Text.Trim();
-            string location = TextBox_Location.Text.Trim();
+            string originalFileLocation = TextBox_Location.Text.Trim();
 
-            string? originalFilePath = Path.GetDirectoryName(location);
-            string? fileName = Path.GetFileName(location);
+            string? originalFilePath = Path.GetDirectoryName(originalFileLocation);
+            string? fileName = Path.GetFileName(originalFileLocation);
 
             Controller controller = new();
             FileReference? fileReference = new FileReference();
 
-            long id = controller.GenerateId();
-            fileReference.Id = id;
+            long referenceId = controller.GenerateId();
+            fileReference.Id = referenceId;
             fileReference.Title = title;
             fileReference.FileName = fileName;
 
-            string organizationPath = AppStore.organizationPath;
-            string projectId = AppStore.project?.Id.ToString() ?? "";
             string userStoryId = _userStoryId.ToString();
-
-            string filePath = Path.Combine(organizationPath, projectId, userStoryId);
+            string newFileLocation = Path.Combine(AppStore.projectPath, userStoryId);
 
             try
             {
-                controller.Save(fileReference, filePath, id, typeof(Reference));
-                controller.CopyFile(location, filePath, fileName);
+                controller.Save(fileReference, newFileLocation, referenceId, typeof(Reference));
+                controller.CopyFile(originalFileLocation, newFileLocation, fileName);
             }
             catch (Exception exception)
             {

@@ -92,12 +92,6 @@ namespace Kahnban_ToDo
                 Debug.WriteLine(exception);
                 return;
             }
-
-            if (_project == null) return;
-
-            string projectPath = Path.Combine(organizationPath, projectId.ToString());
-            AppStore.projectPath = projectPath;
-            AppStore.project = _project;
         }
         #endregion Load
 

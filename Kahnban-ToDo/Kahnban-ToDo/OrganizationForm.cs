@@ -33,7 +33,6 @@ namespace Kahnban_ToDo
             Projects_Load();
 
             // Reset the store
-            AppStore.project = null;
             AppStore.projectFilterCategory = -1;
             AppStore.projectFilterSearch = "";
             AppStore.projectFilterStatus = -1;

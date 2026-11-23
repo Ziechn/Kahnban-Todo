@@ -79,7 +79,7 @@ namespace Kahnban_ToDo
             InitializeComponent();
 
             _projectId = projectId;
-            AppStore.userStoryId = userStoryId;
+            _userStoryId= userStoryId;
 
             ComboBox_Assignee_Initialize();
             ComboBox_Status_Initialize();
@@ -228,7 +228,8 @@ namespace Kahnban_ToDo
 
         private void LinkLabel_Project_Display()
         {
-            LinkLabel_Project.Text = AppStore.project?.Name ?? "";
+            Project? project = Project_Read();
+            LinkLabel_Project.Text = project != null ? project.Name : "Error";
         }
 
         private void TableLayoutPanel_Content_Display()
@@ -420,12 +421,8 @@ namespace Kahnban_ToDo
             if (result == DialogResult.No) return;
 
             // Get the path
-            string organizationPath = AppStore.organizationPath;
-
-            string projectId = AppStore.project?.Id.ToString() ?? "";
-            string projectPath = Path.Combine(organizationPath, projectId);
-
-            string userStoryId = AppStore.userStoryId.ToString();
+            string projectPath = AppStore.projectPath;
+            string userStoryId = _userStoryId.ToString();
             string userStoryPath = Path.Combine(projectPath, userStoryId);
 
             // Delete the reference
@@ -454,8 +451,7 @@ namespace Kahnban_ToDo
 
         private void Button_AddText_Click(object sender, EventArgs e)
         {
-            long userStoryId = AppStore.userStoryId;
-            TextReferenceForm textReferenceForm = new TextReferenceForm(userStoryId);
+            TextReferenceForm textReferenceForm = new TextReferenceForm(_userStoryId);
             textReferenceForm.ShowDialog();
 
             References_Load();
@@ -463,8 +459,7 @@ namespace Kahnban_ToDo
 
         private void Button_AddMedia_Click(object sender, EventArgs e)
         {
-            long userStoryId = AppStore.userStoryId;
-            FileReferenceForm fileReferenceForm = new FileReferenceForm(userStoryId);
+            FileReferenceForm fileReferenceForm = new FileReferenceForm(_userStoryId);
             fileReferenceForm.ShowDialog();
 
             References_Load();
@@ -524,12 +519,10 @@ namespace Kahnban_ToDo
             string referenceType = DataGridViewUtilities.GetCellValue_String(row, HEADER_TYPE);
             if (string.IsNullOrEmpty(referenceType)) return;
 
-            long userStoryId = AppStore.userStoryId;
-
             bool isTextReference = referenceType.Equals(REFERENCE_TEXT);
             if (isTextReference)
             {
-                TextReferenceForm textReferenceForm = new TextReferenceForm(userStoryId, referenceId);
+                TextReferenceForm textReferenceForm = new TextReferenceForm(_userStoryId, referenceId);
                 textReferenceForm.ShowDialog(this);
             }
 
@@ -537,17 +530,15 @@ namespace Kahnban_ToDo
             if (isFileReference)
             {
                 // Find the file
-                string organizaitonPath = AppStore.organizationPath;
-                string projectId = AppStore.project?.Id.ToString() ?? "";
-                string userStoryIdString = userStoryId.ToString();
-
-                string path = Path.Combine(organizaitonPath, projectId, userStoryIdString);
+                string userStoryId = _userStoryId.ToString();
+                string projectPath = AppStore.projectPath;
+                string userStoryPath = Path.Combine(projectPath, userStoryId);
 
                 FileReference? fileReference = null;
                 Controller controller = new();
                 try
                 {
-                    fileReference = controller.ReadObject<FileReference>(path, referenceId);
+                    fileReference = controller.ReadObject<FileReference>(userStoryPath, referenceId);
                 }
                 catch (Exception exception)
                 {
@@ -558,7 +549,7 @@ namespace Kahnban_ToDo
                 if (fileReference == null) return;
 
                 string fileName = fileReference.FileName;
-                string filePath = Path.Combine(path, fileName);
+                string filePath = Path.Combine(userStoryPath, fileName);
 
                 // Open the file using windows.
                 Process.Start(
@@ -633,9 +624,6 @@ namespace Kahnban_ToDo
 
         private void LinkLabel_Organization_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Controller controller = new();
-            controller.ResetStore_Organization();
-
             EventBus.Unsubscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
 
             OrganizationForm organizationForm = new OrganizationForm();
@@ -644,9 +632,6 @@ namespace Kahnban_ToDo
 
         private void LinkLabel_Project_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Controller controller = new();
-            controller.ResetStore_Project();
-
             EventBus.Unsubscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
 
             ProjectDetailsForm projectForm = new ProjectDetailsForm(_projectId);
@@ -716,13 +701,9 @@ namespace Kahnban_ToDo
         #region Load ===============================================
         private void References_Load()
         {
-            long userStoryId = AppStore.userStoryId;
-
-            string idString = userStoryId.ToString();
-            string organizationPath = AppStore.organizationPath;
-            string projectId = AppStore.project?.Id.ToString() ?? "";
-
-            string filePath = Path.Combine(organizationPath, projectId, idString);
+            string userStoryId = _userStoryId.ToString();
+            string projectPath = AppStore.projectPath;
+            string filePath = Path.Combine(projectPath, userStoryId);
 
             DataTable dataTable = new DataTable();
 
@@ -762,11 +743,10 @@ namespace Kahnban_ToDo
 
         private void UserStory_Load()
         {
-            long userStoreId = AppStore.userStoryId;
             string projectPath = AppStore.projectPath;
 
             Controller controller = new();
-            UserStory? userStory = controller.GetUserStory(projectPath, userStoreId);
+            UserStory? userStory = controller.GetUserStory(projectPath, _userStoryId);
             if (userStory == null)
             {
                 Debug.WriteLine("Error loading User Story");
@@ -807,11 +787,11 @@ namespace Kahnban_ToDo
             Controller controller = new();
             UserStory userStory = new();
 
-            long userStoryId = AppStore.userStoryId;
+            long userStoryId = _userStoryId;
             if (userStoryId < 0)
             {
                 userStoryId = controller.GenerateId();
-                AppStore.userStoryId = userStoryId;
+                _userStoryId = userStoryId;
             }
 
             userStory.Id = userStoryId;
@@ -819,8 +799,8 @@ namespace Kahnban_ToDo
             string organization = AppStore.organization;
             userStory.Organization = organization;
 
-            Project? project = AppStore.project;
-            string projectName = project.Name;
+            Project? project = Project_Read();
+            string projectName = project != null ? project.Name : "";
             userStory.Project = projectName;
 
             string userStoryNameText = TextBox_UserStoryName.Text;
@@ -866,5 +846,13 @@ namespace Kahnban_ToDo
             }
         }
         #endregion Save
+
+        #region Read ===============================================
+        private Project? Project_Read()
+        {
+            Controller controller = new();
+            return controller.ReadObject<Project>(AppStore.organizationPath, _projectId);
+        }
+        #endregion Read
     }
 }
