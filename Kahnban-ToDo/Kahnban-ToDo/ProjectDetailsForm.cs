@@ -421,6 +421,7 @@ namespace Kahnban_ToDo
             }
 
             DataGridView_UserStories_Load();
+            DataGridView_Status_Display();
 
             ComboBox_Category_Filter_Load();
 
