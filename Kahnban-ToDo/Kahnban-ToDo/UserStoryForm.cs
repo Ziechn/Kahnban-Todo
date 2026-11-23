@@ -290,8 +290,8 @@ namespace Kahnban_ToDo
 
         private void UserStoryForm_Load(object sender, EventArgs e)
         {
-            ActiveControl = TextBox_UserStoryName;
             TextBox_UserStoryName.Focus();
+            TextBox_UserStoryName.Select(TextBox_UserStoryName.TextLength, 0);
         }
 
         private void HandleOnContactManaged()
