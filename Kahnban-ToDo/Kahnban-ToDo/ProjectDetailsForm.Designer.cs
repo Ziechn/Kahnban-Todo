@@ -452,7 +452,7 @@
             Label_UserStories.Name = "Label_UserStories";
             Label_UserStories.Size = new Size(716, 20);
             Label_UserStories.TabIndex = 0;
-            Label_UserStories.Text = "User Stories";
+            Label_UserStories.Text = "Features";
             Label_UserStories.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // DataGridView_UserStories

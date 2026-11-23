@@ -35,7 +35,7 @@ namespace Kahnban_ToDo
         private const string HEADER_STATUS = "Status";
         private const string HEADER_TASKLIST = "Task List";
         private const string HEADER_TASKS = "Tasks";
-        private const string HEADER_USER_STORY = "User Story";
+        private const string HEADER_USER_STORY = "Feature";
         private const string HEADER_VERSION = "Version";
 
         // CONSTANTS - DataGridView Properties
@@ -191,7 +191,7 @@ namespace Kahnban_ToDo
                 total += tasks;
             }
 
-            string text = $"User Stories (tasks: {total})";
+            string text = $"Features (tasks: {total})";
             Label_UserStories.Text = text;
         }
 
