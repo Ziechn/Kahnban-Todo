@@ -211,7 +211,19 @@ namespace Kahnban_ToDo
                 return;
             }
 
-            Image projectImage = Image.FromFile(fileLocation);
+            Image? projectImage = null;
+
+            try
+            {
+                projectImage = Image.FromFile(fileLocation);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+                PictureBox_Project.Image = Resources.NoImage;
+                return;
+            }
+
             PictureBox_Project.Image = projectImage;
         }
 

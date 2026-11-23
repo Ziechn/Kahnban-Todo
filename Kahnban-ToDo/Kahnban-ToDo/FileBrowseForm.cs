@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Diagnostics;
 
 namespace Kahnban_ToDo
 {
@@ -65,7 +58,8 @@ namespace Kahnban_ToDo
         private void Button_Submit_Click(object sender, EventArgs e)
         {
             string location = TextBox_Location.Text.Trim();
-            SaveProject(location);
+            Image_Copy(location);
+            Project_Save(location);
             Close();
         }
 
@@ -107,22 +101,42 @@ namespace Kahnban_ToDo
         }
         #endregion Load
 
+        #region Logic ==============================================
+        private void Image_Copy(string originalFileLocation)
+        {
+            string? originalFilePath = Path.GetDirectoryName(originalFileLocation);
+            string? fileName = Path.GetFileName(originalFileLocation);
+
+            Controller controller = new();
+
+            try
+            {
+                controller.CopyFile(originalFileLocation, AppStore.projectPath, fileName);
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
+        }
+
+        private void Project_Save(string originalFileLocation)
+        {
+            string? fileName = Path.GetFileName(originalFileLocation);
+            string newFileLocation = Path.Combine(AppStore.projectPath, fileName);
+
+            if (_project == null) return;
+            _project.ImageFileLocation = newFileLocation;
+
+            Controller controller = new();
+            controller.Save(_project, AppStore.organizationPath, _projectId);
+        }
+        #endregion Logic
+
         #region Populate ===========================================
         private void TextBox_Location_Populate(string location)
         {
             TextBox_Location.Text = location;
         }
         #endregion Populate
-
-        #region Save ===============================================
-        private void SaveProject(string fileLocation)
-        {
-            if (_project == null) return;
-            _project.ImageFileLocation = fileLocation;
-
-            Controller controller = new();
-            controller.Save(_project, AppStore.organizationPath, _projectId);
-        }
-        #endregion Save
     }
 }
