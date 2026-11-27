@@ -104,14 +104,14 @@
             // ToolStripMenuItem_SideBar_Toggle
             // 
             ToolStripMenuItem_SideBar_Toggle.Name = "ToolStripMenuItem_SideBar_Toggle";
-            ToolStripMenuItem_SideBar_Toggle.Size = new Size(180, 22);
+            ToolStripMenuItem_SideBar_Toggle.Size = new Size(164, 22);
             ToolStripMenuItem_SideBar_Toggle.Text = "Toggle Side Bar";
             ToolStripMenuItem_SideBar_Toggle.Click += ToolStripMenuItem_SideBar_Toggle_Click;
             // 
             // ToolStripMenuItem_Summary_Toggle
             // 
             ToolStripMenuItem_Summary_Toggle.Name = "ToolStripMenuItem_Summary_Toggle";
-            ToolStripMenuItem_Summary_Toggle.Size = new Size(180, 22);
+            ToolStripMenuItem_Summary_Toggle.Size = new Size(164, 22);
             ToolStripMenuItem_Summary_Toggle.Text = "Toggle Summary";
             ToolStripMenuItem_Summary_Toggle.Click += ToolStripMenuItem_Summary_Toggle_Click;
             // 
@@ -134,7 +134,7 @@
             MainMenuStrip = menuStrip1;
             MinimumSize = new Size(960, 600);
             Name = "MainForm";
-            Text = "Projectz - 0.12.1";
+            Text = "Projectz - 0.12.2";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
