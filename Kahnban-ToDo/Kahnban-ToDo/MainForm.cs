@@ -106,6 +106,16 @@ namespace Kahnban_ToDo
             StartForm selectForm = new StartForm();
             FormUtilities.NavigateTo(selectForm);
         }
+
+        private void ToolStripMenuItem_SideBar_Toggle_Click(object sender, EventArgs e)
+        {
+            EventBus.Publish(this, EventEnum.OnToggleSideBar);
+        }
+
+        private void ToolStripMenuItem_Summary_Toggle_Click(object sender, EventArgs e)
+        {
+            EventBus.Publish(this, EventEnum.OnToggleSummary);
+        }
         #endregion Interaction
     }
 }

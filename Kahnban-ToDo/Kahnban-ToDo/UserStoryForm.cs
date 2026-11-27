@@ -69,7 +69,7 @@ namespace Kahnban_ToDo
             Controls_State();
             LinkLabel_DisableTabStop();
 
-            EventBus.Subscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
+            Event_Subscribe();
 
             isLoading = false;
         }
@@ -100,7 +100,7 @@ namespace Kahnban_ToDo
             Controls_State();
             LinkLabel_DisableTabStop();
 
-            EventBus.Subscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
+            Event_Subscribe();
 
             isLoading = false;
         }
@@ -282,10 +282,24 @@ namespace Kahnban_ToDo
         }
         #endregion Display
 
-        #region Event Handlers =====================================
+        #region Events =============================================
         private void DataGridView_References_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             DataGridView_References.Columns[HEADER_ID]?.Visible = false;
+        }
+
+        private void Event_Subscribe()
+        {
+            EventBus.Subscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
+            EventBus.Subscribe(EventEnum.OnToggleSideBar, HandleOnSidebarToggle);
+            EventBus.Subscribe(EventEnum.OnToggleSummary, HandleOnSummaryToggle);
+        }
+
+        private void Event_Unsubscribe()
+        {
+            EventBus.Unsubscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
+            EventBus.Unsubscribe(EventEnum.OnToggleSideBar, HandleOnSidebarToggle);
+            EventBus.Unsubscribe(EventEnum.OnToggleSummary, HandleOnSummaryToggle);
         }
 
         private void UserStoryForm_Load(object sender, EventArgs e)
@@ -297,6 +311,16 @@ namespace Kahnban_ToDo
         private void HandleOnContactManaged()
         {
             ComboBox_Assignee_Initialize();
+        }
+
+        private void HandleOnSidebarToggle()
+        {
+            TableLayoutPanel_Content_Display();
+        }
+
+        private void HandleOnSummaryToggle()
+        {
+            TableLayoutPanel_Summary_Display();
         }
         #endregion Event Handlers
 
@@ -624,7 +648,7 @@ namespace Kahnban_ToDo
 
         private void LinkLabel_Organization_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            EventBus.Unsubscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
+            Event_Unsubscribe();
 
             OrganizationForm organizationForm = new OrganizationForm();
             FormUtilities.NavigateTo(organizationForm);
@@ -632,7 +656,7 @@ namespace Kahnban_ToDo
 
         private void LinkLabel_Project_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            EventBus.Unsubscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
+            Event_Unsubscribe();
 
             ProjectDetailsForm projectForm = new ProjectDetailsForm(_projectId);
             FormUtilities.NavigateTo(projectForm);
@@ -643,7 +667,7 @@ namespace Kahnban_ToDo
             Controller controller = new();
             controller.ResetStore_Start();
 
-            EventBus.Unsubscribe(EventEnum.OnContactManaged, HandleOnContactManaged);
+            Event_Unsubscribe();
 
             StartForm startForm = new StartForm();
             FormUtilities.NavigateTo(startForm);

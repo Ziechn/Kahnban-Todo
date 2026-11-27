@@ -35,13 +35,17 @@
             ToolStripMenuItem_Exit = new ToolStripMenuItem();
             preferencesToolStripMenuItem = new ToolStripMenuItem();
             ToolStripMenuItem_AssigneeManagement = new ToolStripMenuItem();
+            manageStatusesToolStripMenuItem = new ToolStripMenuItem();
+            viewToolStripMenuItem = new ToolStripMenuItem();
+            ToolStripMenuItem_SideBar_Toggle = new ToolStripMenuItem();
+            ToolStripMenuItem_Summary_Toggle = new ToolStripMenuItem();
             Panel_Main = new Panel();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, preferencesToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, preferencesToolStripMenuItem, viewToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1094, 24);
@@ -71,7 +75,7 @@
             // 
             // preferencesToolStripMenuItem
             // 
-            preferencesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStripMenuItem_AssigneeManagement });
+            preferencesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStripMenuItem_AssigneeManagement, manageStatusesToolStripMenuItem });
             preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
             preferencesToolStripMenuItem.Size = new Size(80, 20);
             preferencesToolStripMenuItem.Text = "Preferences";
@@ -82,6 +86,34 @@
             ToolStripMenuItem_AssigneeManagement.Size = new Size(167, 22);
             ToolStripMenuItem_AssigneeManagement.Text = "Manage Contacts";
             ToolStripMenuItem_AssigneeManagement.Click += ToolStripMenuItem_AssigneeManagement_Click;
+            // 
+            // manageStatusesToolStripMenuItem
+            // 
+            manageStatusesToolStripMenuItem.Enabled = false;
+            manageStatusesToolStripMenuItem.Name = "manageStatusesToolStripMenuItem";
+            manageStatusesToolStripMenuItem.Size = new Size(167, 22);
+            manageStatusesToolStripMenuItem.Text = "Manage Statuses";
+            // 
+            // viewToolStripMenuItem
+            // 
+            viewToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { ToolStripMenuItem_SideBar_Toggle, ToolStripMenuItem_Summary_Toggle });
+            viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            viewToolStripMenuItem.Size = new Size(44, 20);
+            viewToolStripMenuItem.Text = "View";
+            // 
+            // ToolStripMenuItem_SideBar_Toggle
+            // 
+            ToolStripMenuItem_SideBar_Toggle.Name = "ToolStripMenuItem_SideBar_Toggle";
+            ToolStripMenuItem_SideBar_Toggle.Size = new Size(180, 22);
+            ToolStripMenuItem_SideBar_Toggle.Text = "Toggle Side Bar";
+            ToolStripMenuItem_SideBar_Toggle.Click += ToolStripMenuItem_SideBar_Toggle_Click;
+            // 
+            // ToolStripMenuItem_Summary_Toggle
+            // 
+            ToolStripMenuItem_Summary_Toggle.Name = "ToolStripMenuItem_Summary_Toggle";
+            ToolStripMenuItem_Summary_Toggle.Size = new Size(180, 22);
+            ToolStripMenuItem_Summary_Toggle.Text = "Toggle Summary";
+            ToolStripMenuItem_Summary_Toggle.Click += ToolStripMenuItem_Summary_Toggle_Click;
             // 
             // Panel_Main
             // 
@@ -118,5 +150,9 @@
         private ToolStripMenuItem ToolStripMenuItem_SelectFolder;
         private ToolStripMenuItem preferencesToolStripMenuItem;
         private ToolStripMenuItem ToolStripMenuItem_AssigneeManagement;
+        private ToolStripMenuItem manageStatusesToolStripMenuItem;
+        private ToolStripMenuItem viewToolStripMenuItem;
+        private ToolStripMenuItem ToolStripMenuItem_SideBar_Toggle;
+        private ToolStripMenuItem ToolStripMenuItem_Summary_Toggle;
     }
 }

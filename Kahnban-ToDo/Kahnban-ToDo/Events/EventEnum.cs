@@ -7,6 +7,8 @@ namespace Kahnban_ToDo
     internal enum EventEnum
     {
         OnContactManaged,
-        OnStatusManaged
+        OnStatusManaged,
+        OnToggleSideBar,
+        OnToggleSummary
     }
 }

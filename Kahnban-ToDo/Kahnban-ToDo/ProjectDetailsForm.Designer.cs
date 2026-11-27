@@ -37,8 +37,6 @@
             label_navigation_separator2 = new Label();
             Label_Project = new Label();
             flowLayoutPanel_controls = new FlowLayoutPanel();
-            Button_SideBar = new Button();
-            label_pipe = new Label();
             TextBox_UserStory_Search = new TextBox();
             ComboBox_Category_Filter = new ComboBox();
             ComboBox_Status_Filter = new ComboBox();
@@ -167,8 +165,6 @@
             // 
             // flowLayoutPanel_controls
             // 
-            flowLayoutPanel_controls.Controls.Add(Button_SideBar);
-            flowLayoutPanel_controls.Controls.Add(label_pipe);
             flowLayoutPanel_controls.Controls.Add(TextBox_UserStory_Search);
             flowLayoutPanel_controls.Controls.Add(ComboBox_Category_Filter);
             flowLayoutPanel_controls.Controls.Add(ComboBox_Status_Filter);
@@ -182,28 +178,9 @@
             flowLayoutPanel_controls.Size = new Size(978, 29);
             flowLayoutPanel_controls.TabIndex = 2;
             // 
-            // Button_SideBar
-            // 
-            Button_SideBar.Location = new Point(3, 3);
-            Button_SideBar.Name = "Button_SideBar";
-            Button_SideBar.Size = new Size(100, 23);
-            Button_SideBar.TabIndex = 0;
-            Button_SideBar.Text = "Side Bar";
-            Button_SideBar.UseVisualStyleBackColor = true;
-            Button_SideBar.Click += Button_SideBar_Click;
-            // 
-            // label_pipe
-            // 
-            label_pipe.Location = new Point(109, 0);
-            label_pipe.Name = "label_pipe";
-            label_pipe.Size = new Size(10, 23);
-            label_pipe.TabIndex = 1;
-            label_pipe.Text = "|";
-            label_pipe.TextAlign = ContentAlignment.MiddleCenter;
-            // 
             // TextBox_UserStory_Search
             // 
-            TextBox_UserStory_Search.Location = new Point(125, 3);
+            TextBox_UserStory_Search.Location = new Point(3, 3);
             TextBox_UserStory_Search.Name = "TextBox_UserStory_Search";
             TextBox_UserStory_Search.Size = new Size(125, 23);
             TextBox_UserStory_Search.TabIndex = 4;
@@ -215,7 +192,7 @@
             // 
             ComboBox_Category_Filter.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_Category_Filter.FormattingEnabled = true;
-            ComboBox_Category_Filter.Location = new Point(256, 3);
+            ComboBox_Category_Filter.Location = new Point(134, 3);
             ComboBox_Category_Filter.Name = "ComboBox_Category_Filter";
             ComboBox_Category_Filter.Size = new Size(150, 23);
             ComboBox_Category_Filter.TabIndex = 2;
@@ -225,7 +202,7 @@
             // 
             ComboBox_Status_Filter.DropDownStyle = ComboBoxStyle.DropDownList;
             ComboBox_Status_Filter.FormattingEnabled = true;
-            ComboBox_Status_Filter.Location = new Point(412, 3);
+            ComboBox_Status_Filter.Location = new Point(290, 3);
             ComboBox_Status_Filter.Name = "ComboBox_Status_Filter";
             ComboBox_Status_Filter.Size = new Size(150, 23);
             ComboBox_Status_Filter.TabIndex = 3;
@@ -233,7 +210,7 @@
             // 
             // label_pipe2
             // 
-            label_pipe2.Location = new Point(568, 0);
+            label_pipe2.Location = new Point(446, 0);
             label_pipe2.Name = "label_pipe2";
             label_pipe2.RightToLeft = RightToLeft.Yes;
             label_pipe2.Size = new Size(10, 23);
@@ -243,7 +220,7 @@
             // 
             // Button_UserStory_Create
             // 
-            Button_UserStory_Create.Location = new Point(584, 3);
+            Button_UserStory_Create.Location = new Point(462, 3);
             Button_UserStory_Create.Name = "Button_UserStory_Create";
             Button_UserStory_Create.Size = new Size(100, 23);
             Button_UserStory_Create.TabIndex = 6;
@@ -254,7 +231,7 @@
             // Button_UserStory_Update
             // 
             Button_UserStory_Update.Enabled = false;
-            Button_UserStory_Update.Location = new Point(690, 3);
+            Button_UserStory_Update.Location = new Point(568, 3);
             Button_UserStory_Update.Name = "Button_UserStory_Update";
             Button_UserStory_Update.Size = new Size(100, 23);
             Button_UserStory_Update.TabIndex = 7;
@@ -265,7 +242,7 @@
             // Button_UserStory_Delete
             // 
             Button_UserStory_Delete.Enabled = false;
-            Button_UserStory_Delete.Location = new Point(796, 3);
+            Button_UserStory_Delete.Location = new Point(674, 3);
             Button_UserStory_Delete.Name = "Button_UserStory_Delete";
             Button_UserStory_Delete.Size = new Size(100, 23);
             Button_UserStory_Delete.TabIndex = 8;
@@ -521,8 +498,6 @@
         private Label Label_UserStories;
         private DataGridView DataGridView_UserStories;
         private FlowLayoutPanel flowLayoutPanel_controls;
-        private Button Button_SideBar;
-        private Label label_pipe;
         private ComboBox ComboBox_Status;
         private LinkLabel LinkLabel_Start;
         private Label label_navigation_separator1;

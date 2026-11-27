@@ -86,6 +86,8 @@ namespace Kahnban_ToDo
 
             PictureBox_Project_Display();
 
+            Event_Subscribe();
+
             _isLoading = false;
 
             // Select Filters
@@ -264,6 +266,23 @@ namespace Kahnban_ToDo
         }
         #endregion Display
 
+        #region Events =============================================
+        private void Event_Subscribe()
+        {
+            EventBus.Subscribe(EventEnum.OnToggleSideBar, HandleOnSidebarToggle);
+        }
+
+        private void Event_Unsubscribe()
+        {
+            EventBus.Unsubscribe(EventEnum.OnToggleSideBar, HandleOnSidebarToggle);
+        }
+
+        private void HandleOnSidebarToggle()
+        {
+            TableLayoutPanel_Content_Display();
+        }
+        #endregion Event Handlers
+
         #region Initialize =========================================
         private void ComboBox_Status_Initialize()
         {
@@ -380,11 +399,6 @@ namespace Kahnban_ToDo
         #endregion Initialize
 
         #region Interaction: Button ================================
-        private void Button_SideBar_Click(object sender, EventArgs e)
-        {
-            TableLayoutPanel_Content_Display();
-        }
-
         private void Button_UserStory_Create_Click(object sender, EventArgs e)
         {
             UserStoryForm userStoryForm = new UserStoryForm(_projectId);
@@ -501,6 +515,8 @@ namespace Kahnban_ToDo
             int rowIndex = e.RowIndex;
             if (rowIndex < 0) return;
 
+            Event_Unsubscribe();
+
             Update_UserStory(rowIndex);
         }
 
@@ -533,12 +549,16 @@ namespace Kahnban_ToDo
         #region Interaction: LinkLabel =============================
         private void LinkLabel_Organization_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            Event_Unsubscribe();
+
             OrganizationForm organizationForm = new OrganizationForm();
             FormUtilities.NavigateTo(organizationForm);
         }
 
         private void LinkLabel_Start_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            Event_Unsubscribe();
+
             Controller controller = new();
             controller.ResetStore_Start();
 

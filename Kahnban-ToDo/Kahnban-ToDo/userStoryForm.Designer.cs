@@ -39,9 +39,6 @@
             LinkLabel_Project = new LinkLabel();
             label_navigation_separator3 = new Label();
             TextBox_UserStoryName = new TextBox();
-            FlowLayoutPanel_Controls = new FlowLayoutPanel();
-            Button_SideBar = new Button();
-            Button_Summary = new Button();
             TableLayoutPanel_Content = new TableLayoutPanel();
             TableLayoutPanel_SideBar = new TableLayoutPanel();
             DataGridView_References = new DataGridView();
@@ -79,7 +76,6 @@
             TableLayoutPanel_Body.SuspendLayout();
             tableLayoutPanel_Navigtion.SuspendLayout();
             FlowLayoutPanel_Navigation.SuspendLayout();
-            FlowLayoutPanel_Controls.SuspendLayout();
             TableLayoutPanel_Content.SuspendLayout();
             TableLayoutPanel_SideBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DataGridView_References).BeginInit();
@@ -99,15 +95,14 @@
             TableLayoutPanel_Body.ColumnCount = 1;
             TableLayoutPanel_Body.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             TableLayoutPanel_Body.Controls.Add(tableLayoutPanel_Navigtion, 0, 0);
-            TableLayoutPanel_Body.Controls.Add(FlowLayoutPanel_Controls, 0, 1);
-            TableLayoutPanel_Body.Controls.Add(TableLayoutPanel_Content, 0, 2);
+            TableLayoutPanel_Body.Controls.Add(TableLayoutPanel_Content, 0, 1);
             TableLayoutPanel_Body.Dock = DockStyle.Fill;
             TableLayoutPanel_Body.Location = new Point(0, 0);
             TableLayoutPanel_Body.Name = "TableLayoutPanel_Body";
-            TableLayoutPanel_Body.RowCount = 4;
+            TableLayoutPanel_Body.RowCount = 3;
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
-            TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_Body.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_Body.Size = new Size(984, 561);
             TableLayoutPanel_Body.TabIndex = 99;
@@ -226,36 +221,6 @@
             TextBox_UserStoryName.KeyUp += TextBox_UserStoryName_KeyUp;
             TextBox_UserStoryName.Leave += TextBox_UserStoryName_Leave;
             // 
-            // FlowLayoutPanel_Controls
-            // 
-            FlowLayoutPanel_Controls.Controls.Add(Button_SideBar);
-            FlowLayoutPanel_Controls.Controls.Add(Button_Summary);
-            FlowLayoutPanel_Controls.Dock = DockStyle.Fill;
-            FlowLayoutPanel_Controls.Location = new Point(3, 33);
-            FlowLayoutPanel_Controls.Name = "FlowLayoutPanel_Controls";
-            FlowLayoutPanel_Controls.Size = new Size(978, 29);
-            FlowLayoutPanel_Controls.TabIndex = 2;
-            // 
-            // Button_SideBar
-            // 
-            Button_SideBar.Location = new Point(3, 3);
-            Button_SideBar.Name = "Button_SideBar";
-            Button_SideBar.Size = new Size(100, 23);
-            Button_SideBar.TabIndex = 99;
-            Button_SideBar.Text = "Side Bar";
-            Button_SideBar.UseVisualStyleBackColor = true;
-            Button_SideBar.Click += Button_SideBar_Click;
-            // 
-            // Button_Summary
-            // 
-            Button_Summary.Location = new Point(109, 3);
-            Button_Summary.Name = "Button_Summary";
-            Button_Summary.Size = new Size(100, 23);
-            Button_Summary.TabIndex = 99;
-            Button_Summary.Text = "Summary";
-            Button_Summary.UseVisualStyleBackColor = true;
-            Button_Summary.Click += Button_Summary_Click;
-            // 
             // TableLayoutPanel_Content
             // 
             TableLayoutPanel_Content.ColumnCount = 2;
@@ -265,12 +230,12 @@
             TableLayoutPanel_Content.Controls.Add(TableLayoutPanel_SideBar, 0, 0);
             TableLayoutPanel_Content.Controls.Add(TableLayoutPanel_UserStory, 1, 0);
             TableLayoutPanel_Content.Dock = DockStyle.Fill;
-            TableLayoutPanel_Content.Location = new Point(0, 65);
+            TableLayoutPanel_Content.Location = new Point(0, 30);
             TableLayoutPanel_Content.Margin = new Padding(0);
             TableLayoutPanel_Content.Name = "TableLayoutPanel_Content";
             TableLayoutPanel_Content.RowCount = 1;
             TableLayoutPanel_Content.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_Content.Size = new Size(984, 476);
+            TableLayoutPanel_Content.Size = new Size(984, 511);
             TableLayoutPanel_Content.TabIndex = 1;
             // 
             // TableLayoutPanel_SideBar
@@ -301,7 +266,7 @@
             TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
             TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             TableLayoutPanel_SideBar.RowStyles.Add(new RowStyle(SizeType.Absolute, 30F));
-            TableLayoutPanel_SideBar.Size = new Size(244, 470);
+            TableLayoutPanel_SideBar.Size = new Size(244, 505);
             TableLayoutPanel_SideBar.TabIndex = 99;
             // 
             // DataGridView_References
@@ -320,7 +285,7 @@
             DataGridView_References.ReadOnly = true;
             DataGridView_References.RowHeadersVisible = false;
             DataGridView_References.ShowCellToolTips = false;
-            DataGridView_References.Size = new Size(238, 169);
+            DataGridView_References.Size = new Size(238, 204);
             DataGridView_References.TabIndex = 99;
             DataGridView_References.CellClick += DataGridView_References_CellClick;
             DataGridView_References.CellDoubleClick += DataGridView_References_CellDoubleClick;
@@ -333,7 +298,7 @@
             panel_referenceControls.Controls.Add(Button_AddMedia);
             panel_referenceControls.Controls.Add(Button_AddText);
             panel_referenceControls.Dock = DockStyle.Fill;
-            panel_referenceControls.Location = new Point(0, 440);
+            panel_referenceControls.Location = new Point(0, 475);
             panel_referenceControls.Margin = new Padding(0);
             panel_referenceControls.Name = "panel_referenceControls";
             panel_referenceControls.Size = new Size(244, 30);
@@ -609,7 +574,7 @@
             TableLayoutPanel_UserStory.RowStyles.Add(new RowStyle(SizeType.Absolute, 120F));
             TableLayoutPanel_UserStory.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             TableLayoutPanel_UserStory.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            TableLayoutPanel_UserStory.Size = new Size(728, 470);
+            TableLayoutPanel_UserStory.Size = new Size(728, 505);
             TableLayoutPanel_UserStory.TabIndex = 0;
             // 
             // RichTextBox_Summary
@@ -630,7 +595,7 @@
             RichTextBox_TaskList.Dock = DockStyle.Fill;
             RichTextBox_TaskList.Location = new Point(3, 163);
             RichTextBox_TaskList.Name = "RichTextBox_TaskList";
-            RichTextBox_TaskList.Size = new Size(722, 304);
+            RichTextBox_TaskList.Size = new Size(722, 339);
             RichTextBox_TaskList.TabIndex = 2;
             RichTextBox_TaskList.Text = "";
             RichTextBox_TaskList.KeyUp += RichTextBox_TaskList_KeyUp;
@@ -676,7 +641,6 @@
             tableLayoutPanel_Navigtion.PerformLayout();
             FlowLayoutPanel_Navigation.ResumeLayout(false);
             FlowLayoutPanel_Navigation.PerformLayout();
-            FlowLayoutPanel_Controls.ResumeLayout(false);
             TableLayoutPanel_Content.ResumeLayout(false);
             TableLayoutPanel_SideBar.ResumeLayout(false);
             TableLayoutPanel_SideBar.PerformLayout();
@@ -711,15 +675,12 @@
         private Button Button_HideSummary;
         private Button Button_HideReferences;
         private TableLayoutPanel TableLayoutPanel_UserStory;
-        private FlowLayoutPanel FlowLayoutPanel_Controls;
         private TableLayoutPanel TableLayoutPanel_TagCount;
         private Label Label_TaskCount;
         private TableLayoutPanel TableLayoutPanel_SideBar;
         private DataGridView DataGridView_References;
         private Label Label_References;
         private FlowLayoutPanel FlowLayoutPanel_Navigation;
-        private Button Button_Summary;
-        private Button Button_SideBar;
         private RichTextBox RichTextBox_Summary;
         private RichTextBox RichTextBox_TaskList;
         private Label label_start;
